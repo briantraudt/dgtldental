@@ -1,6 +1,4 @@
-
-import { useState } from 'react';
-import { ArrowRight, MessageCircle, Zap, Shield, BarChart3 } from 'lucide-react';
+import { ArrowRight, Zap, Shield, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -8,8 +6,6 @@ import DGTLChatWidget from '@/components/DGTLChatWidget';
 import EmbeddedChatDemo from '@/components/EmbeddedChatDemo';
 
 const Index = () => {
-  const [isDemoOpen, setIsDemoOpen] = useState(false);
-
   return (
     <div className="min-h-screen">
       {/* Hero Section with dental office background */}
@@ -104,16 +100,10 @@ const Index = () => {
             </p>
 
             <div className="flex justify-center">
-              <Button onClick={() => setIsDemoOpen(true)} className="bg-green-600 hover:bg-green-700 text-white">
-                Launch Demo <MessageCircle className="ml-2" />
-              </Button>
-            </div>
-
-            {isDemoOpen && (
-              <div className="mt-8">
+              <div className="w-full max-w-4xl">
                 <EmbeddedChatDemo />
               </div>
-            )}
+            </div>
           </section>
 
           {/* Call to Action Section */}
