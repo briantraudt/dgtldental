@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,40 +32,142 @@ const DGTLChatWidget = () => {
   const getDGTLResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase();
     
-    if (lowerMessage.includes('what') && (lowerMessage.includes('dgtl') || lowerMessage.includes('do'))) {
-      return "DGTL Dental creates AI-powered chat widgets specifically for dental practices. Our solution helps dentists attract more patients, streamline communication, and enhance their online presence through intelligent, 24/7 patient engagement.";
+    // Q1: What does this chatbot actually do?
+    if (lowerMessage.includes('what') && (lowerMessage.includes('chatbot') || lowerMessage.includes('do') || lowerMessage.includes('this'))) {
+      return "This AI assistant answers common questions patients have about your practice, such as hours, location, insurance, and procedures — 24/7. It can also respond to general dental health questions.";
     }
     
-    if (lowerMessage.includes('how') && (lowerMessage.includes('work') || lowerMessage.includes('function'))) {
-      return "Our AI chat widget integrates seamlessly into your dental practice website. It provides instant responses to patient inquiries about appointments, services, insurance, and office hours. The widget is customized with your practice information and can handle multiple conversations simultaneously, ensuring no patient inquiry goes unanswered.";
+    // Q2: Is it trained for dental practices?
+    if (lowerMessage.includes('trained') || (lowerMessage.includes('dental') && lowerMessage.includes('practice'))) {
+      return "Yes, the assistant is specifically designed to handle dental-related inquiries and knows how to guide patients appropriately.";
     }
     
-    if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('pricing')) {
-      return "We offer flexible pricing plans tailored to different practice sizes. Our packages include widget customization, HIPAA-compliant hosting, analytics dashboard, and ongoing support. Contact us for a personalized quote based on your practice needs.";
+    // Q3: Can it answer patient questions after hours?
+    if (lowerMessage.includes('after hours') || lowerMessage.includes('24/7') || lowerMessage.includes('closed')) {
+      return "Absolutely — it's available 24/7, even when your office is closed.";
     }
     
-    if (lowerMessage.includes('feature') || lowerMessage.includes('benefit')) {
-      return "Key features include: 24/7 automated responses, HIPAA compliance, customizable branding, appointment scheduling integration, insurance verification assistance, emergency protocols, and detailed analytics. Benefits include increased patient engagement, reduced phone calls, improved patient satisfaction, and more efficient practice operations.";
+    // Q4: What kind of dental questions can it answer?
+    if (lowerMessage.includes('dental questions') || lowerMessage.includes('what questions')) {
+      return "Everything from practice logistics to oral health questions like \"What causes toothaches?\" or \"How often should I get cleanings?\"";
     }
     
-    if (lowerMessage.includes('setup') || lowerMessage.includes('install') || lowerMessage.includes('implement')) {
-      return "Setup is incredibly simple! We provide a single line of code that you add to your website. Our team handles all the configuration, customization with your practice details, and testing. Most practices are up and running within 24-48 hours.";
+    // Q5: How do I install it on my website?
+    if (lowerMessage.includes('install') || lowerMessage.includes('setup') || lowerMessage.includes('website')) {
+      return "Just paste one line of code into your site's <head> or at the bottom of the <body>. We'll provide it after signup.";
     }
     
-    if (lowerMessage.includes('hipaa') || lowerMessage.includes('secure') || lowerMessage.includes('privacy')) {
-      return "Yes, our platform is fully HIPAA compliant with end-to-end encryption, secure data storage, and strict privacy protocols. We understand the importance of patient data protection and have built our system with healthcare compliance as a top priority.";
+    // Q6: What if I don't manage my website?
+    if (lowerMessage.includes('don\'t manage') || lowerMessage.includes('web admin')) {
+      return "We offer setup help for a flat fee of $100. You or your web admin just need to grant access.";
     }
     
-    if (lowerMessage.includes('demo') || lowerMessage.includes('try') || lowerMessage.includes('test')) {
-      return "You can see our chat widget in action right here on this page! We also offer personalized demos where we can show you how it would look and function on your specific website. Would you like to schedule a demo or get started with a free trial?";
+    // Q7: Does it know my practice hours and contact info?
+    if (lowerMessage.includes('practice hours') || lowerMessage.includes('contact info') || lowerMessage.includes('my info')) {
+      return "Yes — during signup, you'll enter your hours, services, insurance, and emergency policy. The assistant uses that to answer accurately.";
     }
     
-    if (lowerMessage.includes('contact') || lowerMessage.includes('reach') || lowerMessage.includes('support')) {
-      return "You can reach our team at hello@dgtldental.com or schedule a consultation through our website. We're here to answer any questions and help you transform your dental practice's patient communication!";
+    // Q8: Can it book appointments for me?
+    if (lowerMessage.includes('book') || lowerMessage.includes('appointment') || lowerMessage.includes('schedule')) {
+      return "Not yet — but it can recommend patients call or visit your scheduling page when appropriate.";
     }
     
-    return "I'm here to help you learn about DGTL Dental's AI chat widget for dental practices! Ask me about our features, pricing, setup process, or how our solution can help grow your practice. What would you like to know?";
+    // Q9: Can I customize the responses?
+    if (lowerMessage.includes('customize') || lowerMessage.includes('personalize')) {
+      return "Yes. The AI adapts to your provided info. In the future, we'll support more manual customization too.";
+    }
+    
+    // Q10: Does it handle HIPAA compliance?
+    if (lowerMessage.includes('hipaa') || lowerMessage.includes('compliance') || lowerMessage.includes('secure')) {
+      return "We do not collect patient data or offer diagnostics. All interactions are secure, and no sensitive data is stored.";
+    }
+    
+    // Q11: Will it say things I don't want it to?
+    if (lowerMessage.includes('don\'t want') || lowerMessage.includes('wrong things')) {
+      return "The AI is instructed to avoid diagnoses and will defer sensitive or urgent questions to your staff. You control the key info it uses.";
+    }
+    
+    // Q12: How accurate are its dental answers?
+    if (lowerMessage.includes('accurate') || lowerMessage.includes('reliable')) {
+      return "Very accurate. The AI uses dental-specific guidance and phrasing. For anything unclear or sensitive, it always recommends contacting the office.";
+    }
+    
+    // Q13: How much does it cost?
+    if (lowerMessage.includes('cost') || lowerMessage.includes('price') || lowerMessage.includes('much')) {
+      return "Just $10/month, with no contracts. Cancel anytime.";
+    }
+    
+    // Q14: What's the setup fee?
+    if (lowerMessage.includes('setup fee') || lowerMessage.includes('installation fee')) {
+      return "Free if you do it yourself. If you want us to handle installation, it's a one-time $100 flat fee.";
+    }
+    
+    // Q15: Can I try it before paying?
+    if (lowerMessage.includes('try') || lowerMessage.includes('demo') || lowerMessage.includes('test')) {
+      return "Yes — there's a live demo right here on the site. Try asking common questions to see how it works.";
+    }
+    
+    // Q16: Will it replace my front desk team?
+    if (lowerMessage.includes('replace') || lowerMessage.includes('front desk')) {
+      return "No — it supports your team by answering repetitive questions, especially after hours, and freeing up staff time.";
+    }
+    
+    // Q17: Is it hard to manage once installed?
+    if (lowerMessage.includes('hard to manage') || lowerMessage.includes('maintenance')) {
+      return "Not at all. No ongoing maintenance required. Your info is saved and used intelligently.";
+    }
+    
+    // Q18: Can I see what patients are asking?
+    if (lowerMessage.includes('analytics') || lowerMessage.includes('see what') || lowerMessage.includes('reports')) {
+      return "We're working on adding analytics. For now, the focus is on real-time support, not logging user data.";
+    }
+    
+    // Q19: Can I use it on a WordPress or Wix site?
+    if (lowerMessage.includes('wordpress') || lowerMessage.includes('wix') || lowerMessage.includes('platform')) {
+      return "Yes — it works on any website where you can embed a script.";
+    }
+    
+    // Q20: How fast does it respond?
+    if (lowerMessage.includes('fast') || lowerMessage.includes('speed') || lowerMessage.includes('quick')) {
+      return "Responses are nearly instant, even outside office hours.";
+    }
+    
+    // Q21: Can it speak Spanish?
+    if (lowerMessage.includes('spanish') || lowerMessage.includes('language') || lowerMessage.includes('multilingual')) {
+      return "Not yet, but multilingual support is on our roadmap.";
+    }
+    
+    // Q22: Is there a contract or long-term commitment?
+    if (lowerMessage.includes('contract') || lowerMessage.includes('commitment') || lowerMessage.includes('term')) {
+      return "No — it's month-to-month. Cancel anytime.";
+    }
+    
+    // Q23: How do I update my hours or services?
+    if (lowerMessage.includes('update') || lowerMessage.includes('change') || lowerMessage.includes('modify')) {
+      return "After signup, you'll receive a link to update your clinic info at any time.";
+    }
+    
+    // Q24: Is this a live person or a bot?
+    if (lowerMessage.includes('live person') || lowerMessage.includes('bot') || lowerMessage.includes('human')) {
+      return "It's an AI assistant — always available, always professional. Patients will see it as a helpful extension of your team.";
+    }
+    
+    // Q25: How do I get started?
+    if (lowerMessage.includes('get started') || lowerMessage.includes('sign up') || lowerMessage.includes('begin')) {
+      return "Click \"Sign Up Now,\" enter your practice info, and either paste the code into your website or ask us to install it. It only takes a few minutes!";
+    }
+    
+    // Default response
+    return "I'm here to help you learn about DGTL's AI assistant for dental practices. Ask me about pricing, setup, features, or how it can help your practice!";
   };
+
+  const suggestedQuestions = [
+    "What does this chatbot actually do?",
+    "How much does it cost?",
+    "How do I install it on my website?",
+    "Can it answer patient questions after hours?",
+    "Does it handle HIPAA compliance?"
+  ];
 
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
@@ -103,6 +206,10 @@ const DGTLChatWidget = () => {
     }
   };
 
+  const handleSuggestedQuestion = (question: string) => {
+    setMessage(question);
+  };
+
   return (
     <>
       {/* Chat bubble */}
@@ -123,7 +230,7 @@ const DGTLChatWidget = () => {
           <div className="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
             <div>
               <h3 className="font-semibold">DGTL Dental</h3>
-              <p className="text-sm text-blue-100">Ask about our AI chat solution</p>
+              <p className="text-sm text-blue-100">AI Assistant for Dental Practices</p>
             </div>
             <Button
               onClick={() => setIsOpen(false)}
@@ -138,6 +245,25 @@ const DGTLChatWidget = () => {
           {/* Messages area */}
           <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
             <div className="space-y-4">
+              {messages.length === 0 && (
+                <div className="space-y-4">
+                  <div className="text-center text-gray-600 text-sm">
+                    <p className="font-medium">Try asking about:</p>
+                  </div>
+                  <div className="space-y-2">
+                    {suggestedQuestions.map((question, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSuggestedQuestion(question)}
+                        className="w-full text-left text-xs bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border transition-colors"
+                      >
+                        "{question}"
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               {messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -176,7 +302,7 @@ const DGTLChatWidget = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask about DGTL Dental..."
+                placeholder="Ask about DGTL..."
                 disabled={isLoading}
                 className="flex-1"
               />
