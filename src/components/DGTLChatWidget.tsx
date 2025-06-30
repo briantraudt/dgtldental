@@ -18,6 +18,7 @@ const DGTLChatWidget = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -27,6 +28,16 @@ const DGTLChatWidget = () => {
       }
     }
   }, [messages]);
+
+  // Auto-focus input after AI response
+  useEffect(() => {
+    if (!isLoading && messages.length > 0 && messages[messages.length - 1].role === 'assistant') {
+      // Small delay to ensure the input is ready
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [isLoading, messages]);
 
   const getDGTLResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase();
@@ -179,7 +190,6 @@ const DGTLChatWidget = () => {
     return "I'm here to help you learn about DGTL's AI assistant for dental practices. Ask me about pricing, setup, features, or how it can help your practice!";
   };
 
-  // ... keep existing code (suggestedQuestions array)
   const suggestedQuestions = [
     "What does this chatbot actually do?",
     "How much does it cost?",
@@ -188,7 +198,6 @@ const DGTLChatWidget = () => {
     "Does it handle HIPAA compliance?"
   ];
 
-  // ... keep existing code (handleSendMessage, handleKeyPress, handleSuggestedQuestion functions and JSX return)
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
 
@@ -228,6 +237,10 @@ const DGTLChatWidget = () => {
 
   const handleSuggestedQuestion = (question: string) => {
     setMessage(question);
+    // Focus input after setting the suggested question
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 50);
   };
 
   return (
@@ -319,6 +332,7 @@ const DGTLChatWidget = () => {
           <div className="p-4 border-t">
             <div className="flex space-x-2">
               <Input
+                ref={inputRef}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
