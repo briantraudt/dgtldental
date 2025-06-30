@@ -1,5 +1,3 @@
-
-
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,11 +23,11 @@ const Index = () => {
         <div className="relative flex-1 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Your Smartest Front Desk Hire<br />
-              Available 24/7
+              The Assistant That Stays Late<br />
+              (So You Don't Have To)
             </h1>
             <p className="text-lg md:text-2xl mb-8 opacity-90">
-              Answer patient questions instantly, even after hours. No contracts. Just $10/month.
+              Handle patient questions automatically — after hours, weekends, holidays. Your front desk, upgraded.
             </p>
             <Link to="/signup-flow">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
@@ -162,4 +160,3 @@ const Index = () => {
 };
 
 export default Index;
-
