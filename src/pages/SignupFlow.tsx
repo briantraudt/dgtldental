@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard, Bot, Code, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard, Bot, Code } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -319,16 +318,16 @@ const SignupFlow = () => {
           <div className="grid lg:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
             {/* Step 1 */}
             <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm">
-              <CardContent className="pt-8 pb-6 px-6 text-center relative">
+              <CardContent className="pt-6 pb-4 px-4 text-center relative">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300">
-                  <User className="h-8 w-8 text-blue-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-300">
+                  <User className="h-6 w-6 text-blue-600" />
                 </div>
-                <div className="mb-3">
+                <div className="mb-2">
                   <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-2">
                     Step 1
                   </span>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Sign Up</h3>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">Sign Up</h3>
                 </div>
                 <p className="text-slate-600 text-sm leading-relaxed">
                   Enter your practice details and customize your AI assistant with your specific information, services, and operating hours.
@@ -338,16 +337,16 @@ const SignupFlow = () => {
 
             {/* Step 2 */}
             <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm">
-              <CardContent className="pt-8 pb-6 px-6 text-center relative">
+              <CardContent className="pt-6 pb-4 px-4 text-center relative">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300">
-                  <Code className="h-8 w-8 text-emerald-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-300">
+                  <Code className="h-6 w-6 text-emerald-600" />
                 </div>
-                <div className="mb-3">
+                <div className="mb-2">
                   <span className="inline-block px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full mb-2">
                     Step 2
                   </span>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Install Widget</h3>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">Install Widget</h3>
                 </div>
                 <p className="text-slate-600 text-sm leading-relaxed">
                   Add a simple code snippet to your website, or let our expert team handle the complete installation for you.
@@ -357,56 +356,22 @@ const SignupFlow = () => {
 
             {/* Step 3 */}
             <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm">
-              <CardContent className="pt-8 pb-6 px-6 text-center relative">
+              <CardContent className="pt-6 pb-4 px-4 text-center relative">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300">
-                  <Bot className="h-8 w-8 text-purple-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-300">
+                  <Bot className="h-6 w-6 text-purple-600" />
                 </div>
-                <div className="mb-3">
+                <div className="mb-2">
                   <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full mb-2">
                     Step 3
                   </span>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Go Live</h3>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">Go Live</h3>
                 </div>
                 <p className="text-slate-600 text-sm leading-relaxed">
                   Your AI assistant is ready to help patients 24/7 with appointments, questions, and practice information.
                 </p>
               </CardContent>
             </Card>
-          </div>
-
-          {/* Enhanced Setup Support Offer */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-8 max-w-3xl mx-auto shadow-sm">
-            <div className="flex items-center justify-center text-center">
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mr-3">
-                  <Zap className="h-5 w-5 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-amber-900 font-semibold text-base mb-1">
-                    Professional Setup Available
-                  </p>
-                  <p className="text-amber-700 text-sm">
-                    Need help with installation? Our team can set everything up for you for just $100 one-time fee.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced CTA Button */}
-          <div className="text-center">
-            <Button 
-              onClick={scrollToSignup}
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-base px-8 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-            >
-              Start Your Free Trial
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-            <p className="text-xs text-slate-500 mt-3">
-              No credit card required • Cancel anytime
-            </p>
           </div>
         </div>
 
