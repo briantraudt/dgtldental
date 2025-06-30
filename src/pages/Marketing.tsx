@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,17 +10,75 @@ import EmbeddedChatDemo from '@/components/EmbeddedChatDemo';
 const Marketing = () => {
   const navigate = useNavigate();
 
+  const scrollToDemo = () => {
+    const demoSection = document.getElementById('demo-section');
+    if (demoSection) {
+      demoSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Clean Hero Section */}
-      <div className="container mx-auto px-4 py-12">
+      {/* Hero Section with Background Image */}
+      <div 
+        className="relative min-h-screen bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2668&q=80')`
+        }}
+      >
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-transparent"></div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 flex items-center justify-center min-h-screen">
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-4xl mx-auto space-y-8">
+              <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Never Miss a Patient Question Again
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed max-w-3xl mx-auto">
+                Let patients get instant answers — about hours, insurance, and more — day or night. Powered by GPT.
+              </p>
+              
+              <Button 
+                onClick={scrollToDemo}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl rounded-lg shadow-2xl transform hover:scale-105 transition-all duration-300"
+              >
+                Start Free Demo
+              </Button>
+            </div>
+
+            {/* Floating Chat Example */}
+            <div className="absolute bottom-20 right-8 hidden lg:block">
+              <div className="bg-white rounded-2xl shadow-2xl p-4 max-w-xs animate-fade-in">
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                    <MessageCircle className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="bg-gray-100 rounded-lg p-3 mb-2">
+                      <p className="text-sm text-gray-800">"What are your office hours?"</p>
+                    </div>
+                    <div className="bg-blue-600 rounded-lg p-3 text-white">
+                      <p className="text-sm">"We're open Mon-Fri 8am-6pm, Saturday 9am-2pm. Would you like to schedule an appointment?"</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Demo Section */}
+      <div id="demo-section" className="container mx-auto px-4 py-20">
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
           {/* Left side - Content */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
                 24/7 AI Chat for Your Dental Website
-              </h1>
+              </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 Instant answers for patients — powered by GPT, customized to your practice.
               </p>
