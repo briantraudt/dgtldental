@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +10,7 @@ import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard } from 'lucide
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import OfficeHoursSelector from '@/components/OfficeHoursSelector';
 
 interface AccountInfo {
   firstName: string;
@@ -30,7 +30,7 @@ interface PracticeDetails {
   zip: string;
   practicePhone: string;
   officeEmail: string;
-  officeHours: string;
+  officeHours: any;
   servicesOffered: string[];
   insuranceAccepted: string;
   emergencyPolicy: string;
@@ -83,7 +83,7 @@ const SignupFlow = () => {
     zip: '',
     practicePhone: '',
     officeEmail: '',
-    officeHours: '',
+    officeHours: {},
     servicesOffered: [],
     insuranceAccepted: '',
     emergencyPolicy: '',
@@ -108,15 +108,33 @@ const SignupFlow = () => {
     }));
   };
 
+  const formatOfficeHours = (officeHours: any): string => {
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    
+    const openDays = days
+      .map((day, index) => {
+        const dayData = officeHours[day];
+        if (dayData?.isOpen && dayData.startTime && dayData.endTime) {
+          return `${dayNames[index]} ${dayData.startTime}-${dayData.endTime}`;
+        }
+        return null;
+      })
+      .filter(Boolean);
+    
+    return openDays.length > 0 ? openDays.join(', ') : 'Hours not specified';
+  };
+
   const isStep1Valid = () => {
     return accountInfo.firstName && accountInfo.lastName && accountInfo.email && accountInfo.password;
   };
 
   const isStep2Valid = () => {
+    const hasOfficeHours = Object.values(practiceDetails.officeHours).some((day: any) => day?.isOpen);
     return practiceDetails.practiceName && practiceDetails.streetAddress && 
            practiceDetails.city && practiceDetails.state && practiceDetails.zip &&
            practiceDetails.practicePhone && practiceDetails.officeEmail && 
-           practiceDetails.officeHours && practiceDetails.servicesOffered.length > 0 &&
+           hasOfficeHours && practiceDetails.servicesOffered.length > 0 &&
            practiceDetails.insuranceAccepted && practiceDetails.emergencyPolicy;
   };
 
@@ -145,6 +163,9 @@ const SignupFlow = () => {
       // Generate unique clinic ID
       const clinicId = generateClinicId(practiceDetails.practiceName);
       
+      // Format office hours for storage
+      const formattedOfficeHours = formatOfficeHours(practiceDetails.officeHours);
+      
       // Insert clinic data
       const { error: clinicError } = await supabase
         .from('clinics')
@@ -155,7 +176,7 @@ const SignupFlow = () => {
           phone: practiceDetails.practicePhone,
           email: practiceDetails.officeEmail,
           website_url: accountInfo.practiceWebsite,
-          office_hours: practiceDetails.officeHours,
+          office_hours: formattedOfficeHours,
           services_offered: practiceDetails.servicesOffered,
           insurance_accepted: practiceDetails.insuranceAccepted.split(',').map(s => s.trim()),
           emergency_instructions: practiceDetails.emergencyPolicy,
@@ -171,7 +192,10 @@ const SignupFlow = () => {
           clinicName: practiceDetails.practiceName,
           email: accountInfo.email,
           accountInfo,
-          practiceDetails,
+          practiceDetails: {
+            ...practiceDetails,
+            officeHours: formattedOfficeHours
+          },
           needInstallHelp: practiceDetails.needInstallHelp
         }
       });
@@ -426,15 +450,10 @@ const SignupFlow = () => {
                   </div>
                 </div>
 
-                <div>
-                  <Label htmlFor="officeHours">Office Hours *</Label>
-                  <Input
-                    id="officeHours"
-                    value={practiceDetails.officeHours}
-                    onChange={(e) => updatePracticeDetails('officeHours', e.target.value)}
-                    placeholder="Mon-Fri 8am-5pm, Sat 9am-1pm"
-                  />
-                </div>
+                <OfficeHoursSelector
+                  value={practiceDetails.officeHours}
+                  onChange={(hours) => updatePracticeDetails('officeHours', hours)}
+                />
 
                 <div>
                   <Label>Services Offered * (Select all that apply)</Label>
