@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
@@ -126,8 +125,8 @@ const EmbeddedChatDemo = () => {
 
       {/* Chat Widget */}
       <div className="bg-white rounded-2xl border border-gray-200 h-[500px] flex flex-col shadow-xl overflow-hidden">
-        {/* Header - Updated branding */}
-        <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-6">
+        {/* Header - Updated to blue theme */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
           <div className="flex items-center space-x-3">
             <div className="bg-white/20 rounded-full p-2">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,7 +135,7 @@ const EmbeddedChatDemo = () => {
             </div>
             <div>
               <h3 className="font-semibold text-xl">Smile Family Dental Assistant</h3>
-              <p className="text-teal-100 text-sm">Available 24/7 to answer your questions</p>
+              <p className="text-blue-100 text-sm">Available 24/7 to answer your questions</p>
             </div>
           </div>
         </div>
@@ -149,8 +148,8 @@ const EmbeddedChatDemo = () => {
                 <div className="flex justify-start mb-6">
                   <div className="bg-white rounded-2xl px-5 py-4 max-w-[85%] shadow-sm border border-gray-100">
                     <div className="flex items-start space-x-3">
-                      <div className="bg-teal-100 rounded-full p-2 mt-1">
-                        <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="bg-blue-100 rounded-full p-2 mt-1">
+                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                       </div>
@@ -173,16 +172,16 @@ const EmbeddedChatDemo = () => {
               <div className="flex justify-start">
                 <div className="bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100">
                   <div className="flex items-center space-x-3">
-                    <div className="bg-teal-100 rounded-full p-2">
-                      <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="bg-blue-100 rounded-full p-2">
+                      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                       <span className="text-sm text-gray-500 ml-2">Thinking...</span>
                     </div>
