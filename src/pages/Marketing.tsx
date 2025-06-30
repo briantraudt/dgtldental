@@ -49,15 +49,45 @@ const Marketing = () => {
 
           <Button 
             onClick={() => navigate('/signup')}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-lg shadow-lg"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-lg shadow-lg mb-12"
           >
             Get Started – Only $10/month
           </Button>
         </div>
 
+        {/* Live Demo Frame */}
+        <div className="bg-white rounded-lg shadow-xl p-8 mb-16">
+          <h2 className="text-3xl font-bold text-center mb-4">🦷 Try the Live AI Demo</h2>
+          <p className="text-center text-gray-600 mb-8">
+            Ask questions about dental care, procedures, or oral health. This AI is powered by OpenAI's GPT model.
+          </p>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
+              <div className="text-center mb-4">
+                <p className="text-sm text-gray-600 mb-2">
+                  💬 Click the blue chat button in the bottom-right corner to start chatting!
+                </p>
+                <p className="text-xs text-blue-600">
+                  Try asking: "What should I do if I have a toothache?" or "How often should I get cleanings?"
+                </p>
+              </div>
+              
+              <div className="bg-white rounded-lg p-4 min-h-[200px] border border-gray-200 relative">
+                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <MessageCircle className="h-16 w-16 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">Demo chat area - Click the chat widget to start!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Demo Section */}
         <div className="bg-white rounded-lg shadow-xl p-8 mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Try the Live AI Demo</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="text-xl font-semibold mb-4">Chat with Our AI Dental Assistant</h3>
