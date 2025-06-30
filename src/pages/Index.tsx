@@ -1,4 +1,5 @@
 
+
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,8 +18,8 @@ const Index = () => {
           backgroundSize: 'cover'
         }}
       >
-        {/* Blue overlay */}
-        <div className="absolute inset-0 bg-blue-900/20"></div>
+        {/* Darker overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
         
         {/* Hero Content */}
         <div className="relative flex-1 flex items-center justify-center">
@@ -161,3 +162,4 @@ const Index = () => {
 };
 
 export default Index;
+
