@@ -1,4 +1,3 @@
-
 import { ArrowRight, Zap, Shield, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,13 +16,16 @@ const Index = () => {
           backgroundSize: 'cover'
         }}
       >
+        {/* Blue overlay */}
+        <div className="absolute inset-0 bg-blue-900/20"></div>
+        
         {/* Hero Content */}
-        <div className="flex-1 flex items-center justify-center">
+        <div className="relative flex-1 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-2xl" style={{ textShadow: '2px 4px 8px rgba(0,0,0,0.8)' }}>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Revolutionize Your Dental Practice with AI
             </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90 drop-shadow-xl" style={{ textShadow: '1px 2px 4px rgba(0,0,0,0.7)' }}>
+            <p className="text-xl md:text-2xl mb-8 opacity-90">
               Attract more patients, streamline communication, and enhance your online presence with our AI-powered assistant.
             </p>
             <Link to="/signup-flow">
@@ -35,7 +37,7 @@ const Index = () => {
         </div>
 
         {/* Feature Boxes at Bottom - Hidden on Mobile */}
-        <div className="container mx-auto px-4 pb-8 hidden md:block">
+        <div className="relative container mx-auto px-4 pb-8 hidden md:block">
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
               <CardHeader className="pb-3">
