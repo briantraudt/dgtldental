@@ -1,3 +1,4 @@
+
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,24 +33,28 @@ const Index = () => {
             {/* Mobile headline layout */}
             <div className="block md:hidden">
               <h1 className="text-4xl font-bold mb-2">
-                The Assistant
+                Missed Calls. Missed Patients. Missed Revenue.
               </h1>
-              <h1 className="text-4xl font-bold mb-4">
-                That Stays Late
+              <h1 className="text-4xl font-bold mb-4 text-blue-400">
+                Not Anymore.
               </h1>
               <p className="text-lg font-medium mb-6 opacity-90">
-                (So You Don't Have To)
+                Handle every question after hours with an AI-powered front desk assistant.
               </p>
             </div>
             
             {/* Desktop headline layout */}
-            <h1 className="hidden md:block text-4xl md:text-6xl font-bold mb-6">
-              The Assistant That Stays Late<br />
-              (So You Don't Have To)
-            </h1>
+            <div className="hidden md:block">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                Missed Calls. Missed Patients. Missed Revenue.
+              </h1>
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-blue-400">
+                Not Anymore.
+              </h1>
+            </div>
             
             <p className="text-lg md:text-2xl mb-8 opacity-90">
-              When the lights go off, your front desk stays on — answering patient questions 24/7.
+              Handle every question after hours with an AI-powered front desk assistant.
             </p>
             <Link to="/signup-flow">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
