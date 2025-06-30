@@ -22,7 +22,7 @@ const Marketing = () => {
       <div 
         className="relative min-h-screen bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1606811841689-23dfdb7ee46b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2574&q=80')`
+          backgroundImage: `url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2668&q=80')`
         }}
       >
         {/* Gradient Overlay */}
@@ -71,57 +71,9 @@ const Marketing = () => {
 
       {/* Demo Section */}
       <div id="demo-section" className="container mx-auto px-4 py-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-          {/* Left side - Content */}
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                24/7 AI Chat for Your Dental Website
-              </h2>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Instant answers for patients — powered by GPT, customized to your practice.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              <div className="bg-gray-50 p-6 rounded-xl">
-                <MessageCircle className="h-10 w-10 text-blue-600 mb-4" />
-                <h3 className="font-semibold mb-2">Always-On Chat</h3>
-                <p className="text-sm text-gray-600">GPT-powered answers, personalized to your clinic</p>
-              </div>
-              
-              <div className="bg-gray-50 p-6 rounded-xl">
-                <Globe className="h-10 w-10 text-blue-600 mb-4" />
-                <h3 className="font-semibold mb-2">One-Line Install</h3>
-                <p className="text-sm text-gray-600">Copy, paste, and go live in seconds</p>
-              </div>
-              
-              <div className="bg-gray-50 p-6 rounded-xl">
-                <Settings className="h-10 w-10 text-blue-600 mb-4" />
-                <h3 className="font-semibold mb-2">Custom to You</h3>
-                <p className="text-sm text-gray-600">Hours, insurance, services — it knows it all</p>
-              </div>
-              
-              <div className="bg-gray-50 p-6 rounded-xl">
-                <DollarSign className="h-10 w-10 text-blue-600 mb-4" />
-                <h3 className="font-semibold mb-2">Only $10/Month</h3>
-                <p className="text-sm text-gray-600">No contracts. No hassle.</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <Button 
-                onClick={() => navigate('/signup')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-lg w-full sm:w-auto"
-              >
-                Start Now for Just $10/Month
-              </Button>
-              <p className="text-sm text-gray-500">No setup. Cancel anytime.</p>
-            </div>
-          </div>
-
-          {/* Right side - Chat Demo */}
-          <div className="lg:pl-8">
+        <div className="grid lg:grid-cols-1 gap-16 items-center mb-20">
+          {/* Chat Demo - Full Width */}
+          <div className="w-full max-w-4xl mx-auto">
             <EmbeddedChatDemo />
           </div>
         </div>
