@@ -8,7 +8,6 @@ import { DEMO_CLINIC_DATA } from '@/data/demoClinicData';
 import ChatMessage from './ChatMessage';
 import QuickQuestions from './QuickQuestions';
 import ChatInput from './ChatInput';
-import { Shield } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -116,14 +115,6 @@ const EmbeddedChatDemo = () => {
 
   return (
     <div className="space-y-4">
-      {/* AI Badge - Made more bold and prominent */}
-      <div className="flex justify-center">
-        <div className="flex items-center space-x-3 text-lg font-bold text-gray-800 bg-gradient-to-r from-blue-50 to-blue-100 px-6 py-3 rounded-xl border-2 border-blue-200 shadow-md">
-          <Shield className="w-5 h-5 text-blue-600" />
-          <span>Ask a Question Below!</span>
-        </div>
-      </div>
-
       {/* Chat Widget */}
       <div className="bg-white rounded-2xl border border-gray-200 h-[500px] flex flex-col shadow-xl overflow-hidden">
         {/* Header - Updated to blue theme */}
