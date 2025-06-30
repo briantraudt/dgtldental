@@ -1,153 +1,198 @@
 
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle, MessageCircle, Globe, Settings, DollarSign } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import DentalChatWidget from '@/components/DentalChatWidget';
-import EmbeddedChatDemo from '@/components/EmbeddedChatDemo';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowRight, MessageCircle, Clock, Users, Zap, Check, Bot } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { DentalChatWidget } from '@/components/DentalChatWidget';
 
 const Marketing = () => {
-  const navigate = useNavigate();
-
-  const scrollToDemo = () => {
-    const demoSection = document.getElementById('demo-section');
-    if (demoSection) {
-      demoSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const [showDemo, setShowDemo] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section with Background Image */}
-      <div 
-        className="relative min-h-screen bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('/lovable-uploads/6b06b8d1-0437-4771-8911-a3058c126fd6.png')`
-        }}
-      >
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-transparent"></div>
-        
-        {/* Hero Content */}
-        <div className="relative z-10 flex items-center justify-center min-h-screen">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-4xl mx-auto space-y-8">
-              <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                Your Dental Office is Now Open 24/7
-              </h1>
-              <p className="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed max-w-3xl mx-auto">
-                Now you can answer any dental related question any time of the day. Generate new leads and grow your practice.
-              </p>
-              
-              <Button 
-                onClick={scrollToDemo}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl rounded-lg shadow-2xl transform hover:scale-105 transition-all duration-300"
-              >
-                Start Free Demo
-              </Button>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Bot className="h-8 w-8 text-blue-600" />
+            <h1 className="text-2xl font-bold text-gray-900">DGTL Chat</h1>
+          </div>
+          <nav className="space-x-4">
+            <Button variant="ghost" onClick={() => setShowDemo(!showDemo)}>
+              {showDemo ? 'Hide Demo' : 'Try Demo'}
+            </Button>
+            <Button asChild>
+              <Link to="/signup">Get Started</Link>
+            </Button>
+          </nav>
+        </div>
+      </header>
 
-            {/* Floating Chat Example */}
-            <div className="absolute bottom-20 right-8 hidden lg:block">
-              <div className="bg-white rounded-2xl shadow-2xl p-4 max-w-xs animate-fade-in">
-                <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                    <MessageCircle className="h-4 w-4 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="bg-gray-100 rounded-lg p-3 mb-2">
-                      <p className="text-sm text-gray-800">"What are your office hours?"</p>
-                    </div>
-                    <div className="bg-blue-600 rounded-lg p-3 text-white">
-                      <p className="text-sm">"We're open Mon-Fri 8am-6pm, Saturday 9am-2pm. Would you like to schedule an appointment?"</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Hero Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            AI-Powered Chat for Your Practice
+          </h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Provide 24/7 patient support with an intelligent chat widget that knows your practice inside and out. 
+            Handle appointments, answer questions, and improve patient satisfaction automatically.
+          </p>
+          
+          {/* Pricing Highlight */}
+          <div className="mb-8 p-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl text-white max-w-md mx-auto">
+            <div className="flex items-center justify-center mb-2">
+              <Zap className="h-6 w-6 mr-2" />
+              <span className="text-lg font-semibold">Simple Pricing</span>
             </div>
+            <div className="text-4xl font-bold mb-2">$10/month</div>
+            <p className="text-blue-100">Unlimited features • No setup fees • Cancel anytime</p>
+          </div>
+          
+          <div className="space-x-4">
+            <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700">
+              <Link to="/signup">
+                Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" onClick={() => setShowDemo(true)}>
+              See Demo
+            </Button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Demo Section */}
-      <div id="demo-section" className="container mx-auto px-4 py-20">
-        <div className="grid lg:grid-cols-1 gap-16 items-center mb-20">
-          {/* Chat Demo - Full Width */}
-          <div className="w-full max-w-4xl mx-auto">
-            <EmbeddedChatDemo />
-          </div>
-        </div>
-
-        {/* How It Works Section */}
-        <div className="bg-gray-50 rounded-2xl p-12 mb-20">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold">Chat with Our AI Dental Assistant</h3>
-              <p className="text-gray-600 leading-relaxed">
-                This is a live demo powered by OpenAI's GPT model. Try asking about:
-              </p>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span className="text-gray-700">Dental procedures and treatments</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span className="text-gray-700">Oral health and hygiene tips</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span className="text-gray-700">Common dental problems</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span className="text-gray-700">Preventive care advice</span>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white p-8 rounded-xl border border-gray-200">
-              <h4 className="font-semibold mb-4">Embed Code Example:</h4>
-              <code className="text-sm bg-gray-100 p-4 rounded block font-mono break-all">
-                {`<script defer src="${window.location.origin}/widget.js" data-clinic-id="your-clinic-id"></script>`}
-              </code>
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-                <p className="text-blue-800 text-sm">
-                  <strong>Note:</strong> This AI provides general information only. For specific medical advice, 
-                  always consult with a qualified dentist.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Benefits Section */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-12">Why Dental Practices Love Our Chat Widget</h2>
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Everything Your Practice Needs
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 border-0 shadow-sm bg-gray-50">
-              <h3 className="text-lg font-semibold mb-4">Reduce Phone Calls</h3>
-              <p className="text-gray-600">Patients get instant answers to common questions without calling your office.</p>
+            <Card>
+              <CardHeader>
+                <MessageCircle className="h-12 w-12 text-blue-600 mb-4" />
+                <CardTitle>Smart Conversations</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  AI that understands your practice details, services, and policies to provide accurate responses to patient questions.
+                </p>
+              </CardContent>
             </Card>
-            <Card className="p-8 border-0 shadow-sm bg-gray-50">
-              <h3 className="text-lg font-semibold mb-4">Capture More Leads</h3>
-              <p className="text-gray-600">24/7 availability means you never miss a potential patient inquiry.</p>
+            
+            <Card>
+              <CardHeader>
+                <Clock className="h-12 w-12 text-blue-600 mb-4" />
+                <CardTitle>24/7 Availability</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Never miss a patient inquiry. Your AI assistant works around the clock, even when your office is closed.
+                </p>
+              </CardContent>
             </Card>
-            <Card className="p-8 border-0 shadow-sm bg-gray-50">
-              <h3 className="text-lg font-semibold mb-4">Professional & Smart</h3>
-              <p className="text-gray-600">AI responses are accurate and maintain your practice's professional tone.</p>
+            
+            <Card>
+              <CardHeader>
+                <Users className="h-12 w-12 text-blue-600 mb-4" />
+                <CardTitle>Better Patient Experience</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Instant answers to common questions, appointment information, and emergency instructions improve patient satisfaction.
+                </p>
+              </CardContent>
             </Card>
           </div>
         </div>
-      </div>
-      
-      {/* Chat widget for demo */}
-      <DentalChatWidget />
+      </section>
+
+      {/* Pricing Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Simple, Transparent Pricing
+          </h2>
+          <div className="max-w-md mx-auto">
+            <Card className="border-2 border-blue-500 relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                  Most Popular
+                </span>
+              </div>
+              <CardHeader className="text-center pt-8">
+                <CardTitle className="text-2xl">Premium Plan</CardTitle>
+                <div className="mt-4">
+                  <span className="text-5xl font-bold text-blue-600">$10</span>
+                  <span className="text-gray-600">/month</span>
+                </div>
+                <p className="text-gray-600 mt-2">Everything you need to get started</p>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center">
+                    <Check className="h-5 w-5 text-green-500 mr-3" />
+                    <span>Unlimited AI conversations</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="h-5 w-5 text-green-500 mr-3" />
+                    <span>Custom practice information</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="h-5 w-5 text-green-500 mr-3" />
+                    <span>24/7 patient support</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="h-5 w-5 text-green-500 mr-3" />
+                    <span>Easy website integration</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="h-5 w-5 text-green-500 mr-3" />
+                    <span>Emergency instructions</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="h-5 w-5 text-green-500 mr-3" />
+                    <span>Insurance information</span>
+                  </li>
+                </ul>
+                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Link to="/signup">
+                    Get Started Now
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-blue-600 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">
+            Ready to Transform Your Patient Experience?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Join practices already using DGTL Chat to provide better patient support
+          </p>
+          <Button size="lg" variant="secondary" asChild>
+            <Link to="/signup">
+              Start Your Free Trial <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Demo Widget */}
+      {showDemo && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <DentalChatWidget clinicId="demo" />
+        </div>
+      )}
     </div>
   );
 };
 
 export default Marketing;
-

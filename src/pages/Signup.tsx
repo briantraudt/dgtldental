@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -24,7 +24,6 @@ interface ClinicFormData {
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<ClinicFormData>({
     name: '',
@@ -60,7 +59,7 @@ const Signup = () => {
       const insuranceArray = formData.insuranceAccepted.split(',').map(s => s.trim()).filter(s => s);
       
       // Insert clinic data
-      const { error } = await supabase
+      const { error: clinicError } = await supabase
         .from('clinics')
         .insert({
           clinic_id: clinicId,
@@ -76,23 +75,26 @@ const Signup = () => {
           subscription_status: 'pending'
         });
 
-      if (error) throw error;
+      if (clinicError) throw clinicError;
 
-      // For now, simulate payment and go to success page
-      // In production, this would redirect to Stripe Checkout
-      setTimeout(() => {
-        navigate('/success', { 
-          state: { 
-            clinicId, 
-            clinicName: formData.name 
-          } 
-        });
-      }, 1000);
+      // Create Stripe checkout session
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          clinicId,
+          clinicName: formData.name,
+          email: formData.email
+        }
+      });
+
+      if (error) throw error;
 
       toast({
         title: "Clinic registered successfully!",
-        description: "Redirecting to payment..."
+        description: "Redirecting to secure payment..."
       });
+
+      // Redirect to Stripe checkout
+      window.location.href = data.url;
 
     } catch (error) {
       console.error('Error registering clinic:', error);
@@ -122,9 +124,43 @@ const Signup = () => {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Button>
-          <h1 className="text-3xl font-bold text-gray-900">Get Your Chat Widget</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Get Your AI Chat Widget</h1>
           <p className="text-gray-600 mt-2">Tell us about your practice to get started</p>
         </div>
+
+        {/* Pricing Card */}
+        <Card className="mb-6 border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Zap className="h-6 w-6 text-blue-600 mr-2" />
+                <h3 className="text-2xl font-bold text-gray-900">Premium Plan</h3>
+              </div>
+              <div className="mb-4">
+                <span className="text-4xl font-bold text-blue-600">$10</span>
+                <span className="text-gray-600">/month</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-700">
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-2" />
+                  <span>Unlimited AI conversations</span>
+                </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-2" />
+                  <span>24/7 patient support</span>
+                </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-2" />
+                  <span>Custom practice information</span>
+                </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-2" />
+                  <span>Easy website integration</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
@@ -239,7 +275,7 @@ const Signup = () => {
                 disabled={!isFormValid() || isLoading}
                 className="bg-blue-600 hover:bg-blue-700"
               >
-                {isLoading ? 'Saving...' : 'Continue to Payment'}
+                {isLoading ? 'Processing...' : 'Subscribe & Get Widget'}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>

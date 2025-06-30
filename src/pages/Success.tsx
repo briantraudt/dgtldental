@@ -2,26 +2,75 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Copy, ExternalLink, Settings } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { CheckCircle, Copy, ExternalLink, Settings, Loader2 } from 'lucide-react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Success = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [embedCode, setEmbedCode] = useState('');
+  const [isVerifying, setIsVerifying] = useState(true);
+  const [subscriptionActive, setSubscriptionActive] = useState(false);
   
-  const { clinicId, clinicName } = location.state || {};
+  const clinicId = searchParams.get('clinic_id') || location.state?.clinicId;
+  const clinicName = searchParams.get('clinic_name') || location.state?.clinicName;
 
   useEffect(() => {
-    if (!clinicId) {
+    if (!clinicId || !clinicName) {
       navigate('/');
       return;
     }
     
     const code = `<script defer src="${window.location.origin}/widget.js" data-clinic-id="${clinicId}"></script>`;
     setEmbedCode(code);
-  }, [clinicId, navigate]);
+    
+    // Verify subscription status
+    verifySubscription();
+  }, [clinicId, clinicName, navigate]);
+
+  const verifySubscription = async () => {
+    try {
+      // Get clinic email from the clinics table
+      const { data: clinic, error: clinicError } = await supabase
+        .from('clinics')
+        .select('email')
+        .eq('clinic_id', clinicId)
+        .single();
+
+      if (clinicError || !clinic) {
+        throw new Error('Clinic not found');
+      }
+
+      // Check subscription status
+      const { data, error } = await supabase.functions.invoke('check-subscription', {
+        body: { email: clinic.email }
+      });
+
+      if (error) throw error;
+
+      setSubscriptionActive(data.subscribed || false);
+      
+      if (data.subscribed) {
+        // Update clinic subscription status
+        await supabase
+          .from('clinics')
+          .update({ subscription_status: 'active' })
+          .eq('clinic_id', clinicId);
+      }
+    } catch (error) {
+      console.error('Error verifying subscription:', error);
+      toast({
+        title: "Verification Warning",
+        description: "Could not verify subscription status. Your widget should still work.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   const copyToClipboard = async () => {
     try {
@@ -43,13 +92,41 @@ const Success = () => {
     return null;
   }
 
+  if (isVerifying) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <div className="text-center">
+            <Loader2 className="h-16 w-16 text-blue-500 mx-auto mb-4 animate-spin" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Verifying your subscription...</h1>
+            <p className="text-gray-600">Please wait while we confirm your payment</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="text-center mb-8">
           <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome to DGTL Chat!</h1>
-          <p className="text-xl text-gray-600">Your AI chat widget is ready to go</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            {subscriptionActive ? 'Welcome to DGTL Chat!' : 'Registration Complete!'}
+          </h1>
+          <p className="text-xl text-gray-600">
+            {subscriptionActive 
+              ? 'Your AI chat widget is ready to go' 
+              : 'Your widget is being set up'
+            }
+          </p>
+          {subscriptionActive && (
+            <div className="mt-4 p-3 bg-green-100 border border-green-300 rounded-lg">
+              <p className="text-green-800 font-medium">
+                ✅ Subscription Active - Premium features enabled
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="space-y-6">
@@ -101,8 +178,8 @@ const Success = () => {
                   <span>Embed code generated</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  <span>24/7 chat activated</span>
+                  <CheckCircle className={`h-5 w-5 mr-2 ${subscriptionActive ? 'text-green-500' : 'text-yellow-500'}`} />
+                  <span>{subscriptionActive ? 'Premium subscription active' : 'Subscription being processed'}</span>
                 </div>
               </CardContent>
             </Card>
