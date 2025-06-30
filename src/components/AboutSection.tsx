@@ -49,12 +49,12 @@ const AboutSection = () => {
                 How Does It Work?
               </CardTitle>
               <CardDescription className="text-green-600 font-medium">
-                Install in Minutes. No Tech Experience Needed.
+                Get Your Custom Code Instantly — Go Live Today
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 leading-relaxed">
-                Paste one line of code into your site. That's it. Prefer full-service? We'll handle everything for a one-time $100 setup fee. Once installed, the assistant responds automatically to common patient questions—saving time and freeing up your staff.
+                At the end of signup, you'll receive a line of code customized for your practice. Just paste it into your website—no tech experience needed. Want help? We'll handle the install for a one-time $100 fee. Once it's live, your assistant starts answering patient questions immediately—saving time and freeing up your staff, even after hours.
               </p>
             </CardContent>
           </Card>
