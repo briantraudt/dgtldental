@@ -1,131 +1,191 @@
-
-import { ArrowRight, Zap, Shield, BarChart3 } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
-import DGTLChatWidget from '@/components/DGTLChatWidget';
-import EmbeddedChatDemo from '@/components/EmbeddedChatDemo';
+import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [isDemoVisible, setIsDemoVisible] = useState(false);
+
+  const toggleDemoVisibility = () => {
+    setIsDemoVisible(!isDemoVisible);
+  };
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section with dental office background */}
-      <section 
-        className="relative h-screen bg-cover md:bg-center bg-top bg-no-repeat flex flex-col justify-center md:justify-between"
-        style={{
-          backgroundImage: `linear-gradient(rgba(30, 64, 175, 0.4), rgba(30, 64, 175, 0.4)), url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`,
-          backgroundSize: 'cover'
-        }}
-      >
-        {/* Hero Content */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center text-white px-4 max-w-4xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Revolutionize Your Dental Practice with AI
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Attract more patients, streamline communication, and enhance your online presence with our AI-powered assistant.
-            </p>
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
-              Get Started Today <ArrowRight className="ml-2" />
-            </Button>
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <h1 className="text-2xl font-bold text-blue-600">DGTL</h1>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/embed-demo')}
+              >
+                Live Demo
+              </Button>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => navigate('/signup-flow')}
+              >
+                Get Started
+              </Button>
+            </div>
           </div>
         </div>
+      </nav>
 
-        {/* Feature Boxes at Bottom - Hidden on Mobile */}
-        <div className="container mx-auto px-4 pb-8 hidden md:block">
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Zap className="mr-2 h-5 w-5 text-yellow-500" /> 
-                  Instant Patient Engagement
-                </CardTitle>
-                <CardDescription className="text-sm">
-                  Provide immediate answers to patient inquiries 24/7.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  Reduce wait times and improve patient satisfaction with AI-driven responses.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Shield className="mr-2 h-5 w-5 text-green-500" /> 
-                  Secure & HIPAA Compliant
-                </CardTitle>
-                <CardDescription className="text-sm">
-                  Protect patient data with our secure and compliant platform.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  Ensure the privacy and security of patient information with end-to-end encryption.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <BarChart3 className="mr-2 h-5 w-5 text-purple-500" /> 
-                  Analytics & Insights
-                </CardTitle>
-                <CardDescription className="text-sm">
-                  Track key metrics and gain valuable insights into patient interactions.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  Optimize your communication strategy with data-driven analytics and reporting.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+      {/* Hero Section */}
+      <section className="bg-white py-24">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+            Supercharge Your Dental Practice with AI
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Automate patient communication, reduce phone calls, and improve satisfaction with our AI-powered chatbot.
+          </p>
+          <Button 
+            size="lg" 
+            className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3"
+            onClick={() => navigate('/signup-flow')}
+          >
+            Get Started
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
         </div>
       </section>
 
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
-        <div className="container mx-auto px-4">
-          {/* Demo Section */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
-              See How Your AI Dental Assistant Works
-            </h2>
-            <p className="text-gray-600 mb-8 text-center">
-              Experience the power of a 24/7 AI assistant trained to answer dental-specific questions for your patients — instantly and accurately.
-            </p>
+      {/* Features Section */}
+      <section className="bg-gray-50 py-16">
+        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Feature 1 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>24/7 Patient Support</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Provide instant answers to common questions, even outside of office hours.
+              </CardDescription>
+            </CardContent>
+          </Card>
 
-            <div className="flex justify-center">
-              <div className="w-full max-w-4xl">
-                <EmbeddedChatDemo />
-              </div>
-            </div>
-          </section>
+          {/* Feature 2 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Reduce Phone Calls</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Let AI handle routine inquiries, freeing up your staff for critical tasks.
+              </CardDescription>
+            </CardContent>
+          </Card>
 
-          {/* Call to Action Section */}
-          <section className="text-center">
-            <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-              Ready to Modernize the Patient Experience at Your Practice?
-            </h2>
-            <p className="text-gray-600 mb-8">
-              Join other dentists using AI to increase customer satisfaction, save staff time, and be available 24/7 to care for the people who need you most - your patients.
-            </p>
-            <Link to="/signup">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-                Sign Up Now <ArrowRight className="ml-2" />
-              </Button>
-            </Link>
-          </section>
+          {/* Feature 3 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Improve Patient Satisfaction</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Offer personalized, timely support that keeps patients happy and engaged.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          {/* Feature 4 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Easy Website Integration</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Simply copy and paste a code snippet to add the chatbot to your site.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          {/* Feature 5 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Custom Practice Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                The AI is trained on your specific services, hours, and policies.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          {/* Feature 6 */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Affordable Pricing</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Get all the benefits of AI without breaking the bank. Starting at just $10/month.
+              </CardDescription>
+            </CardContent>
+          </Card>
         </div>
-      </div>
+      </section>
 
-      {/* DGTL Dental Chat Widget */}
-      <DGTLChatWidget />
+      {/* CTA Section */}
+      <section className="bg-blue-600 py-16">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Ready to Transform Your Patient Experience?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Join hundreds of dental practices using AI to improve patient satisfaction and reduce phone calls.
+          </p>
+          <Button 
+            size="lg" 
+            className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-3"
+            onClick={() => navigate('/signup-flow')}
+          >
+            Start Your Free Trial
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-100 py-8 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-gray-500 text-sm">
+            &copy; {new Date().getFullYear()} DGTL. All rights reserved.
+          </p>
+        </div>
+      </footer>
+
+      {/* Demo Widget (Conditionally Rendered) */}
+      {isDemoVisible && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <iframe
+            src="/embed-demo"
+            title="AI Chatbot Demo"
+            width="350"
+            height="500"
+            style={{ border: '1px solid #ccc', borderRadius: '8px' }}
+          />
+        </div>
+      )}
     </div>
   );
 };
