@@ -26,9 +26,11 @@ const Index = () => {
             <p className="text-xl md:text-2xl mb-8 opacity-90">
               Attract more patients, streamline communication, and enhance your online presence with our AI-powered assistant.
             </p>
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
-              Get Started Today <ArrowRight className="ml-2" />
-            </Button>
+            <Link to="/signup-flow">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
+                Get Started Today <ArrowRight className="ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
 
@@ -115,7 +117,7 @@ const Index = () => {
             <p className="text-gray-600 mb-8">
               Join other dentists using AI to increase customer satisfaction, save staff time, and be available 24/7 to care for the people who need you most - your patients.
             </p>
-            <Link to="/signup">
+            <Link to="/signup-flow">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
                 Sign Up Now <ArrowRight className="ml-2" />
               </Button>
