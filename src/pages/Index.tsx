@@ -14,7 +14,7 @@ const Index = () => {
     <div className="min-h-screen">
       {/* Hero Section with dental office background */}
       <section 
-        className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-between"
+        className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center md:justify-between"
         style={{
           backgroundImage: `linear-gradient(rgba(30, 64, 175, 0.4), rgba(30, 64, 175, 0.4)), url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`
         }}
@@ -34,8 +34,8 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Feature Boxes at Bottom */}
-        <div className="container mx-auto px-4 pb-8">
+        {/* Feature Boxes at Bottom - Hidden on Mobile */}
+        <div className="container mx-auto px-4 pb-8 hidden md:block">
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
               <CardHeader className="pb-3">
