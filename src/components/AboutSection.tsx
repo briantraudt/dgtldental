@@ -1,5 +1,5 @@
 
-import { Bot, Code, Activity } from 'lucide-react';
+import { Bot, Code, Activity, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const AboutSection = () => {
@@ -18,7 +18,7 @@ const AboutSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {/* Card 1: What Is It? */}
           <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="text-center pb-4">
@@ -62,7 +62,29 @@ const AboutSection = () => {
             </CardContent>
           </Card>
 
-          {/* Card 3: Why It Matters to You */}
+          {/* Card 3: What Does It Cost? */}
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto bg-emerald-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                <DollarSign className="h-8 w-8 text-emerald-600" />
+              </div>
+              <CardTitle className="text-xl font-bold text-gray-800">
+                What Does It Cost?
+              </CardTitle>
+              <CardDescription className="text-emerald-600 font-medium">
+                Simple, Transparent Pricing
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">
+                Just $10/month with no contracts—cancel anytime. Need help with setup? 
+                We offer a one-time $100 installation service where we handle everything for you. 
+                No hidden fees, no surprises.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Card 4: Why It Matters to You */}
           <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="text-center pb-4">
               <div className="mx-auto bg-purple-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
