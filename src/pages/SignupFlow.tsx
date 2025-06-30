@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -446,9 +445,6 @@ const SignupFlow = () => {
             {/* Enhanced subheadline */}
             {currentStep === 1 && (
               <div className="space-y-2">
-                <p className="text-gray-600">
-                  Let's start with your basic information
-                </p>
                 <p className="text-sm text-blue-600 font-medium bg-blue-50 px-3 py-1 rounded-full inline-block">
                   Get started in minutes. No tech skills needed, no long-term contracts.
                 </p>
