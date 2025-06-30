@@ -1,5 +1,3 @@
-
-
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -51,7 +49,7 @@ const Index = () => {
             </h1>
             
             <p className="text-lg md:text-2xl mb-8 opacity-90">
-              Handle patient questions automatically — after hours, weekends, holidays. Your front desk, upgraded.
+              When the lights go off, your front desk stays on — answering patient questions 24/7.
             </p>
             <Link to="/signup-flow">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
@@ -197,4 +195,3 @@ const Index = () => {
 };
 
 export default Index;
-
