@@ -8,6 +8,7 @@ import { DEMO_CLINIC_DATA } from '@/data/demoClinicData';
 import ChatMessage from './ChatMessage';
 import QuickQuestions from './QuickQuestions';
 import ChatInput from './ChatInput';
+import { Shield } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -114,82 +115,93 @@ const EmbeddedChatDemo = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 h-[500px] flex flex-col shadow-xl overflow-hidden">
-      {/* Header - More professional dental theme */}
-      <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-6">
-        <div className="flex items-center space-x-3">
-          <div className="bg-white/20 rounded-full p-2">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="font-semibold text-xl">Dental Practice AI Assistant</h3>
-            <p className="text-teal-100 text-sm">Available 24/7 to answer your questions</p>
-          </div>
+    <div className="space-y-4">
+      {/* AI Badge */}
+      <div className="flex justify-center">
+        <div className="flex items-center space-x-2 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-full border">
+          <Shield className="w-4 h-4 text-green-600" />
+          <span>Powered by secure, dental-specific AI</span>
         </div>
       </div>
 
-      {/* Messages area */}
-      <ScrollArea ref={scrollAreaRef} className="flex-1 p-6 bg-gray-50">
-        <div className="space-y-4">
-          {messages.length === 0 && (
-            <>
-              <div className="flex justify-start mb-6">
-                <div className="bg-white rounded-2xl px-5 py-4 max-w-[85%] shadow-sm border border-gray-100">
-                  <div className="flex items-start space-x-3">
-                    <div className="bg-teal-100 rounded-full p-2 mt-1">
+      {/* Chat Widget */}
+      <div className="bg-white rounded-2xl border border-gray-200 h-[500px] flex flex-col shadow-xl overflow-hidden">
+        {/* Header - Updated branding */}
+        <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-6">
+          <div className="flex items-center space-x-3">
+            <div className="bg-white/20 rounded-full p-2">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-xl">Smile Family Dental Assistant</h3>
+              <p className="text-teal-100 text-sm">Available 24/7 to answer your questions</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Messages area */}
+        <ScrollArea ref={scrollAreaRef} className="flex-1 p-6 bg-gray-50">
+          <div className="space-y-4">
+            {messages.length === 0 && (
+              <>
+                <div className="flex justify-start mb-6">
+                  <div className="bg-white rounded-2xl px-5 py-4 max-w-[85%] shadow-sm border border-gray-100">
+                    <div className="flex items-start space-x-3">
+                      <div className="bg-teal-100 rounded-full p-2 mt-1">
+                        <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-800 font-medium">Hi there! I'm the virtual assistant for Smile Family Dental.</p>
+                        <p className="text-gray-600 text-sm mt-1">I can answer questions about our hours, services, insurance, or general dental care — 24/7.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <QuickQuestions onQuestionClick={setMessage} />
+              </>
+            )}
+            
+            {messages.map((msg) => (
+              <ChatMessage key={msg.id} message={msg} />
+            ))}
+            
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-teal-100 rounded-full p-2">
                       <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
-                    <div>
-                      <p className="text-gray-800 font-medium">Hello! I'm your dental practice assistant.</p>
-                      <p className="text-gray-600 text-sm mt-1">Ask me about our services, hours, location, insurance, or any dental questions you may have.</p>
+                    <div className="flex items-center space-x-2">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                      <span className="text-sm text-gray-500 ml-2">Thinking...</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <QuickQuestions onQuestionClick={setMessage} />
-            </>
-          )}
-          
-          {messages.map((msg) => (
-            <ChatMessage key={msg.id} message={msg} />
-          ))}
-          
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-teal-100 rounded-full p-2">
-                    <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    </div>
-                    <span className="text-sm text-gray-500 ml-2">Thinking...</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </ScrollArea>
+            )}
+          </div>
+        </ScrollArea>
 
-      {/* Input area */}
-      <ChatInput
-        message={message}
-        isLoading={isLoading}
-        onChange={setMessage}
-        onSend={handleSendMessage}
-        onKeyPress={handleKeyPress}
-      />
+        {/* Input area */}
+        <ChatInput
+          message={message}
+          isLoading={isLoading}
+          onChange={setMessage}
+          onSend={handleSendMessage}
+          onKeyPress={handleKeyPress}
+        />
+      </div>
     </div>
   );
 };

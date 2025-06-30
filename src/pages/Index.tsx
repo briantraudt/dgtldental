@@ -1,4 +1,5 @@
 
+
 import { ArrowRight, Clock, Shield, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -177,10 +178,10 @@ const Index = () => {
           {/* Call to Action Section */}
           <section className="text-center">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-              Ready to Modernize the Patient Experience at Your Practice?
+              Ready to Put Your Website to Work for You?
             </h2>
             <p className="text-gray-600 mb-8">
-              Join other dentists using AI to increase customer satisfaction, save staff time, and be available 24/7 to care for the people who need you most - your patients.
+              Join practices using our AI chat assistant to answer questions, reduce phone calls, and stay available 24/7 — even after hours.
             </p>
             <Link to="/signup-flow">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">

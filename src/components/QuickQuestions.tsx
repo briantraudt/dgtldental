@@ -5,11 +5,9 @@ interface QuickQuestionsProps {
 
 const QuickQuestions = ({ onQuestionClick }: QuickQuestionsProps) => {
   const quickQuestions = [
-    "What are your office hours?",
-    "Where are you located?",
-    "What services do you offer?",
-    "Do you accept my insurance?",
-    "How do I schedule an appointment?"
+    "Do you accept Delta Dental insurance?",
+    "Can I get Invisalign at your office?",
+    "What should I do if I have a chipped tooth?"
   ];
 
   return (
