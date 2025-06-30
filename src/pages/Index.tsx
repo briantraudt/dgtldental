@@ -1,4 +1,5 @@
 
+
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -147,8 +148,12 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="bg-gradient-to-br from-indigo-100/80 via-blue-50 to-slate-50 py-16">
-        <div className="container mx-auto px-4">
+      {/* Demo and CTA Section with elegant gradient transition */}
+      <div className="relative bg-gradient-to-b from-indigo-100/80 via-blue-50/60 to-slate-100/40 py-16">
+        {/* Seamless transition from previous section */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-indigo-100/80 to-transparent"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           {/* Demo Section */}
           <section className="mb-16">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
@@ -166,7 +171,7 @@ const Index = () => {
           </section>
 
           {/* Call to Action Section */}
-          <section className="text-center">
+          <section className="text-center bg-white/30 backdrop-blur-sm rounded-2xl p-12 border border-white/20 shadow-lg">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4">
               Ready to Put Your Website to Work for You?
             </h2>
@@ -180,6 +185,9 @@ const Index = () => {
             </Link>
           </section>
         </div>
+        
+        {/* Bottom gradient for page completion */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-100 to-transparent"></div>
       </div>
 
       {/* DGTL Dental Chat Widget */}
@@ -189,3 +197,4 @@ const Index = () => {
 };
 
 export default Index;
+
