@@ -407,7 +407,7 @@ const SignupFlow = () => {
                     <h3 className="text-lg font-bold text-slate-900 mb-2">Go Live</h3>
                   </div>
                   <p className="text-slate-600 text-sm leading-relaxed">
-                    Start handling patient questions, appointments, and FAQs automatically—24/7.
+                    Start handling patient questions and FAQs automatically—24/7.
                   </p>
                 </CardContent>
               </Card>
