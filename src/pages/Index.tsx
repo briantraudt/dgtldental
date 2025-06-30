@@ -19,7 +19,7 @@ const Index = () => {
         
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Welcome to Hill Country Dental
+            Welcome to DGTL Dental
           </h2>
           <p className="text-gray-600 mb-4">
             Your trusted dental care provider in Boerne, TX. We offer comprehensive 
@@ -41,7 +41,7 @@ const Index = () => {
               <ul className="text-gray-600 space-y-1">
                 <li>Phone: (830) 555-1234</li>
                 <li>Address: 123 Main St, Boerne, TX 78006</li>
-                <li>Email: info@hillcountrydental.com</li>
+                <li>Email: info@dgtldental.com</li>
               </ul>
             </div>
           </div>

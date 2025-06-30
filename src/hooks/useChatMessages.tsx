@@ -24,7 +24,7 @@ interface ClinicConfig {
 const CLINIC_CONFIGS: Record<string, ClinicConfig> = {
   'demo-clinic-123': {
     id: 'demo-clinic-123',
-    name: 'Hill Country Dental',
+    name: 'DGTL Dental',
     address: '123 Main St, Boerne, TX 78006',
     phone: '(830) 555-1234',
     hours: 'Mon–Fri 8am–5pm, Sat 9am–1pm, Closed Sunday',
