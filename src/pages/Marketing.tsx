@@ -1,4 +1,5 @@
 
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,7 +24,7 @@ const Marketing = () => {
       <div 
         className="relative min-h-screen bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/lovable-uploads/e565ec38-7e03-4be4-a809-dccd53a36f56.png')`
+          backgroundImage: `url('/lovable-uploads/6b06b8d1-0437-4771-8911-a3058c126fd6.png')`
         }}
       >
         {/* Gradient Overlay */}
@@ -149,3 +150,4 @@ const Marketing = () => {
 };
 
 export default Marketing;
+
