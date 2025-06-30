@@ -35,10 +35,10 @@ const Marketing = () => {
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-4xl mx-auto space-y-8">
               <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                Turn Website Visitors Into Appointments — 24/7
+                Your Dental Office is Now Open 24/7
               </h1>
               <p className="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed max-w-3xl mx-auto">
-                Let GPT handle the questions, so you can focus on care. Instant answers about hours, insurance, and more.
+                Now you can answer any dental related question any time of the day. Generate new leads and grow your practice.
               </p>
               
               <Button 
