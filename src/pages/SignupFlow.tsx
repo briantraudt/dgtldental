@@ -51,6 +51,19 @@ const servicesOptions = [
   'Emergency Dental Care'
 ];
 
+const insuranceOptions = [
+  'Delta Dental',
+  'Cigna Dental',
+  'Aetna Dental',
+  'UnitedHealthcare Dental',
+  'MetLife Dental',
+  'Guardian Dental',
+  'Humana Dental',
+  'Blue Cross Blue Shield',
+  'Ameritas',
+  'Principal Financial Group'
+];
+
 const howDidYouHearOptions = [
   'Google Search',
   'Social Media',
@@ -106,6 +119,42 @@ const SignupFlow = () => {
         ? prev.servicesOffered.filter(s => s !== service)
         : [...prev.servicesOffered, service]
     }));
+  };
+
+  const toggleInsurance = (insurance: string) => {
+    const currentInsurance = practiceDetails.insuranceAccepted.split(',').map(s => s.trim()).filter(Boolean);
+    
+    if (currentInsurance.includes(insurance)) {
+      const updatedInsurance = currentInsurance.filter(i => i !== insurance);
+      setPracticeDetails(prev => ({
+        ...prev,
+        insuranceAccepted: updatedInsurance.join(', ')
+      }));
+    } else {
+      const updatedInsurance = [...currentInsurance, insurance];
+      setPracticeDetails(prev => ({
+        ...prev,
+        insuranceAccepted: updatedInsurance.join(', ')
+      }));
+    }
+  };
+
+  const handleOtherInsuranceChange = (value: string) => {
+    const currentInsurance = practiceDetails.insuranceAccepted.split(',').map(s => s.trim()).filter(Boolean);
+    const predefinedInsurance = currentInsurance.filter(i => insuranceOptions.includes(i));
+    
+    if (value.trim()) {
+      const updatedInsurance = [...predefinedInsurance, value.trim()];
+      setPracticeDetails(prev => ({
+        ...prev,
+        insuranceAccepted: updatedInsurance.join(', ')
+      }));
+    } else {
+      setPracticeDetails(prev => ({
+        ...prev,
+        insuranceAccepted: predefinedInsurance.join(', ')
+      }));
+    }
   };
 
   const formatOfficeHours = (officeHours: any): string => {
@@ -474,14 +523,39 @@ const SignupFlow = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="insuranceAccepted">Insurance Accepted *</Label>
-                  <Textarea
-                    id="insuranceAccepted"
-                    value={practiceDetails.insuranceAccepted}
-                    onChange={(e) => updatePracticeDetails('insuranceAccepted', e.target.value)}
-                    placeholder="Delta Dental, MetLife, Cigna, Aetna (separate with commas)"
-                    rows={2}
-                  />
+                  <Label>Insurance Accepted * (Select all that apply)</Label>
+                  <div className="grid grid-cols-1 gap-2 mt-2">
+                    {insuranceOptions.map((insurance) => {
+                      const currentInsurance = practiceDetails.insuranceAccepted.split(',').map(s => s.trim()).filter(Boolean);
+                      return (
+                        <div key={insurance} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={insurance}
+                            checked={currentInsurance.includes(insurance)}
+                            onCheckedChange={() => toggleInsurance(insurance)}
+                          />
+                          <Label htmlFor={insurance} className="text-sm">
+                            {insurance}
+                          </Label>
+                        </div>
+                      );
+                    })}
+                    <div className="flex items-center space-x-2 mt-2">
+                      <Checkbox
+                        id="other-insurance"
+                        checked={false}
+                        disabled
+                      />
+                      <Label htmlFor="other-insurance" className="text-sm">
+                        Other:
+                      </Label>
+                      <Input
+                        placeholder="Enter other insurance carriers"
+                        onChange={(e) => handleOtherInsuranceChange(e.target.value)}
+                        className="flex-1"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div>
