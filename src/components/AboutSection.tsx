@@ -29,13 +29,12 @@ const AboutSection = () => {
                 What Is It?
               </CardTitle>
               <CardDescription className="text-blue-600 font-medium">
-                An AI Assistant Trained for Dental Practices
+                An AI Assistant Built for Dental Practices
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 leading-relaxed">
-                Our AI-powered assistant answers patient questions instantly—day or night—about your services, insurance, hours, location, and more. 
-                It lives on your website, works 24/7, and is trained to respond just like your front desk would.
+                Our smart AI assistant lives on your website and instantly answers patient questions—day or night—about services, insurance, hours, location, and more. It works 24/7, just like a perfect front desk hire that never clocks out.
               </p>
             </CardContent>
           </Card>
@@ -50,14 +49,12 @@ const AboutSection = () => {
                 How Does It Work?
               </CardTitle>
               <CardDescription className="text-green-600 font-medium">
-                Install in Minutes. No Tech Skills Needed.
+                Install in Minutes. No Tech Experience Needed.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 leading-relaxed">
-                Just copy and paste one line of code into your website. That's it. 
-                Or, choose our $100 full setup service and we'll handle it for you. 
-                Once live, your AI assistant will respond to common questions and free up your staff.
+                Paste one line of code into your site. That's it. Prefer full-service? We'll handle everything for a one-time $100 setup fee. Once installed, the assistant responds automatically to common patient questions—saving time and freeing up your staff.
               </p>
             </CardContent>
           </Card>
@@ -72,13 +69,12 @@ const AboutSection = () => {
                 Why It Matters to You
               </CardTitle>
               <CardDescription className="text-purple-600 font-medium">
-                Save Time, Book More Appointments, and Wow Patients
+                Save Time. Book More Appointments. Impress Patients.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 leading-relaxed">
-                Eliminate repetitive phone calls, reduce front desk interruptions, and never miss a patient question again. 
-                Your patients get immediate answers—even after hours—and your practice looks modern, accessible, and tech-savvy.
+                Stop wasting staff time on repetitive calls. Get instant answers for patients—even after hours—and give your practice a modern, responsive feel. Fewer interruptions. More bookings. Happier patients.
               </p>
             </CardContent>
           </Card>
@@ -93,14 +89,12 @@ const AboutSection = () => {
                 What Does It Cost?
               </CardTitle>
               <CardDescription className="text-emerald-600 font-medium">
-                Simple, Transparent Pricing
+                Straightforward Pricing. No Surprises.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 leading-relaxed">
-                Just $10/month with no contracts—cancel anytime. Need help with setup? 
-                We offer a one-time $100 installation service where we handle everything for you. 
-                No hidden fees, no surprises.
+                Just $10/month — no contracts, cancel anytime. Need help with setup? We offer a $100 one-time installation that handles it all for you. No hidden fees. Just value.
               </p>
             </CardContent>
           </Card>
