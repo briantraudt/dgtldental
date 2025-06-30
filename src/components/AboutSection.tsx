@@ -1,83 +1,103 @@
 
-import { MessageSquare, Clock, Users, BarChart3 } from 'lucide-react';
+import { Bot, Code, Activity, DollarSign } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const AboutSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-slate-50 to-indigo-100/80">
-      <div className="container mx-auto px-4 max-w-6xl">
-        {/* Problem Section */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">
-            The Reality of Running a Dental Practice
+    <section className="bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-100/80 py-16 relative">
+      {/* Subtle top gradient for seamless transition */}
+      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-slate-50 to-transparent"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            AI-Powered Patient Support for Your Practice
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-            <div className="text-center">
-              <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageSquare className="w-8 h-8 text-red-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">Constant Interruptions</h3>
-              <p className="text-gray-600">Staff constantly interrupted by basic patient questions during busy hours.</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-8 h-8 text-orange-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">After-Hours Silence</h3>
-              <p className="text-gray-600">Patients can't get answers to simple questions when your office is closed.</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-yellow-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">Overworked Staff</h3>
-              <p className="text-gray-600">Your team spends valuable time answering the same questions repeatedly.</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BarChart3 className="w-8 h-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">Lost Opportunities</h3>
-              <p className="text-gray-600">Potential patients leave when they can't get immediate answers to their questions.</p>
-            </div>
-          </div>
+          <p className="text-lg text-gray-600 max-w-4xl mx-auto text-center">
+            Transform how your practice handles patient questions with intelligent, 24/7 assistance.
+          </p>
         </div>
 
-        {/* Solution Section */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              How Does It Work?
-            </h2>
-            <div className="max-w-3xl mx-auto">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                At the end of signup, you'll receive a line of code customized for your practice. Just paste it into your website—no tech experience needed. Once it's live, your assistant starts answering patient questions immediately—saving time and freeing up your staff, even after hours.
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+          {/* Card 1: What Is It? */}
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto bg-blue-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                <Bot className="h-8 w-8 text-blue-600" />
+              </div>
+              <CardTitle className="text-xl font-bold text-gray-800">
+                What Is It?
+              </CardTitle>
+              <CardDescription className="text-blue-600 font-medium">
+                An AI Assistant Built for Dental Practices
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">
+                Our smart AI assistant lives on your website and instantly answers patient questions—day or night—about services, insurance, hours, location, and more. It works 24/7, just like a perfect front desk hire that never clocks out.
               </p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <div className="text-2xl font-bold text-blue-600">1</div>
+            </CardContent>
+          </Card>
+
+          {/* Card 2: How Does It Work? */}
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto bg-green-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                <Code className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">Instant Setup</h3>
-              <p className="text-gray-600">Get your custom code and paste it into your website. No technical skills required.</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <div className="text-2xl font-bold text-green-600">2</div>
+              <CardTitle className="text-xl font-bold text-gray-800">
+                How Does It Work?
+              </CardTitle>
+              <CardDescription className="text-green-600 font-medium">
+                Install in Minutes. No Tech Experience Needed.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">
+                Paste one line of code into your site. That's it. Prefer full-service? We'll handle everything for a one-time $100 setup fee. Once installed, the assistant responds automatically to common patient questions—saving time and freeing up your staff.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Card 3: Why It Matters to You */}
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto bg-purple-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                <Activity className="h-8 w-8 text-purple-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">AI Takes Over</h3>
-              <p className="text-gray-600">Your assistant immediately starts answering patient questions with your practice information.</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <div className="text-2xl font-bold text-purple-600">3</div>
+              <CardTitle className="text-xl font-bold text-gray-800">
+                Why It Matters to You
+              </CardTitle>
+              <CardDescription className="text-purple-600 font-medium">
+                Save Time. Book More Appointments. Impress Patients.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">
+                Stop wasting staff time on repetitive calls. Get instant answers for patients—even after hours—and give your practice a modern, responsive feel. Fewer interruptions. More bookings. Happier patients.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Card 4: What Does It Cost? */}
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto bg-emerald-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                <DollarSign className="h-8 w-8 text-emerald-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">You Save Time</h3>
-              <p className="text-gray-600">Staff freed up for patient care while the AI handles routine inquiries 24/7.</p>
-            </div>
-          </div>
+              <CardTitle className="text-xl font-bold text-gray-800">
+                What Does It Cost?
+              </CardTitle>
+              <CardDescription className="text-emerald-600 font-medium">
+                Straightforward Pricing. No Surprises.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">
+                Just $10/month — no contracts, cancel anytime. Need help with setup? We offer a $100 one-time installation that handles it all for you. No hidden fees. Just value.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
