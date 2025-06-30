@@ -1,5 +1,4 @@
 
-
 import { ArrowRight, Clock, Shield, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +11,7 @@ const Index = () => {
     <div className="min-h-screen">
       {/* Hero Section with dental office background */}
       <section 
-        className="relative h-screen bg-cover md:bg-center bg-top bg-no-repeat flex flex-col justify-center md:justify-between"
+        className="relative h-screen bg-cover md:bg-center bg-top bg-no-repeat flex flex-col justify-center"
         style={{
           backgroundImage: `url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`,
           backgroundSize: 'cover'
@@ -93,11 +92,13 @@ const Index = () => {
             </Card>
           </div>
         </div>
+      </section>
 
-        {/* Mobile Feature Cards - Visible only on mobile */}
-        <div className="relative container mx-auto px-4 pb-8 md:hidden">
+      {/* Mobile Feature Cards - Visible only on mobile, moved below hero */}
+      <div className="md:hidden bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+        <div className="container mx-auto px-4">
           <div className="space-y-4">
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
+            <Card className="bg-white shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center text-base">
                   <Clock className="mr-2 h-4 w-4 text-blue-500" /> 
@@ -111,7 +112,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
+            <Card className="bg-white shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center text-base">
                   <Shield className="mr-2 h-4 w-4 text-green-500" /> 
@@ -125,7 +126,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
+            <Card className="bg-white shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center text-base">
                   <Zap className="mr-2 h-4 w-4 text-purple-500" /> 
@@ -140,25 +141,10 @@ const Index = () => {
             </Card>
           </div>
         </div>
-      </section>
+      </div>
 
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
         <div className="container mx-auto px-4">
-          {/* Testimonial Section */}
-          <section className="mb-16">
-            <div className="text-center bg-white rounded-lg shadow-sm p-8 max-w-3xl mx-auto">
-              <blockquote className="text-xl text-gray-800 mb-4 italic">
-                "Our patients love it — and it saves my staff hours each week."
-              </blockquote>
-              <cite className="text-gray-600 font-medium">
-                – Dr. Lisa Tran, Austin Dental Co.
-              </cite>
-              <div className="mt-4 text-sm text-blue-600 font-semibold">
-                Trusted by 200+ dental practices and counting.
-              </div>
-            </div>
-          </section>
-
           {/* Demo Section */}
           <section className="mb-16">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
