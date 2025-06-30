@@ -25,21 +25,21 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-20 flex-1 flex items-center justify-center">
         <div className="text-center text-white px-4 max-w-4xl">
-          {/* Mobile headline layout */}
-          <div className="block md:hidden">
-            <h1 className="text-4xl font-bold mb-2">
+          {/* Mobile and Tablet headline layout */}
+          <div className="block lg:hidden">
+            <h1 className="text-4xl md:text-5xl font-bold mb-2">
               Missed Calls. Missed Patients. Missed Revenue.
             </h1>
-            <h1 className="text-4xl font-bold mb-4 text-blue-400">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-blue-400">
               Not Anymore.
             </h1>
-            <p className="text-lg font-medium mb-6 opacity-90">
+            <p className="text-lg md:text-xl font-medium mb-6 opacity-90">
               Handle every question after hours with an AI-powered front desk assistant.
             </p>
           </div>
           
           {/* Desktop headline layout */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
               Missed Calls. Missed Patients. Missed Revenue.
             </h1>
