@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard, Bot, Code, MessageCircle, Star } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard, Bot, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -360,10 +360,7 @@ const SignupFlow = () => {
                 <div className="absolute top-4 left-4 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                   1
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-300">
-                  <User className="h-6 w-6 text-blue-600" />
-                </div>
-                <div className="mb-2">
+                <div className="mb-2 mt-8">
                   <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-2">
                     Step 1
                   </span>
@@ -382,10 +379,7 @@ const SignupFlow = () => {
                 <div className="absolute top-4 left-4 w-6 h-6 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                   2
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-300">
-                  <Code className="h-6 w-6 text-emerald-600" />
-                </div>
-                <div className="mb-2">
+                <div className="mb-2 mt-8">
                   <span className="inline-block px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full mb-2">
                     Step 2
                   </span>
@@ -404,10 +398,7 @@ const SignupFlow = () => {
                 <div className="absolute top-4 left-4 w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                   3
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-300">
-                  <Bot className="h-6 w-6 text-purple-600" />
-                </div>
-                <div className="mb-2">
+                <div className="mb-2 mt-8">
                   <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full mb-2">
                     Step 3
                   </span>
