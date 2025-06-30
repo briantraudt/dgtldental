@@ -110,7 +110,7 @@ const Index = () => {
           {/* Call to Action Section */}
           <section className="text-center">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-              Ready to Modernize Patient Communication at Your Practice?
+              Ready to Modernize the Patient Experience at Your Practice?
             </h2>
             <p className="text-gray-600 mb-8">
               Join other dentists using our AI chat widget to increase patient satisfaction, save staff time, and stay available 24/7 — even after hours.
