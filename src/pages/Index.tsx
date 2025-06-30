@@ -23,7 +23,8 @@ const Index = () => {
         <div className="relative flex-1 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Your Smartest Front Desk Hire<br />Available 24/7
+              Your Smartest Front Desk Hire<br />
+              Available 24/7
             </h1>
             <p className="text-lg md:text-2xl mb-8 opacity-90">
               Answer patient questions instantly, even after hours. No contracts. Just $10/month.
@@ -45,7 +46,7 @@ const Index = () => {
               AI-Powered Patient Support for Your Practice
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Transform how your practice handles patient questions with intelligent, 24/7<br />assistance
+              Transform how your practice handles patient questions with intelligent, 24/7 assistance
             </p>
           </div>
 
