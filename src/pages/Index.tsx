@@ -1,3 +1,4 @@
+
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,19 +9,26 @@ import EmbeddedChatDemo from '@/components/EmbeddedChatDemo';
 const Index = () => {
   return (
     <div className="min-h-screen">
-      {/* Hero Section with dental office background */}
+      {/* Hero Section with different backgrounds for mobile and desktop */}
       <section 
-        className="relative h-screen bg-cover md:bg-center bg-top bg-no-repeat flex flex-col justify-center"
+        className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center"
         style={{
-          backgroundImage: `url('/lovable-uploads/4696588c-59c3-46d6-8d8b-c6e580f53b9f.png')`,
-          backgroundSize: 'cover'
+          backgroundImage: `url('/lovable-uploads/942be64c-570e-4ba1-9e24-e46fd5478324.png')`,
         }}
       >
+        {/* Desktop background override */}
+        <div 
+          className="absolute inset-0 hidden md:block bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/lovable-uploads/4696588c-59c3-46d6-8d8b-c6e580f53b9f.png')`,
+          }}
+        ></div>
+        
         {/* Darker overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
         
         {/* Hero Content */}
-        <div className="relative flex-1 flex items-center justify-center">
+        <div className="relative z-20 flex-1 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               The Assistant That Stays Late<br />
