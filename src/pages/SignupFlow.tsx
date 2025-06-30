@@ -347,10 +347,10 @@ const SignupFlow = () => {
           <div className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">
-                Start in 3 Simple Steps
+                How Does It Work?
               </h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                Launch your 24/7 dental assistant in minutes—no tech skills or long setup required.
+                Get Your Custom Code Instantly — Go Live Today
               </p>
             </div>
 
@@ -411,6 +411,15 @@ const SignupFlow = () => {
                   </p>
                 </CardContent>
               </Card>
+            </div>
+
+            {/* Updated description section */}
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-100">
+                <p className="text-gray-700 text-lg leading-relaxed">
+                  At the end of signup, you'll receive a line of code customized for your practice. Just paste it into your website—no tech experience needed. Once it's live, your assistant starts answering patient questions immediately—saving time and freeing up your staff, even after hours.
+                </p>
+              </div>
             </div>
           </div>
         )}
