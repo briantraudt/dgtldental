@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -61,11 +60,17 @@ const EmbeddedChatDemo = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Auto-scroll to bottom when new messages arrive
-    if (scrollAreaRef.current) {
+    // Auto-scroll to show new messages, but not to the very bottom
+    if (scrollAreaRef.current && messages.length > 0) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
-        scrollElement.scrollTop = scrollElement.scrollHeight;
+        // Delay scroll to ensure content is rendered
+        setTimeout(() => {
+          const lastMessage = scrollElement.lastElementChild?.lastElementChild;
+          if (lastMessage) {
+            lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
       }
     }
   }, [messages]);
