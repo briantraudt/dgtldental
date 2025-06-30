@@ -57,32 +57,38 @@ const Marketing = () => {
 
         {/* Demo Section */}
         <div className="bg-white rounded-lg shadow-xl p-8 mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Try the Live Demo</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">Try the Live AI Demo</h2>
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-xl font-semibold mb-4">Chat with DGTL Dental's AI Assistant</h3>
+              <h3 className="text-xl font-semibold mb-4">Chat with Our AI Dental Assistant</h3>
               <p className="text-gray-600 mb-4">
-                This demo uses real practice information to show how the chat widget works. 
-                Try asking about:
+                This is a live demo powered by OpenAI's GPT model. The AI assistant can answer 
+                questions about dental care, procedures, and general oral health. Try asking about:
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  Office hours and location
+                  Dental procedures and treatments
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  Services offered
+                  Oral health and hygiene tips
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  Insurance accepted
+                  Common dental problems
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  Scheduling appointments
+                  Preventive care advice
                 </li>
               </ul>
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Note:</strong> This AI provides general information only. For specific medical advice, 
+                  always consult with a qualified dentist.
+                </p>
+              </div>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg">
               <p className="text-sm text-gray-600 mb-4">

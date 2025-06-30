@@ -10,3 +10,6 @@ max_rows = 1000
 
 [functions.chat-ai]
 verify_jwt = false
+
+[functions.demo-chat]
+verify_jwt = false
