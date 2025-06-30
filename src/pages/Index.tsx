@@ -1,4 +1,5 @@
-import { ArrowRight, Zap, Shield, BarChart3 } from 'lucide-react';
+
+import { ArrowRight, Clock, Shield, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -22,11 +23,11 @@ const Index = () => {
         {/* Hero Content */}
         <div className="relative flex-1 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Revolutionize Your Dental Practice with AI
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Your Smartest Front Desk Hire — Available 24/7
             </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Attract more patients, streamline communication, and enhance your online presence with our AI-powered assistant.
+            <p className="text-lg md:text-2xl mb-8 opacity-90">
+              Answer patient questions instantly, even after hours. No contracts. Just $10/month.
             </p>
             <Link to="/signup-flow">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
@@ -42,16 +43,16 @@ const Index = () => {
             <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center text-lg">
-                  <Zap className="mr-2 h-5 w-5 text-yellow-500" /> 
-                  Instant Patient Engagement
+                  <Clock className="mr-2 h-5 w-5 text-blue-500" /> 
+                  24/7 Patient Support
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Provide immediate answers to patient inquiries 24/7.
+                  Provide instant answers to patient questions — even after hours.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <p className="text-sm text-gray-700">
-                  Reduce wait times and improve patient satisfaction with AI-driven responses.
+                  Reduce calls, save staff time, and increase patient satisfaction with round-the-clock AI help.
                 </p>
               </CardContent>
             </Card>
@@ -60,15 +61,15 @@ const Index = () => {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center text-lg">
                   <Shield className="mr-2 h-5 w-5 text-green-500" /> 
-                  Secure & HIPAA Compliant
+                  Secure & Private
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Protect patient data with our secure and compliant platform.
+                  Designed to protect your patients' privacy.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <p className="text-sm text-gray-700">
-                  Ensure the privacy and security of patient information with end-to-end encryption.
+                  All chats are handled confidentially. No sensitive data is stored or shared.
                 </p>
               </CardContent>
             </Card>
@@ -76,16 +77,16 @@ const Index = () => {
             <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center text-lg">
-                  <BarChart3 className="mr-2 h-5 w-5 text-purple-500" /> 
-                  Analytics & Insights
+                  <Zap className="mr-2 h-5 w-5 text-purple-500" /> 
+                  Quick & Easy Setup
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Track key metrics and gain valuable insights into patient interactions.
+                  Go live in minutes — or let us handle it for you.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <p className="text-sm text-gray-700">
-                  Optimize your communication strategy with data-driven analytics and reporting.
+                  Copy one line of code into your site, or choose our $100 full setup service.
                 </p>
               </CardContent>
             </Card>
