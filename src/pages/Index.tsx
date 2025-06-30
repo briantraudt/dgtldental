@@ -1,4 +1,3 @@
-
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -47,7 +46,7 @@ const Index = () => {
               AI-Powered Patient Support for Your Practice
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Transform how your practice handles patient questions with intelligent, 24/7 assistance
+              Transform how your practice handles patient questions with intelligent, 24/7&nbsp;assistance
             </p>
           </div>
 
