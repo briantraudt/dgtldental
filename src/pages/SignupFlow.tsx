@@ -587,7 +587,7 @@ const SignupFlow = () => {
                     onCheckedChange={(checked) => updatePracticeDetails('needInstallHelp', checked)}
                   />
                   <Label htmlFor="needInstallHelp">
-                    Do you need help installing the widget? (+$100 one-time setup fee)
+                    Do you need help installing the AI Assistant on your website? (+$100 one-time setup fee)
                   </Label>
                 </div>
               </>
