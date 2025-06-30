@@ -88,31 +88,30 @@ const EmbeddedChatDemo = () => {
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 h-96 flex flex-col">
+    <div className="bg-white rounded-lg border border-gray-200 h-[500px] flex flex-col shadow-lg">
       {/* Header */}
-      <div className="bg-blue-600 text-white p-4 rounded-t-lg">
+      <div className="bg-blue-600 text-white p-6 rounded-t-lg">
         <div className="flex items-center">
-          <MessageCircle className="h-5 w-5 mr-2" />
+          <MessageCircle className="h-6 w-6 mr-3" />
           <div>
-            <h3 className="font-semibold text-sm">Demo Dental Assistant</h3>
-            <p className="text-xs text-blue-100">Ask me about dental care!</p>
+            <h3 className="font-semibold text-lg">Demo Dental Assistant</h3>
+            <p className="text-blue-100">Ask me about dental care!</p>
           </div>
         </div>
       </div>
 
       {/* Messages area */}
-      <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
+      <ScrollArea ref={scrollAreaRef} className="flex-1 p-6">
         <div className="space-y-4">
           {messages.length === 0 && (
-            <div className="text-center text-gray-500 py-4">
-              <MessageCircle className="h-8 w-8 mx-auto mb-2 text-gray-300" />
-              <p className="text-sm mb-4">Try asking a dental question!</p>
-              <div className="space-y-2">
+            <div className="text-center text-gray-500 py-8">
+              <p className="text-gray-600 mb-6">Try asking a dental question!</p>
+              <div className="space-y-3">
                 {quickQuestions.map((question, index) => (
                   <button
                     key={index}
                     onClick={() => setMessage(question)}
-                    className="block w-full text-left text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded border border-blue-200"
+                    className="block w-full text-left text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-3 rounded-lg border border-blue-200 transition-colors"
                   >
                     "{question}"
                   </button>
@@ -127,7 +126,7 @@ const EmbeddedChatDemo = () => {
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
+                className={`max-w-[80%] rounded-lg px-4 py-3 ${
                   msg.role === 'user'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-100 text-gray-800'
@@ -140,7 +139,7 @@ const EmbeddedChatDemo = () => {
           
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 rounded-lg px-3 py-2 text-sm">
+              <div className="bg-gray-100 rounded-lg px-4 py-3">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -153,15 +152,15 @@ const EmbeddedChatDemo = () => {
       </ScrollArea>
 
       {/* Input area */}
-      <div className="p-4 border-t">
-        <div className="flex space-x-2">
+      <div className="p-6 border-t">
+        <div className="flex space-x-3">
           <Input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask about dental care..."
             disabled={isLoading}
-            className="flex-1 text-sm"
+            className="flex-1"
           />
           <Button
             onClick={handleSendMessage}

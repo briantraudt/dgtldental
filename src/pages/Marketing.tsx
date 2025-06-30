@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -65,18 +64,7 @@ const Marketing = () => {
 
           {/* Right side - Chat Demo */}
           <div className="lg:pl-8">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold mb-2">🦷 Try the Live Chat Demo</h2>
-                <p className="text-gray-600">
-                  Ask anything about dental care. Powered by GPT and preloaded with sample practice info.
-                </p>
-              </div>
-              
-              <div className="max-w-md mx-auto">
-                <EmbeddedChatDemo />
-              </div>
-            </div>
+            <EmbeddedChatDemo />
           </div>
         </div>
 
