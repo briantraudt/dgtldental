@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { MessageCircle, X, Send, User, Mail, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -10,6 +10,7 @@ interface Message {
   content: string;
   role: 'user' | 'assistant';
   timestamp: Date;
+  isForm?: boolean;
 }
 
 const DGTLChatWidget = () => {
@@ -17,6 +18,12 @@ const DGTLChatWidget = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  });
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -55,6 +62,22 @@ const DGTLChatWidget = () => {
 
     const addDisclaimer = isMedicalQuestion(lowerMessage);
     const disclaimer = addDisclaimer ? "\n\nPlease remember that this is for informational purposes only and not a substitute for professional dental advice. For specific concerns, consult with a qualified dentist." : "";
+    
+    // Contact information
+    if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('phone') || lowerMessage.includes('call')) {
+      return `You can reach DGTL Dental at:
+
+📧 Email: info@dgtldental.com
+📞 Phone: 512-774-5010
+
+Would you like someone from our team to contact you? I can help you submit your contact information.`;
+    }
+
+    // Contact form trigger
+    if (lowerMessage.includes('contact me') || lowerMessage.includes('call me') || lowerMessage.includes('reach out') || lowerMessage.includes('get in touch')) {
+      setShowContactForm(true);
+      return "I'd be happy to have someone from our team contact you! Please fill out the form below and we'll get back to you soon.";
+    }
     
     // Q1: What does this chatbot actually do?
     if (lowerMessage.includes('what') && (lowerMessage.includes('chatbot') || lowerMessage.includes('do') || lowerMessage.includes('this'))) {
@@ -228,6 +251,26 @@ const DGTLChatWidget = () => {
     }, 1000);
   };
 
+  const handleContactSubmit = () => {
+    if (!contactForm.name || !contactForm.email) return;
+
+    const contactMessage: Message = {
+      id: Date.now().toString(),
+      content: `Thank you, ${contactForm.name}! We've received your contact information and someone from our team will reach out to you at ${contactForm.email}${contactForm.phone ? ` or ${contactForm.phone}` : ''} within 24 hours.`,
+      role: 'assistant',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, contactMessage]);
+    setShowContactForm(false);
+    setContactForm({ name: '', email: '', phone: '' });
+    
+    // Focus back to input
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -313,6 +356,61 @@ const DGTLChatWidget = () => {
                   </div>
                 </div>
               ))}
+              
+              {/* Contact Form */}
+              {showContactForm && (
+                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                  <h4 className="font-medium text-gray-800">Contact Information</h4>
+                  <div className="space-y-2">
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Input
+                        placeholder="Your name *"
+                        value={contactForm.name}
+                        onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                        className="pl-10"
+                      />
+                    </div>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Input
+                        type="email"
+                        placeholder="Your email *"
+                        value={contactForm.email}
+                        onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                        className="pl-10"
+                      />
+                    </div>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Input
+                        type="tel"
+                        placeholder="Your phone (optional)"
+                        value={contactForm.phone}
+                        onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button
+                      onClick={handleContactSubmit}
+                      disabled={!contactForm.name || !contactForm.email}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700"
+                      size="sm"
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      onClick={() => setShowContactForm(false)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
               
               {isLoading && (
                 <div className="flex justify-start">
