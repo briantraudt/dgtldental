@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,7 +22,7 @@ const Marketing = () => {
       <div 
         className="relative min-h-screen bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2668&q=80')`
+          backgroundImage: `url('https://images.unsplash.com/photo-1606811841689-23dfdb7ee46b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2574&q=80')`
         }}
       >
         {/* Gradient Overlay */}
@@ -34,10 +33,10 @@ const Marketing = () => {
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-4xl mx-auto space-y-8">
               <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                Never Miss a Patient Question Again
+                Turn Website Visitors Into Appointments — 24/7
               </h1>
               <p className="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed max-w-3xl mx-auto">
-                Let patients get instant answers — about hours, insurance, and more — day or night. Powered by GPT.
+                Let GPT handle the questions, so you can focus on care. Instant answers about hours, insurance, and more.
               </p>
               
               <Button 
