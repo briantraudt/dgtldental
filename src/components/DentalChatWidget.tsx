@@ -8,20 +8,13 @@ import { Card } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useChatMessages } from '@/hooks/useChatMessages';
 
-interface Message {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant';
-  timestamp: Date;
-}
-
 const DentalChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [clinicId, setClinicId] = useState('demo-clinic-123');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
-  const { messages, isLoading, sendMessage } = useChatMessages(clinicId);
+  const { messages, isLoading, sendMessage, clinicConfig } = useChatMessages(clinicId);
 
   useEffect(() => {
     // Get clinic ID from window config (simulating script injection)
@@ -41,7 +34,7 @@ const DentalChatWidget = () => {
   }, [messages]);
 
   const handleSendMessage = async () => {
-    if (!message.trim() || isLoading) return;
+    if (!message.trim() || isLoading || !clinicConfig) return;
 
     const userMessage = message.trim();
     setMessage('');
@@ -64,6 +57,19 @@ const DentalChatWidget = () => {
     }
   };
 
+  // Show loading state if clinic config is not loaded
+  if (!clinicConfig) {
+    return (
+      <Button
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gray-400 shadow-lg z-50"
+        size="icon"
+        disabled
+      >
+        <MessageCircle className="h-6 w-6 text-white animate-pulse" />
+      </Button>
+    );
+  }
+
   return (
     <>
       {/* Chat bubble */}
@@ -83,7 +89,7 @@ const DentalChatWidget = () => {
           {/* Header */}
           <div className="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
             <div>
-              <h3 className="font-semibold">Dental Assistant</h3>
+              <h3 className="font-semibold">{clinicConfig.name}</h3>
               <p className="text-sm text-blue-100">How can I help you today?</p>
             </div>
             <Button

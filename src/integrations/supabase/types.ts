@@ -9,7 +9,95 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      chat_messages: {
+        Row: {
+          clinic_id: string
+          created_at: string
+          id: string
+          message_content: string
+          response_content: string
+        }
+        Insert: {
+          clinic_id: string
+          created_at?: string
+          id?: string
+          message_content: string
+          response_content: string
+        }
+        Update: {
+          clinic_id?: string
+          created_at?: string
+          id?: string
+          message_content?: string
+          response_content?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_clinic_id_fkey"
+            columns: ["clinic_id"]
+            isOneToOne: false
+            referencedRelation: "clinics"
+            referencedColumns: ["clinic_id"]
+          },
+        ]
+      }
+      clinics: {
+        Row: {
+          address: string
+          clinic_id: string
+          created_at: string
+          email: string
+          emergency_instructions: string
+          id: string
+          insurance_accepted: string[]
+          name: string
+          office_hours: string
+          phone: string
+          services_offered: string[]
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          subscription_status: string | null
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          address: string
+          clinic_id: string
+          created_at?: string
+          email: string
+          emergency_instructions: string
+          id?: string
+          insurance_accepted?: string[]
+          name: string
+          office_hours: string
+          phone: string
+          services_offered?: string[]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          address?: string
+          clinic_id?: string
+          created_at?: string
+          email?: string
+          emergency_instructions?: string
+          id?: string
+          insurance_accepted?: string[]
+          name?: string
+          office_hours?: string
+          phone?: string
+          services_offered?: string[]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

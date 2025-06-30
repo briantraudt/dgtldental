@@ -5,6 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Marketing from "./pages/Marketing";
+import Signup from "./pages/Signup";
+import Success from "./pages/Success";
 import EmbedDemo from "./pages/EmbedDemo";
 import NotFound from "./pages/NotFound";
 
@@ -17,7 +20,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Marketing />} />
+          <Route path="/demo" element={<Index />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/success" element={<Success />} />
           <Route path="/embed-demo" element={<EmbedDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
