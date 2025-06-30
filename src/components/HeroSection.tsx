@@ -40,7 +40,7 @@ const HeroSection = () => {
               Not Anymore.
             </h1>
             <p className="text-lg md:text-xl font-medium mb-6 opacity-90">
-              Handle every question after hours with an AI-powered front desk assistant.
+              Handle every patient question with an AI-powered front desk assistant.
             </p>
           </div>
           
@@ -53,7 +53,7 @@ const HeroSection = () => {
               Not Anymore.
             </h1>
             <p className="text-lg md:text-2xl mb-8 opacity-90">
-              Handle every question after hours with an AI-powered front desk assistant.
+              Handle every patient question with an AI-powered front desk assistant.
             </p>
           </div>
           
