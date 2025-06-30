@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -291,87 +292,121 @@ const SignupFlow = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-12">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="mb-8">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/')}
-            className="mb-4"
+            className="mb-4 text-slate-600 hover:text-slate-900"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Button>
         </div>
 
-        {/* How It Works Section */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-xl text-gray-600">Get your AI dental assistant up and running in 3 simple steps</p>
+        {/* Enhanced How It Works Section */}
+        <div className="mb-20">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold text-slate-900 mb-6 tracking-tight">
+              How It Works
+            </h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Transform your dental practice with AI in just three simple steps
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid lg:grid-cols-3 gap-8 mb-12 max-w-5xl mx-auto">
             {/* Step 1 */}
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="pt-8">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <User className="h-8 w-8 text-blue-600" />
+            <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
+              <CardContent className="pt-12 pb-8 px-8 text-center relative">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <User className="h-10 w-10 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">1. Sign Up</h3>
-                <p className="text-gray-600">
-                  Enter your practice details and customize your AI assistant with your specific information, hours, and services.
+                <div className="mb-4">
+                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full mb-3">
+                    Step 1
+                  </span>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Sign Up</h3>
+                </div>
+                <p className="text-slate-600 leading-relaxed">
+                  Enter your practice details and customize your AI assistant with your specific information, services, and operating hours.
                 </p>
               </CardContent>
             </Card>
 
             {/* Step 2 */}
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="pt-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Code className="h-8 w-8 text-green-600" />
+            <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
+              <CardContent className="pt-12 pb-8 px-8 text-center relative">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+                <div className="w-20 h-20 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Code className="h-10 w-10 text-emerald-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">2. Install Widget</h3>
-                <p className="text-gray-600">
-                  Add a simple code snippet to your website, or let our team handle the installation for you.
+                <div className="mb-4">
+                  <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-sm font-semibold rounded-full mb-3">
+                    Step 2
+                  </span>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Install Widget</h3>
+                </div>
+                <p className="text-slate-600 leading-relaxed">
+                  Add a simple code snippet to your website, or let our expert team handle the complete installation for you.
                 </p>
               </CardContent>
             </Card>
 
             {/* Step 3 */}
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="pt-8">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Bot className="h-8 w-8 text-purple-600" />
+            <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
+              <CardContent className="pt-12 pb-8 px-8 text-center relative">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Bot className="h-10 w-10 text-purple-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">3. Go Live</h3>
-                <p className="text-gray-600">
+                <div className="mb-4">
+                  <span className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full mb-3">
+                    Step 3
+                  </span>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Go Live</h3>
+                </div>
+                <p className="text-slate-600 leading-relaxed">
                   Your AI assistant is ready to help patients 24/7 with appointments, questions, and practice information.
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Setup Support Offer */}
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
-            <div className="flex items-center justify-center">
-              <Zap className="h-5 w-5 text-amber-600 mr-2" />
-              <p className="text-amber-800 font-medium">
-                Need help with installation? Our team can set everything up for you for just $100 one-time fee.
-              </p>
+          {/* Enhanced Setup Support Offer */}
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-8 mb-12 max-w-4xl mx-auto shadow-lg">
+            <div className="flex items-center justify-center text-center">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mr-4">
+                  <Zap className="h-6 w-6 text-amber-600" />
+                </div>
+                <div>
+                  <p className="text-amber-900 font-semibold text-lg mb-1">
+                    Professional Setup Available
+                  </p>
+                  <p className="text-amber-700">
+                    Need help with installation? Our team can set everything up for you for just $100 one-time fee.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* CTA Button */}
+          {/* Enhanced CTA Button */}
           <div className="text-center">
             <Button 
               onClick={scrollToSignup}
               size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-12 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               Start Your Free Trial
-              <ArrowRight className="h-5 w-5 ml-2" />
+              <ArrowRight className="h-5 w-5 ml-3" />
             </Button>
+            <p className="text-sm text-slate-500 mt-4">
+              No credit card required • Cancel anytime
+            </p>
           </div>
         </div>
 
