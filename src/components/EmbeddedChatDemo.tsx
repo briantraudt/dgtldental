@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,35 +23,13 @@ const EmbeddedChatDemo = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Smart scroll behavior to show conversation flow naturally
+    // Simple scroll to bottom when messages change
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
         setTimeout(() => {
-          if (isLoading && messages.length > 0) {
-            // When loading, scroll to show the user's question and thinking indicator
-            const messagesContainer = scrollElement.children[0];
-            if (messagesContainer && messagesContainer.children.length > 0) {
-              // Find the last user message and scroll to show it plus some context
-              const lastUserMessageIndex = Array.from(messagesContainer.children).findIndex((child, index) => {
-                return index === messagesContainer.children.length - 1; // Last message area before loading indicator
-              });
-              
-              if (lastUserMessageIndex >= 0) {
-                const lastMessageElement = messagesContainer.children[lastUserMessageIndex] as HTMLElement;
-                lastMessageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }
-          } else if (messages.length > 0 && !isLoading) {
-            // When not loading, scroll to show the start of the latest assistant response
-            const messagesContainer = scrollElement.children[0];
-            if (messagesContainer && messagesContainer.children.length >= 2) {
-              // Get the second to last message (user's question) to show context
-              const userQuestionElement = messagesContainer.children[messagesContainer.children.length - 2] as HTMLElement;
-              userQuestionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }
-        }, 150);
+          scrollElement.scrollTop = scrollElement.scrollHeight;
+        }, 100);
       }
     }
   }, [messages, isLoading]);
