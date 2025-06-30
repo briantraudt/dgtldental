@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -139,14 +138,6 @@ const DGTLChatWidget = () => {
           {/* Messages area */}
           <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
             <div className="space-y-4">
-              {messages.length === 0 && (
-                <div className="text-center text-gray-500 text-sm py-8">
-                  <MessageCircle className="h-8 w-8 mx-auto mb-2 text-gray-300" />
-                  <p>Hi! I'm here to help you learn about DGTL Dental's AI chat widgets for dental practices.</p>
-                  <p className="mt-2 text-xs">Ask me about features, pricing, or how it works!</p>
-                </div>
-              )}
-              
               {messages.map((msg) => (
                 <div
                   key={msg.id}
