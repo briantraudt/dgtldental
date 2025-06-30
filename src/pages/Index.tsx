@@ -20,10 +20,10 @@ const Index = () => {
         {/* Hero Content */}
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-2xl" style={{ textShadow: '2px 4px 8px rgba(0,0,0,0.8)' }}>
               Revolutionize Your Dental Practice with AI
             </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90">
+            <p className="text-xl md:text-2xl mb-8 opacity-90 drop-shadow-xl" style={{ textShadow: '1px 2px 4px rgba(0,0,0,0.7)' }}>
               Attract more patients, streamline communication, and enhance your online presence with our AI-powered assistant.
             </p>
             <Link to="/signup-flow">
