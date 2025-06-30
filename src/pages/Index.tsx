@@ -1,5 +1,5 @@
 
-import { ArrowRight, Clock, Shield, Zap } from 'lucide-react';
+import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -36,112 +36,87 @@ const Index = () => {
             </Link>
           </div>
         </div>
+      </section>
 
-        {/* Feature Boxes at Bottom - Hidden on Mobile */}
-        <div className="relative container mx-auto px-4 pb-8 hidden md:block">
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Clock className="mr-2 h-5 w-5 text-blue-500" /> 
-                  24/7 Patient Support
+      {/* About Section - Mobile and Desktop */}
+      <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+              AI-Powered Patient Support for Your Practice
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Transform how your practice handles patient questions with intelligent, 24/7 assistance
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Card 1: What Is It? */}
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto bg-blue-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                  <Bot className="h-8 w-8 text-blue-600" />
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-800">
+                  What Is It?
                 </CardTitle>
-                <CardDescription className="text-sm">
-                  Provide instant answers to patient questions — even after hours.
+                <CardDescription className="text-blue-600 font-medium">
+                  An AI Assistant Trained for Dental Practices
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  <strong>Reduce calls, save staff time, and increase patient satisfaction</strong> with round-the-clock AI help.
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  Our AI-powered assistant answers patient questions instantly—day or night—about your services, insurance, hours, location, and more. 
+                  It lives on your website, works 24/7, and is trained to respond just like your front desk would.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Shield className="mr-2 h-5 w-5 text-green-500" /> 
-                  Secure & Private
+            {/* Card 2: How Does It Work? */}
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto bg-green-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                  <Code className="h-8 w-8 text-green-600" />
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-800">
+                  How Does It Work?
                 </CardTitle>
-                <CardDescription className="text-sm">
-                  Designed to protect your patients' privacy.
+                <CardDescription className="text-green-600 font-medium">
+                  Install in Minutes. No Tech Skills Needed.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  <strong>All chats are handled confidentially.</strong> No sensitive data is stored or shared.
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  Just copy and paste one line of code into your website. That's it. 
+                  Or, choose our $100 full setup service and we'll handle it for you. 
+                  Once live, your AI assistant will respond to common questions and free up your staff.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Zap className="mr-2 h-5 w-5 text-purple-500" /> 
-                  Quick & Easy Setup
+            {/* Card 3: Why It Matters to You */}
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto bg-purple-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                  <Activity className="h-8 w-8 text-purple-600" />
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-800">
+                  Why It Matters to You
                 </CardTitle>
-                <CardDescription className="text-sm">
-                  Go live in minutes — or let us handle it for you.
+                <CardDescription className="text-purple-600 font-medium">
+                  Save Time, Book More Appointments, and Wow Patients
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  <strong>Copy one line of code into your site,</strong> or choose our $100 full setup service.
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  Eliminate repetitive phone calls, reduce front desk interruptions, and never miss a patient question again. 
+                  Your patients get immediate answers—even after hours—and your practice looks modern, accessible, and tech-savvy.
                 </p>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
-
-      {/* Mobile Feature Cards - Visible only on mobile, moved below hero */}
-      <div className="md:hidden bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
-        <div className="container mx-auto px-4">
-          <div className="space-y-4">
-            <Card className="bg-white shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-base">
-                  <Clock className="mr-2 h-4 w-4 text-blue-500" /> 
-                  24/7 Patient Support
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  <strong>Reduce calls, save staff time, and increase patient satisfaction</strong> with round-the-clock AI help.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-base">
-                  <Shield className="mr-2 h-4 w-4 text-green-500" /> 
-                  Secure & Private
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  <strong>All chats are handled confidentially.</strong> No sensitive data is stored or shared.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-base">
-                  <Zap className="mr-2 h-4 w-4 text-purple-500" /> 
-                  Quick & Easy Setup
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-gray-700">
-                  <strong>Copy one line of code into your site,</strong> or choose our $100 full setup service.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
 
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
         <div className="container mx-auto px-4">
