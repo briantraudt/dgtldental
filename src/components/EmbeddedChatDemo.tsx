@@ -24,20 +24,29 @@ const EmbeddedChatDemo = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Auto-scroll to show new messages, but not to the very bottom
-    if (scrollAreaRef.current && messages.length > 0) {
+    // Improved auto-scroll that shows the conversation naturally
+    if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
-        // Delay scroll to ensure content is rendered
+        // Small delay to ensure content is rendered
         setTimeout(() => {
-          const lastMessage = scrollElement.lastElementChild?.lastElementChild;
-          if (lastMessage) {
-            lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // If we're loading (showing thinking animation), scroll to show it
+          if (isLoading && messages.length > 0) {
+            scrollElement.scrollTop = scrollElement.scrollHeight;
+          } 
+          // If we just got a new assistant message, scroll to show the user's question and start of response
+          else if (messages.length > 0 && !isLoading) {
+            const lastTwoMessages = scrollElement.children[0]?.children;
+            if (lastTwoMessages && lastTwoMessages.length >= 2) {
+              // Scroll to show the user's question (second to last message)
+              const userMessage = lastTwoMessages[lastTwoMessages.length - 2] as HTMLElement;
+              userMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
           }
         }, 100);
       }
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
@@ -132,10 +141,13 @@ const EmbeddedChatDemo = () => {
           {isLoading && (
             <div className="flex justify-start">
               <div className="bg-gray-100 rounded-lg px-4 py-3">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                <div className="flex items-center space-x-2">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  </div>
+                  <span className="text-sm text-gray-500 ml-2">Thinking...</span>
                 </div>
               </div>
             </div>
