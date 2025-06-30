@@ -23,26 +23,14 @@ const EmbeddedChatDemo = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Improved auto-scroll that shows the conversation naturally
+    // Auto-scroll to bottom when messages change or loading state changes
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
-        // Small delay to ensure content is rendered
+        // Use a longer delay to ensure content is fully rendered
         setTimeout(() => {
-          // If we're loading (showing thinking animation), scroll to show it
-          if (isLoading && messages.length > 0) {
-            scrollElement.scrollTop = scrollElement.scrollHeight;
-          } 
-          // If we just got a new assistant message, scroll to show the user's question and start of response
-          else if (messages.length > 0 && !isLoading) {
-            const lastTwoMessages = scrollElement.children[0]?.children;
-            if (lastTwoMessages && lastTwoMessages.length >= 2) {
-              // Scroll to show the user's question (second to last message)
-              const userMessage = lastTwoMessages[lastTwoMessages.length - 2] as HTMLElement;
-              userMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }
-        }, 100);
+          scrollElement.scrollTop = scrollElement.scrollHeight;
+        }, 200);
       }
     }
   }, [messages, isLoading]);
