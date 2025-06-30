@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -32,6 +31,20 @@ const DGTLChatWidget = () => {
   const getDGTLResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase();
     
+    // Helper function to determine if a question is medical vs practice-related
+    const isMedicalQuestion = (msg: string): boolean => {
+      const medicalKeywords = [
+        'pain', 'hurt', 'ache', 'tooth', 'teeth', 'gum', 'bleeding', 'swollen', 'infection',
+        'cavity', 'filling', 'crown', 'root canal', 'extraction', 'implant', 'whitening',
+        'braces', 'orthodontic', 'cleaning', 'checkup', 'x-ray', 'procedure', 'treatment',
+        'diagnosis', 'symptoms', 'medical', 'health', 'dental health', 'oral health'
+      ];
+      return medicalKeywords.some(keyword => msg.includes(keyword));
+    };
+
+    const addDisclaimer = isMedicalQuestion(lowerMessage);
+    const disclaimer = addDisclaimer ? "\n\nPlease remember that this is for informational purposes only and not a substitute for professional dental advice. For specific concerns, consult with a qualified dentist." : "";
+    
     // Q1: What does this chatbot actually do?
     if (lowerMessage.includes('what') && (lowerMessage.includes('chatbot') || lowerMessage.includes('do') || lowerMessage.includes('this'))) {
       return "This AI assistant answers common questions patients have about your practice, such as hours, location, insurance, and procedures — 24/7. It can also respond to general dental health questions.";
@@ -49,7 +62,7 @@ const DGTLChatWidget = () => {
     
     // Q4: What kind of dental questions can it answer?
     if (lowerMessage.includes('dental questions') || lowerMessage.includes('what questions')) {
-      return "Everything from practice logistics to oral health questions like \"What causes toothaches?\" or \"How often should I get cleanings?\"";
+      return "Everything from practice logistics to oral health questions like \"What causes toothaches?\" or \"How often should I get cleanings?\"" + disclaimer;
     }
     
     // Q5: How do I install it on my website?
@@ -89,7 +102,7 @@ const DGTLChatWidget = () => {
     
     // Q12: How accurate are its dental answers?
     if (lowerMessage.includes('accurate') || lowerMessage.includes('reliable')) {
-      return "Very accurate. The AI uses dental-specific guidance and phrasing. For anything unclear or sensitive, it always recommends contacting the office.";
+      return "Very accurate. The AI uses dental-specific guidance and phrasing. For anything unclear or sensitive, it always recommends contacting the office." + disclaimer;
     }
     
     // Q13: How much does it cost?
@@ -156,11 +169,17 @@ const DGTLChatWidget = () => {
     if (lowerMessage.includes('get started') || lowerMessage.includes('sign up') || lowerMessage.includes('begin')) {
       return "Click \"Sign Up Now,\" enter your practice info, and either paste the code into your website or ask us to install it. It only takes a few minutes!";
     }
+
+    // Office hours (practice question - no disclaimer)
+    if (lowerMessage.includes('hours') || lowerMessage.includes('open') || lowerMessage.includes('closed')) {
+      return "Our office hours are Monday through Friday 8:00 AM to 6:00 PM, Saturday 9:00 AM to 2:00 PM, and we're closed on Sundays. You can schedule an appointment by calling us at (555) 123-CARE or through our website at www.smilefamilydental.com.";
+    }
     
     // Default response
     return "I'm here to help you learn about DGTL's AI assistant for dental practices. Ask me about pricing, setup, features, or how it can help your practice!";
   };
 
+  // ... keep existing code (suggestedQuestions array)
   const suggestedQuestions = [
     "What does this chatbot actually do?",
     "How much does it cost?",
@@ -169,6 +188,7 @@ const DGTLChatWidget = () => {
     "Does it handle HIPAA compliance?"
   ];
 
+  // ... keep existing code (handleSendMessage, handleKeyPress, handleSuggestedQuestion functions and JSX return)
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
 
