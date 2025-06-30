@@ -306,69 +306,69 @@ const SignupFlow = () => {
         </div>
 
         {/* Enhanced How It Works Section */}
-        <div className="mb-20">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-slate-900 mb-6 tracking-tight">
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">
               How It Works
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
               Transform your dental practice with AI in just three simple steps
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 mb-12 max-w-5xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
             {/* Step 1 */}
-            <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
-              <CardContent className="pt-12 pb-8 px-8 text-center relative">
+            <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm">
+              <CardContent className="pt-8 pb-6 px-6 text-center relative">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <User className="h-10 w-10 text-blue-600" />
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300">
+                  <User className="h-8 w-8 text-blue-600" />
                 </div>
-                <div className="mb-4">
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full mb-3">
+                <div className="mb-3">
+                  <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-2">
                     Step 1
                   </span>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Sign Up</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Sign Up</h3>
                 </div>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-slate-600 text-sm leading-relaxed">
                   Enter your practice details and customize your AI assistant with your specific information, services, and operating hours.
                 </p>
               </CardContent>
             </Card>
 
             {/* Step 2 */}
-            <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
-              <CardContent className="pt-12 pb-8 px-8 text-center relative">
+            <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm">
+              <CardContent className="pt-8 pb-6 px-6 text-center relative">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
-                <div className="w-20 h-20 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Code className="h-10 w-10 text-emerald-600" />
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300">
+                  <Code className="h-8 w-8 text-emerald-600" />
                 </div>
-                <div className="mb-4">
-                  <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 text-sm font-semibold rounded-full mb-3">
+                <div className="mb-3">
+                  <span className="inline-block px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full mb-2">
                     Step 2
                   </span>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Install Widget</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Install Widget</h3>
                 </div>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-slate-600 text-sm leading-relaxed">
                   Add a simple code snippet to your website, or let our expert team handle the complete installation for you.
                 </p>
               </CardContent>
             </Card>
 
             {/* Step 3 */}
-            <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
-              <CardContent className="pt-12 pb-8 px-8 text-center relative">
+            <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm">
+              <CardContent className="pt-8 pb-6 px-6 text-center relative">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Bot className="h-10 w-10 text-purple-600" />
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform duration-300">
+                  <Bot className="h-8 w-8 text-purple-600" />
                 </div>
-                <div className="mb-4">
-                  <span className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full mb-3">
+                <div className="mb-3">
+                  <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full mb-2">
                     Step 3
                   </span>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Go Live</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Go Live</h3>
                 </div>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-slate-600 text-sm leading-relaxed">
                   Your AI assistant is ready to help patients 24/7 with appointments, questions, and practice information.
                 </p>
               </CardContent>
@@ -376,17 +376,17 @@ const SignupFlow = () => {
           </div>
 
           {/* Enhanced Setup Support Offer */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-8 mb-12 max-w-4xl mx-auto shadow-lg">
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-8 max-w-3xl mx-auto shadow-sm">
             <div className="flex items-center justify-center text-center">
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mr-4">
-                  <Zap className="h-6 w-6 text-amber-600" />
+                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mr-3">
+                  <Zap className="h-5 w-5 text-amber-600" />
                 </div>
                 <div>
-                  <p className="text-amber-900 font-semibold text-lg mb-1">
+                  <p className="text-amber-900 font-semibold text-base mb-1">
                     Professional Setup Available
                   </p>
-                  <p className="text-amber-700">
+                  <p className="text-amber-700 text-sm">
                     Need help with installation? Our team can set everything up for you for just $100 one-time fee.
                   </p>
                 </div>
@@ -399,12 +399,12 @@ const SignupFlow = () => {
             <Button 
               onClick={scrollToSignup}
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-12 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-base px-8 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
             >
               Start Your Free Trial
-              <ArrowRight className="h-5 w-5 ml-3" />
+              <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
-            <p className="text-sm text-slate-500 mt-4">
+            <p className="text-xs text-slate-500 mt-3">
               No credit card required • Cancel anytime
             </p>
           </div>
