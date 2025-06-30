@@ -4,7 +4,7 @@ import { ArrowRight, MessageCircle, Zap, Shield, BarChart3 } from 'lucide-react'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import DentalChatWidget from '@/components/DentalChatWidget';
+import DGTLChatWidget from '@/components/DGTLChatWidget';
 import EmbeddedChatDemo from '@/components/EmbeddedChatDemo';
 
 const Index = () => {
@@ -132,8 +132,8 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Floating Chat Widget */}
-      <DentalChatWidget />
+      {/* DGTL Dental Chat Widget */}
+      <DGTLChatWidget />
     </div>
   );
 };
