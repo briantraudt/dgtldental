@@ -1,3 +1,4 @@
+
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +13,7 @@ const Index = () => {
       <section 
         className="relative h-screen bg-cover md:bg-center bg-top bg-no-repeat flex flex-col justify-center"
         style={{
-          backgroundImage: `url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`,
+          backgroundImage: `url('/lovable-uploads/4696588c-59c3-46d6-8d8b-c6e580f53b9f.png')`,
           backgroundSize: 'cover'
         }}
       >
