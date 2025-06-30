@@ -252,24 +252,37 @@ const SignupFlow = () => {
           subscription_status: 'pending'
         });
 
-      if (clinicError) throw clinicError;
+      if (clinicError) {
+        console.error('Clinic insertion error:', clinicError);
+        throw clinicError;
+      }
 
-      // Create Stripe checkout session
+      console.log('Clinic data inserted successfully');
+
+      // Create Stripe checkout session with proper data structure
+      const checkoutData = {
+        clinicId,
+        accountInfo,
+        practiceDetails: {
+          ...practiceDetails,
+          practiceName: practiceDetails.practiceName,
+          officeHours: formattedOfficeHours
+        },
+        needInstallHelp: practiceDetails.needInstallHelp
+      };
+
+      console.log('Sending checkout data:', checkoutData);
+
       const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: {
-          clinicId,
-          clinicName: practiceDetails.practiceName,
-          email: accountInfo.email,
-          accountInfo,
-          practiceDetails: {
-            ...practiceDetails,
-            officeHours: formattedOfficeHours
-          },
-          needInstallHelp: practiceDetails.needInstallHelp
-        }
+        body: checkoutData
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Checkout creation error:', error);
+        throw error;
+      }
+
+      console.log('Checkout session created:', data);
 
       toast({
         title: "Practice registered successfully!",
@@ -277,13 +290,17 @@ const SignupFlow = () => {
       });
 
       // Redirect to Stripe checkout
-      window.location.href = data.url;
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
 
     } catch (error) {
       console.error('Error processing signup:', error);
       toast({
         title: "Signup failed",
-        description: "Please try again or contact support.",
+        description: error instanceof Error ? error.message : "Please try again or contact support.",
         variant: "destructive"
       });
     } finally {

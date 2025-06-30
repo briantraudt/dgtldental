@@ -28,21 +28,13 @@ serve(async (req) => {
     const requestData = await req.json();
     logStep("Request data received", requestData);
 
-    // Support both old and new data structures
-    let clinicId, clinicName, email, needInstallHelp = false;
-    
-    if (requestData.accountInfo && requestData.practiceDetails) {
-      // New signup flow structure
-      clinicId = requestData.clinicId;
-      clinicName = requestData.practiceDetails.practiceName;
-      email = requestData.accountInfo.email;
-      needInstallHelp = requestData.needInstallHelp || false;
-    } else {
-      // Old structure
-      clinicId = requestData.clinicId;
-      clinicName = requestData.clinicName;
-      email = requestData.email;
-    }
+    // Extract data from the signup flow structure
+    const clinicId = requestData.clinicId;
+    const clinicName = requestData.practiceDetails?.practiceName;
+    const email = requestData.accountInfo?.email;
+    const needInstallHelp = requestData.needInstallHelp || false;
+
+    logStep("Extracted data", { clinicId, clinicName, email, needInstallHelp });
 
     if (!clinicId || !clinicName || !email) {
       throw new Error("Missing required fields: clinicId, clinicName, or email");
@@ -70,7 +62,7 @@ serve(async (req) => {
       logStep("New customer created", { customerId });
     }
 
-    // Prepare line items
+    // Prepare line items - monthly subscription
     const lineItems = [
       {
         price_data: {
@@ -101,18 +93,24 @@ serve(async (req) => {
       });
     }
 
+    logStep("Line items prepared", { lineItems, needInstallHelp });
+
+    const origin = req.headers.get("origin") || "http://localhost:3000";
+    
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: lineItems,
       mode: "subscription",
-      success_url: `${req.headers.get("origin")}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}`,
-      cancel_url: `${req.headers.get("origin")}/signup-flow`,
+      success_url: `${origin}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}`,
+      cancel_url: `${origin}/signup-flow`,
       metadata: {
         clinic_id: clinicId,
         clinic_name: clinicName,
         needs_install_help: needInstallHelp.toString()
-      }
+      },
+      automatic_tax: { enabled: false },
+      billing_address_collection: "auto",
     });
 
     logStep("Checkout session created", { sessionId: session.id, url: session.url });
@@ -123,7 +121,7 @@ serve(async (req) => {
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    logStep("ERROR in create-checkout", { message: errorMessage });
+    logStep("ERROR in create-checkout", { message: errorMessage, stack: error instanceof Error ? error.stack : undefined });
     return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
