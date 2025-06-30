@@ -1,6 +1,5 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
 import { nanoid } from 'nanoid';
@@ -119,10 +118,9 @@ const EmbeddedChatDemo = () => {
       {/* Header */}
       <div className="bg-blue-600 text-white p-6 rounded-t-lg">
         <div className="flex items-center">
-          <MessageCircle className="h-6 w-6 mr-3" />
           <div>
-            <h3 className="font-semibold text-lg">Smile Family AI Assistant</h3>
-            <p className="text-blue-100">Trained to answer questions about your practice</p>
+            <h3 className="font-semibold text-lg">Dental Practice AI Assistant</h3>
+            <p className="text-blue-100">Trained to answer patients questions 24/7</p>
           </div>
         </div>
       </div>
