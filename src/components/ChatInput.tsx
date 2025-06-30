@@ -21,7 +21,7 @@ const ChatInput = ({ message, isLoading, onChange, onSend, onKeyPress }: ChatInp
           onKeyPress={onKeyPress}
           placeholder="Ask about our services, hours, location, or any dental questions..."
           disabled={isLoading}
-          className="flex-1 border-2 border-blue-200 focus:border-blue-500 focus:ring-blue-500/20 focus:ring-4 rounded-xl px-6 py-4 text-lg text-gray-700 placeholder-gray-500 shadow-sm transition-all duration-200 hover:border-blue-300"
+          className="flex-1 border-2 border-blue-200 focus:border-blue-500 focus:ring-blue-500/20 focus:ring-4 rounded-xl px-6 py-4 text-lg text-gray-700 placeholder-gray-500 shadow-sm transition-all duration-200 hover:border-blue-300 h-14"
         />
         <Button
           onClick={onSend}
