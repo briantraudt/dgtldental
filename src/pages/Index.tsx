@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { ArrowRight, MessageCircle, Zap, Shield, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,12 +11,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Background Image and Feature Boxes */}
+      {/* Hero Section with clean background */}
       <section 
-        className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-between"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/lovable-uploads/c48e4da4-5854-4e7f-8eea-329de628292b.png')`
-        }}
+        className="relative h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex flex-col justify-between"
       >
         {/* Hero Content */}
         <div className="flex-1 flex items-center justify-center">
