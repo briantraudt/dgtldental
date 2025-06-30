@@ -25,10 +25,16 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-20 flex-1 flex items-center justify-center">
         <div className="text-center text-white px-4 max-w-4xl">
-          {/* Mobile and Tablet headline layout */}
+          {/* Mobile and Tablet headline layout - stacked vertically */}
           <div className="block lg:hidden">
             <h1 className="text-4xl md:text-5xl font-bold mb-2">
-              Missed Calls. Missed Patients. Missed Revenue.
+              Missed Calls.
+            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-2">
+              Missed Patients.
+            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Missed Revenue.
             </h1>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-blue-400">
               Not Anymore.
