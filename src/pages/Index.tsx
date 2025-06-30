@@ -16,7 +16,7 @@ const Index = () => {
       <section 
         className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-between"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/lovable-uploads/c48e4da4-5854-4e7f-8eea-329de628292b.png')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/lovable-uploads/e074edd6-516c-48df-a6b0-161afd1fad28.png')`
         }}
       >
         {/* Hero Content */}
