@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,16 +22,44 @@ const EmbeddedChatDemo = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Simple scroll to bottom when messages change
+    // Improved scroll behavior - scroll to show the user's message and start of response
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
         setTimeout(() => {
-          scrollElement.scrollTop = scrollElement.scrollHeight;
+          // Less aggressive scroll that keeps some context visible
+          const scrollHeight = scrollElement.scrollHeight;
+          const clientHeight = scrollElement.clientHeight;
+          const maxScroll = scrollHeight - clientHeight;
+          
+          // Scroll to show recent messages but not hide the user's question
+          const targetScroll = Math.max(0, maxScroll - 100);
+          scrollElement.scrollTop = targetScroll;
         }, 100);
       }
     }
-  }, [messages, isLoading]);
+  }, [messages]);
+
+  // Separate effect for when loading starts/stops to ensure smooth UX
+  useEffect(() => {
+    if (!isLoading && messages.length > 0) {
+      // Final scroll adjustment after assistant response is complete
+      if (scrollAreaRef.current) {
+        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollElement) {
+          setTimeout(() => {
+            const scrollHeight = scrollElement.scrollHeight;
+            const clientHeight = scrollElement.clientHeight;
+            const maxScroll = scrollHeight - clientHeight;
+            
+            // Show the beginning of the assistant's response
+            const targetScroll = Math.max(0, maxScroll - 80);
+            scrollElement.scrollTop = targetScroll;
+          }, 150);
+        }
+      }
+    }
+  }, [isLoading, messages.length]);
 
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
