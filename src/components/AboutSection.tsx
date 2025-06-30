@@ -62,7 +62,28 @@ const AboutSection = () => {
             </CardContent>
           </Card>
 
-          {/* Card 3: What Does It Cost? */}
+          {/* Card 3: Why It Matters to You */}
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto bg-purple-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
+                <Activity className="h-8 w-8 text-purple-600" />
+              </div>
+              <CardTitle className="text-xl font-bold text-gray-800">
+                Why It Matters to You
+              </CardTitle>
+              <CardDescription className="text-purple-600 font-medium">
+                Save Time, Book More Appointments, and Wow Patients
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">
+                Eliminate repetitive phone calls, reduce front desk interruptions, and never miss a patient question again. 
+                Your patients get immediate answers—even after hours—and your practice looks modern, accessible, and tech-savvy.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Card 4: What Does It Cost? */}
           <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="text-center pb-4">
               <div className="mx-auto bg-emerald-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
@@ -80,27 +101,6 @@ const AboutSection = () => {
                 Just $10/month with no contracts—cancel anytime. Need help with setup? 
                 We offer a one-time $100 installation service where we handle everything for you. 
                 No hidden fees, no surprises.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Card 4: Why It Matters to You */}
-          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto bg-purple-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mb-4">
-                <Activity className="h-8 w-8 text-purple-600" />
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-800">
-                Why It Matters to You
-              </CardTitle>
-              <CardDescription className="text-purple-600 font-medium">
-                Save Time, Book More Appointments, and Wow Patients
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 leading-relaxed">
-                Eliminate repetitive phone calls, reduce front desk interruptions, and never miss a patient question again. 
-                Your patients get immediate answers—even after hours—and your practice looks modern, accessible, and tech-savvy.
               </p>
             </CardContent>
           </Card>
