@@ -1,6 +1,8 @@
 
 import { DEMO_CLINIC_DATA } from '@/data/demoClinicData';
 
+const DISCLAIMER = "\n\nPlease remember that this is for informational purposes only and not a substitute for professional dental advice. For specific concerns, consult with a qualified dentist.";
+
 export const getTemplatedResponse = (userMessage: string): string | null => {
   const lowerMessage = userMessage.toLowerCase();
   
@@ -13,14 +15,14 @@ Friday: ${DEMO_CLINIC_DATA.officeHours.friday}
 Saturday: ${DEMO_CLINIC_DATA.officeHours.saturday}
 Sunday: ${DEMO_CLINIC_DATA.officeHours.sunday}
 
-You can schedule an appointment by calling us at ${DEMO_CLINIC_DATA.phone} or through our website at ${DEMO_CLINIC_DATA.website}.`;
+You can schedule an appointment by calling us at ${DEMO_CLINIC_DATA.phone} or through our website at ${DEMO_CLINIC_DATA.website}.${DISCLAIMER}`;
   }
   
   // Location/Address
   if (lowerMessage.includes('location') || lowerMessage.includes('address') || lowerMessage.includes('where') || lowerMessage.includes('directions')) {
     return `We're located at ${DEMO_CLINIC_DATA.address}. 
 
-We're conveniently located in downtown with easy parking available. You can find detailed directions on our website at ${DEMO_CLINIC_DATA.website} or call us at ${DEMO_CLINIC_DATA.phone} if you need help finding us.`;
+We're conveniently located in downtown with easy parking available. You can find detailed directions on our website at ${DEMO_CLINIC_DATA.website} or call us at ${DEMO_CLINIC_DATA.phone} if you need help finding us.${DISCLAIMER}`;
   }
   
   // Services
@@ -29,7 +31,7 @@ We're conveniently located in downtown with easy parking available. You can find
 
 • ${DEMO_CLINIC_DATA.services.join('\n• ')}
 
-We provide personalized care for patients of all ages. Would you like to know more about any specific treatment or schedule a consultation? Call us at ${DEMO_CLINIC_DATA.phone}.`;
+We provide personalized care for patients of all ages. Would you like to know more about any specific treatment or schedule a consultation? Call us at ${DEMO_CLINIC_DATA.phone}.${DISCLAIMER}`;
   }
   
   // Insurance
@@ -39,7 +41,7 @@ We provide personalized care for patients of all ages. Would you like to know mo
 • ${DEMO_CLINIC_DATA.insurance.join('\n• ')}
 • Most PPO plans
 
-We also offer flexible payment options and financing plans. Our team will help verify your benefits and maximize your insurance coverage. Please bring your insurance card to your appointment or call us at ${DEMO_CLINIC_DATA.phone} to verify coverage.`;
+We also offer flexible payment options and financing plans. Our team will help verify your benefits and maximize your insurance coverage. Please bring your insurance card to your appointment or call us at ${DEMO_CLINIC_DATA.phone} to verify coverage.${DISCLAIMER}`;
   }
   
   // Contact/Phone
@@ -51,7 +53,7 @@ We also offer flexible payment options and financing plans. Our team will help v
 🌐 Website: ${DEMO_CLINIC_DATA.website}
 📍 Address: ${DEMO_CLINIC_DATA.address}
 
-We're here to help with any questions or to schedule your appointment!`;
+We're here to help with any questions or to schedule your appointment!${DISCLAIMER}`;
   }
   
   // Emergency
@@ -68,7 +70,7 @@ Common dental emergencies we treat:
 • Lost fillings or crowns
 • Dental abscesses
 
-Don't wait - dental emergencies require prompt attention!`;
+Don't wait - dental emergencies require prompt attention!${DISCLAIMER}`;
   }
   
   // Appointment scheduling
@@ -85,7 +87,7 @@ Our current availability:
 • Urgent care appointments often same-day
 • We offer early morning and Saturday appointments
 
-What type of appointment are you looking for?`;
+What type of appointment are you looking for?${DISCLAIMER}`;
   }
   
   return null;
