@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { ArrowRight, MessageCircle, Zap, Shield, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,7 @@ const Index = () => {
               Revolutionize Your Dental Practice with AI
             </h1>
             <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Attract more patients, streamline communication, and enhance your online presence with our AI-powered chat widget.
+              Attract more patients, streamline communication, and enhance your online presence with our AI-powered assistant.
             </p>
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
               Get Started Today <ArrowRight className="ml-2" />
