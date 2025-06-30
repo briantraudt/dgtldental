@@ -1,16 +1,9 @@
-
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessage from './ChatMessage';
 import ChatGreeting from './ChatGreeting';
 import QuickQuestions from './QuickQuestions';
 import ChatInput from './ChatInput';
-
-interface Message {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant';
-  timestamp: Date;
-}
+import { Message } from '@/types/chatTypes';
 
 interface ChatWidgetProps {
   messages: Message[];

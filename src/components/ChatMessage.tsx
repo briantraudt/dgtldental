@@ -1,10 +1,4 @@
-
-interface Message {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant';
-  timestamp: Date;
-}
+import { Message } from '@/types/chatTypes';
 
 interface ChatMessageProps {
   message: Message;
