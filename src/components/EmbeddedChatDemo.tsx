@@ -121,8 +121,8 @@ const EmbeddedChatDemo = () => {
         <div className="flex items-center">
           <MessageCircle className="h-6 w-6 mr-3" />
           <div>
-            <h3 className="font-semibold text-lg">{DEMO_CLINIC_DATA.name} Assistant</h3>
-            <p className="text-blue-100">How can I help you today?</p>
+            <h3 className="font-semibold text-lg">Smile Family AI Assistant</h3>
+            <p className="text-blue-100">Trained to answer questions about your practice</p>
           </div>
         </div>
       </div>
@@ -131,7 +131,14 @@ const EmbeddedChatDemo = () => {
       <ScrollArea ref={scrollAreaRef} className="flex-1 p-6">
         <div className="space-y-4">
           {messages.length === 0 && (
-            <QuickQuestions onQuestionClick={setMessage} />
+            <>
+              <div className="flex justify-start mb-4">
+                <div className="bg-gray-100 rounded-lg px-4 py-3 max-w-[80%]">
+                  <p className="text-gray-800">Welcome! Ask me about the practice — hours, services, insurance, and more.</p>
+                </div>
+              </div>
+              <QuickQuestions onQuestionClick={setMessage} />
+            </>
           )}
           
           {messages.map((msg) => (

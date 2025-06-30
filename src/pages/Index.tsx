@@ -1,3 +1,4 @@
+
 import { ArrowRight, Zap, Shield, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -93,10 +94,10 @@ const Index = () => {
           {/* Demo Section */}
           <section className="mb-16">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
-              See the AI Chat Widget in Action
+              See How Your AI Dental Assistant Works
             </h2>
             <p className="text-gray-600 mb-8 text-center">
-              Experience the power of AI-driven patient communication with our interactive demo.
+              Experience the power of a 24/7 AI assistant trained to answer dental-specific questions for your patients — instantly and accurately.
             </p>
 
             <div className="flex justify-center">
@@ -109,10 +110,10 @@ const Index = () => {
           {/* Call to Action Section */}
           <section className="text-center">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-              Ready to Transform Your Dental Practice?
+              Ready to Modernize Patient Communication at Your Practice?
             </h2>
             <p className="text-gray-600 mb-8">
-              Join hundreds of dental practices already using our AI chat widget to improve patient engagement and streamline operations.
+              Join other dentists using our AI chat widget to increase patient satisfaction, save staff time, and stay available 24/7 — even after hours.
             </p>
             <Link to="/signup">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
