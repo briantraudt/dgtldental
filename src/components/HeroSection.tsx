@@ -1,9 +1,19 @@
 
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
+  const handleSignupClick = () => {
+    navigate('/signup-flow');
+    // Scroll to top after navigation
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  };
+
   return (
     <section 
       className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center"
@@ -57,11 +67,13 @@ const HeroSection = () => {
             </p>
           </div>
           
-          <Link to="/signup-flow">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
-              Get Started Today <ArrowRight className="ml-2" />
-            </Button>
-          </Link>
+          <Button 
+            size="lg" 
+            className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4"
+            onClick={handleSignupClick}
+          >
+            Get Started Today <ArrowRight className="ml-2" />
+          </Button>
         </div>
       </div>
       

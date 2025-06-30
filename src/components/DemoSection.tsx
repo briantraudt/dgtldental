@@ -1,10 +1,20 @@
 
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import EmbeddedChatDemo from './EmbeddedChatDemo';
 
 const DemoSection = () => {
+  const navigate = useNavigate();
+
+  const handleSignupClick = () => {
+    navigate('/signup-flow');
+    // Scroll to top after navigation
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  };
+
   return (
     <div className="relative bg-gradient-to-b from-indigo-100/80 via-blue-50/60 to-slate-100/40 py-8 md:py-16">
       {/* Seamless transition from previous section */}
@@ -35,11 +45,13 @@ const DemoSection = () => {
           <p className="text-sm md:text-base text-gray-600 mb-6 md:mb-8 leading-relaxed max-w-2xl mx-auto">
             Join practices using our 24/7 AI chat assistant to reduce phone calls, book more appointments, and never miss a patient again.
           </p>
-          <Link to="/signup-flow">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
-              Sign Up Now <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
-            </Button>
-          </Link>
+          <Button 
+            size="lg" 
+            className="bg-blue-600 hover:bg-blue-700 text-white text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+            onClick={handleSignupClick}
+          >
+            Sign Up Now <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+          </Button>
         </section>
       </div>
       
