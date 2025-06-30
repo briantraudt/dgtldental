@@ -77,6 +77,7 @@ const SignupFlow = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [otherService, setOtherService] = useState('');
   
   const [accountInfo, setAccountInfo] = useState<AccountInfo>({
     firstName: '',
@@ -119,6 +120,25 @@ const SignupFlow = () => {
         ? prev.servicesOffered.filter(s => s !== service)
         : [...prev.servicesOffered, service]
     }));
+  };
+
+  const handleOtherServiceChange = (value: string) => {
+    setOtherService(value);
+    
+    // Remove any existing "other" services first
+    const existingServices = practiceDetails.servicesOffered.filter(s => !s.startsWith('Other: '));
+    
+    if (value.trim()) {
+      setPracticeDetails(prev => ({
+        ...prev,
+        servicesOffered: [...existingServices, `Other: ${value.trim()}`]
+      }));
+    } else {
+      setPracticeDetails(prev => ({
+        ...prev,
+        servicesOffered: existingServices
+      }));
+    }
   };
 
   const toggleInsurance = (insurance: string) => {
@@ -599,6 +619,22 @@ const SignupFlow = () => {
                           </Label>
                         </div>
                       ))}
+                      <div className="col-span-2 flex items-center space-x-2 mt-2">
+                        <Checkbox
+                          id="other-service"
+                          checked={otherService.trim() !== ''}
+                          disabled
+                        />
+                        <Label htmlFor="other-service" className="text-sm">
+                          Other:
+                        </Label>
+                        <Input
+                          placeholder="Enter other services"
+                          value={otherService}
+                          onChange={(e) => handleOtherServiceChange(e.target.value)}
+                          className="flex-1"
+                        />
+                      </div>
                     </div>
                   </div>
 
