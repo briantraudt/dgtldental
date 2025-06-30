@@ -1,4 +1,3 @@
-
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,8 +23,8 @@ const Index = () => {
           }}
         ></div>
         
-        {/* Darker overlay */}
-        <div className="absolute inset-0 bg-black/50 z-10"></div>
+        {/* Elegant gradient overlay that transitions to next section */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-slate-900/40 z-10"></div>
         
         {/* Hero Content */}
         <div className="relative z-20 flex-1 flex items-center justify-center">
@@ -44,11 +43,17 @@ const Index = () => {
             </Link>
           </div>
         </div>
+        
+        {/* Smooth transition element */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 to-transparent z-15"></div>
       </section>
 
-      {/* About Section - Mobile and Desktop */}
-      <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
-        <div className="container mx-auto px-4">
+      {/* About Section with improved gradient */}
+      <section className="bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-100/80 py-16 relative">
+        {/* Subtle top gradient for seamless transition */}
+        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-slate-50 to-transparent"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
               AI-Powered Patient Support for Your Practice
@@ -126,7 +131,7 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
+      <div className="bg-gradient-to-br from-indigo-100/80 via-blue-50 to-slate-50 py-16">
         <div className="container mx-auto px-4">
           {/* Demo Section */}
           <section className="mb-16">
