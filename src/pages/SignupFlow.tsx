@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard, Bot, Code, Star } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard, Bot, Code } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -565,25 +565,6 @@ const SignupFlow = () => {
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-
-                  {/* Trust-building testimonial */}
-                  <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
-                    <div className="flex items-start space-x-3">
-                      <div className="flex-shrink-0">
-                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                          <Star className="h-5 w-5 text-white" />
-                        </div>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900 mb-1">
-                          "We booked 12 more new patients in our first week."
-                        </p>
-                        <p className="text-xs text-gray-600">
-                          — Dr. Lopez, Smile Dental, Austin, TX
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 </>
               )}
