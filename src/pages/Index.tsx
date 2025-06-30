@@ -1,4 +1,5 @@
 
+
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -51,11 +52,11 @@ const Index = () => {
               <h1 className="text-4xl md:text-6xl font-bold mb-6 text-blue-400">
                 Not Anymore.
               </h1>
+              <p className="text-lg md:text-2xl mb-8 opacity-90">
+                Handle every question after hours with an AI-powered front desk assistant.
+              </p>
             </div>
             
-            <p className="text-lg md:text-2xl mb-8 opacity-90">
-              Handle every question after hours with an AI-powered front desk assistant.
-            </p>
             <Link to="/signup-flow">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4">
                 Get Started Today <ArrowRight className="ml-2" />
