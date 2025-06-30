@@ -27,13 +27,13 @@ const DemoSection = () => {
           </div>
         </section>
 
-        {/* Call to Action Section */}
+        {/* Call to Action Section - Updated with stronger copy */}
         <section className="text-center bg-white/30 backdrop-blur-sm rounded-2xl p-12 border border-white/20 shadow-lg">
           <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-            Ready to Put Your Website to Work for You?
+            Let Your Website Handle Patient Questions—Even After Hours
           </h2>
           <p className="text-gray-600 mb-8">
-            Join practices using our AI chat assistant to answer questions, reduce phone calls, and stay available 24/7 — even after hours.
+            Join practices using our 24/7 AI chat assistant to reduce phone calls, book more appointments, and never miss a patient again.
           </p>
           <Link to="/signup-flow">
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">

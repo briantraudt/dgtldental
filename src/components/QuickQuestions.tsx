@@ -5,14 +5,16 @@ interface QuickQuestionsProps {
 
 const QuickQuestions = ({ onQuestionClick }: QuickQuestionsProps) => {
   const quickQuestions = [
-    "Do you accept Delta Dental insurance?",
-    "Can I get Invisalign at your office?",
-    "What should I do if I have a chipped tooth?"
+    "What dental insurance plans do you accept?",
+    "Are you accepting new patients?",
+    "How much is a cleaning?",
+    "Where are you located?",
+    "What are your office hours?"
   ];
 
   return (
     <div className="text-center py-4">
-      <p className="text-gray-600 mb-6 font-medium">Common questions about our practice:</p>
+      <p className="text-gray-600 mb-6 font-medium">Common questions about dental practices:</p>
       <div className="space-y-3">
         {quickQuestions.map((question, index) => (
           <button

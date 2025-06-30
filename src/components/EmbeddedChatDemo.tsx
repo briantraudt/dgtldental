@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
@@ -131,7 +132,7 @@ const EmbeddedChatDemo = () => {
     <div className="space-y-4">
       {/* Chat Widget */}
       <div className="bg-white rounded-2xl border border-gray-200 h-[500px] flex flex-col shadow-xl overflow-hidden">
-        {/* Header - Updated to blue theme */}
+        {/* Header - Updated with demo-focused messaging */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
           <div className="flex items-center space-x-3">
             <div className="bg-white/20 rounded-full p-2">
@@ -140,8 +141,8 @@ const EmbeddedChatDemo = () => {
               </svg>
             </div>
             <div>
-              <h3 className="font-semibold text-xl">Smile Family Dental Assistant</h3>
-              <p className="text-blue-100 text-sm">Available 24/7 to answer your questions</p>
+              <h3 className="font-semibold text-xl">Try Me: The 24/7 Assistant for Your Practice</h3>
+              <p className="text-blue-100 text-sm">Ask me anything about your dental practice—services, insurance, hours, or location. I'm available 24/7.</p>
             </div>
           </div>
         </div>
@@ -160,8 +161,8 @@ const EmbeddedChatDemo = () => {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-gray-800 font-medium">Hi there! I'm the virtual assistant for Smile Family Dental.</p>
-                        <p className="text-gray-600 text-sm mt-1">I can answer questions about our hours, services, insurance, or general dental care — 24/7.</p>
+                        <p className="text-gray-800 font-medium">Hi there! I'm a demo AI assistant for dental practices.</p>
+                        <p className="text-gray-600 text-sm mt-1">Ask me anything about your dental practice—services, insurance, hours, or location. I'm available 24/7.</p>
                       </div>
                     </div>
                   </div>
