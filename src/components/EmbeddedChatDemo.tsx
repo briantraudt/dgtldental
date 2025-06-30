@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
@@ -115,11 +116,11 @@ const EmbeddedChatDemo = () => {
 
   return (
     <div className="space-y-4">
-      {/* AI Badge */}
+      {/* AI Badge - Made more bold and prominent */}
       <div className="flex justify-center">
-        <div className="flex items-center space-x-2 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-full border">
-          <Shield className="w-4 h-4 text-green-600" />
-          <span>Powered by secure, dental-specific AI</span>
+        <div className="flex items-center space-x-3 text-lg font-bold text-gray-800 bg-gradient-to-r from-blue-50 to-blue-100 px-6 py-3 rounded-xl border-2 border-blue-200 shadow-md">
+          <Shield className="w-5 h-5 text-blue-600" />
+          <span>Ask a Question Below!</span>
         </div>
       </div>
 
