@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { ArrowRight, MessageCircle, Zap, Shield, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -17,7 +15,7 @@ const Index = () => {
       <section 
         className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-between"
         style={{
-          backgroundImage: `linear-gradient(rgba(30, 64, 175, 0.8), rgba(30, 64, 175, 0.8)), url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`
+          backgroundImage: `linear-gradient(rgba(30, 64, 175, 0.4), rgba(30, 64, 175, 0.4)), url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`
         }}
       >
         {/* Hero Content */}
@@ -140,4 +138,3 @@ const Index = () => {
 };
 
 export default Index;
-
