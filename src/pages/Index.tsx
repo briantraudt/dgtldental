@@ -113,7 +113,7 @@ const Index = () => {
               Ready to Modernize the Patient Experience at Your Practice?
             </h2>
             <p className="text-gray-600 mb-8">
-              Join other dentists using our AI chat widget to increase patient satisfaction, save staff time, and stay available 24/7 — even after hours.
+              Join other dentists using AI to increase customer satisfaction, save staff time, and be available 24/7 to care for the people who need you most - your patients.
             </p>
             <Link to="/signup">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
