@@ -1,213 +1,30 @@
 
-import { useState, useRef, useEffect } from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { supabase } from '@/integrations/supabase/client';
-import { nanoid } from 'nanoid';
-import { getTemplatedResponse } from '@/utils/chatTemplateUtils';
-import { DEMO_CLINIC_DATA } from '@/data/demoClinicData';
-import ChatMessage from './ChatMessage';
-import QuickQuestions from './QuickQuestions';
-import ChatInput from './ChatInput';
-
-interface Message {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant';
-  timestamp: Date;
-}
+import { useChatDemo } from '@/hooks/useChatDemo';
+import ChatWidget from './ChatWidget';
 
 const EmbeddedChatDemo = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Improved scroll behavior - scroll to show the user's message and start of response
-    if (scrollAreaRef.current) {
-      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-      if (scrollElement) {
-        setTimeout(() => {
-          // Less aggressive scroll that keeps some context visible
-          const scrollHeight = scrollElement.scrollHeight;
-          const clientHeight = scrollElement.clientHeight;
-          const maxScroll = scrollHeight - clientHeight;
-          
-          // Scroll to show recent messages but not hide the user's question
-          const targetScroll = Math.max(0, maxScroll - 100);
-          scrollElement.scrollTop = targetScroll;
-        }, 100);
-      }
-    }
-  }, [messages]);
-
-  // Separate effect for when loading starts/stops to ensure smooth UX
-  useEffect(() => {
-    if (!isLoading && messages.length > 0) {
-      // Final scroll adjustment after assistant response is complete
-      if (scrollAreaRef.current) {
-        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (scrollElement) {
-          setTimeout(() => {
-            const scrollHeight = scrollElement.scrollHeight;
-            const clientHeight = scrollElement.clientHeight;
-            const maxScroll = scrollHeight - clientHeight;
-            
-            // Show the beginning of the assistant's response
-            const targetScroll = Math.max(0, maxScroll - 80);
-            scrollElement.scrollTop = targetScroll;
-          }, 150);
-        }
-      }
-    }
-  }, [isLoading, messages.length]);
-
-  const handleSendMessage = async () => {
-    if (!message.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: nanoid(),
-      content: message.trim(),
-      role: 'user',
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    const currentMessage = message.trim();
-    setMessage('');
-    setIsLoading(true);
-
-    try {
-      // First check for templated responses
-      const templatedResponse = getTemplatedResponse(currentMessage);
-      
-      if (templatedResponse) {
-        // Use templated response
-        const assistantMessage: Message = {
-          id: nanoid(),
-          content: templatedResponse,
-          role: 'assistant',
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, assistantMessage]);
-      } else {
-        // Fall back to AI response for general dental questions
-        const { data, error } = await supabase.functions.invoke('demo-chat', {
-          body: { message: currentMessage }
-        });
-
-        if (error) throw error;
-
-        const assistantMessage: Message = {
-          id: nanoid(),
-          content: data.response,
-          role: 'assistant',
-          timestamp: new Date()
-        };
-
-        setMessages(prev => [...prev, assistantMessage]);
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      const errorMessage: Message = {
-        id: nanoid(),
-        content: "I'm sorry, I'm having trouble responding right now. Please try again in a moment or call us directly at (555) 123-CARE.",
-        role: 'assistant',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  const {
+    messages,
+    message,
+    isLoading,
+    scrollAreaRef,
+    setMessage,
+    handleSendMessage,
+    handleKeyPress
+  } = useChatDemo();
 
   return (
     <div className="space-y-4">
-      {/* Chat Widget */}
-      <div className="bg-white rounded-2xl border border-gray-200 h-[500px] flex flex-col shadow-xl overflow-hidden">
-        {/* Header - Updated with demo-focused messaging */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
-          <div className="flex items-center space-x-3">
-            <div className="bg-white/20 rounded-full p-2">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="font-semibold text-xl">Try Me: The 24/7 Assistant for Your Practice</h3>
-              <p className="text-blue-100 text-sm">Ask me anything about your dental practice—services, insurance, hours, or location. I'm available 24/7.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Messages area */}
-        <ScrollArea ref={scrollAreaRef} className="flex-1 p-6 bg-gray-50">
-          <div className="space-y-4">
-            {messages.length === 0 && (
-              <>
-                <div className="flex justify-start mb-6">
-                  <div className="bg-white rounded-2xl px-5 py-4 max-w-[85%] shadow-sm border border-gray-100">
-                    <div className="flex items-start space-x-3">
-                      <div className="bg-blue-100 rounded-full p-2 mt-1">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-gray-800 font-medium">Hi there! I'm a demo AI assistant for dental practices.</p>
-                        <p className="text-gray-600 text-sm mt-1">Ask me anything about your dental practice—services, insurance, hours, or location. I'm available 24/7.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <QuickQuestions onQuestionClick={setMessage} />
-              </>
-            )}
-            
-            {messages.map((msg) => (
-              <ChatMessage key={msg.id} message={msg} />
-            ))}
-            
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100">
-                  <div className="flex items-center space-x-3">
-                    <div className="bg-blue-100 rounded-full p-2">
-                      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                      </div>
-                      <span className="text-sm text-gray-500 ml-2">Thinking...</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
-
-        {/* Input area */}
-        <ChatInput
-          message={message}
-          isLoading={isLoading}
-          onChange={setMessage}
-          onSend={handleSendMessage}
-          onKeyPress={handleKeyPress}
-        />
-      </div>
+      <ChatWidget
+        messages={messages}
+        message={message}
+        isLoading={isLoading}
+        scrollAreaRef={scrollAreaRef}
+        onMessageChange={setMessage}
+        onSendMessage={handleSendMessage}
+        onKeyPress={handleKeyPress}
+        onQuestionClick={setMessage}
+      />
     </div>
   );
 };
