@@ -1,3 +1,4 @@
+
 import { ArrowRight, Bot, Code, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,10 +30,25 @@ const Index = () => {
         {/* Hero Content */}
         <div className="relative z-20 flex-1 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            {/* Mobile headline layout */}
+            <div className="block md:hidden">
+              <h1 className="text-4xl font-bold mb-2">
+                The Assistant
+              </h1>
+              <h1 className="text-4xl font-bold mb-4">
+                That Stays Late
+              </h1>
+              <p className="text-lg font-medium mb-6 opacity-90">
+                (So You Don't Have To)
+              </p>
+            </div>
+            
+            {/* Desktop headline layout */}
+            <h1 className="hidden md:block text-4xl md:text-6xl font-bold mb-6">
               The Assistant That Stays Late<br />
               (So You Don't Have To)
             </h1>
+            
             <p className="text-lg md:text-2xl mb-8 opacity-90">
               Handle patient questions automatically — after hours, weekends, holidays. Your front desk, upgraded.
             </p>
