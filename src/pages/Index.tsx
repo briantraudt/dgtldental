@@ -14,9 +14,10 @@ const Index = () => {
     <div className="min-h-screen">
       {/* Hero Section with dental office background */}
       <section 
-        className="relative h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center md:justify-between"
+        className="relative h-screen bg-cover md:bg-center bg-top bg-no-repeat flex flex-col justify-center md:justify-between"
         style={{
-          backgroundImage: `linear-gradient(rgba(30, 64, 175, 0.4), rgba(30, 64, 175, 0.4)), url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`
+          backgroundImage: `linear-gradient(rgba(30, 64, 175, 0.4), rgba(30, 64, 175, 0.4)), url('/lovable-uploads/83a87e5a-b1bc-4a47-b89c-e217eae32a7f.png')`,
+          backgroundSize: 'cover'
         }}
       >
         {/* Hero Content */}
