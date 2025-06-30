@@ -115,10 +115,6 @@ const OfficeHoursSelector: React.FC<OfficeHoursSelectorProps> = ({ value, onChan
                   </Select>
                 </div>
               )}
-              
-              {!dayData.isOpen && (
-                <span className="text-gray-500 italic">Closed</span>
-              )}
             </div>
           );
         })}
