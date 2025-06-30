@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, User, Building, CreditCard, Bot, Code, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -283,9 +283,16 @@ const SignupFlow = () => {
     return "Payment & Setup";
   };
 
+  const scrollToSignup = () => {
+    const signupSection = document.getElementById('signup-section');
+    if (signupSection) {
+      signupSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
-      <div className="container mx-auto px-4 max-w-2xl">
+      <div className="container mx-auto px-4 max-w-4xl">
         <div className="mb-8">
           <Button 
             variant="ghost" 
@@ -295,7 +302,81 @@ const SignupFlow = () => {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Button>
-          
+        </div>
+
+        {/* How It Works Section */}
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p className="text-xl text-gray-600">Get your AI dental assistant up and running in 3 simple steps</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {/* Step 1 */}
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="pt-8">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <User className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">1. Sign Up</h3>
+                <p className="text-gray-600">
+                  Enter your practice details and customize your AI assistant with your specific information, hours, and services.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Step 2 */}
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="pt-8">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Code className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">2. Install Widget</h3>
+                <p className="text-gray-600">
+                  Add a simple code snippet to your website, or let our team handle the installation for you.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Step 3 */}
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="pt-8">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Bot className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">3. Go Live</h3>
+                <p className="text-gray-600">
+                  Your AI assistant is ready to help patients 24/7 with appointments, questions, and practice information.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Setup Support Offer */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+            <div className="flex items-center justify-center">
+              <Zap className="h-5 w-5 text-amber-600 mr-2" />
+              <p className="text-amber-800 font-medium">
+                Need help with installation? Our team can set everything up for you for just $100 one-time fee.
+              </p>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <div className="text-center">
+            <Button 
+              onClick={scrollToSignup}
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3"
+            >
+              Start Your Free Trial
+              <ArrowRight className="h-5 w-5 ml-2" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Signup Form Section */}
+        <div id="signup-section" className="max-w-2xl mx-auto">
           {/* Progress Indicator */}
           <div className="flex items-center justify-center mb-6">
             {[1, 2, 3].map((step) => (
@@ -320,7 +401,7 @@ const SignupFlow = () => {
             ))}
           </div>
           
-          <div className="text-center">
+          <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900">
               Step {currentStep} of 3: {getStepTitle(currentStep)}
             </h1>
@@ -330,352 +411,352 @@ const SignupFlow = () => {
               {currentStep === 3 && "Complete your subscription"}
             </p>
           </div>
-        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              {getStepIcon(currentStep)}
-              <span className="ml-2">{getStepTitle(currentStep)}</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Step 1: Account Information */}
-            {currentStep === 1 && (
-              <>
-                <div className="grid md:grid-cols-2 gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                {getStepIcon(currentStep)}
+                <span className="ml-2">{getStepTitle(currentStep)}</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Step 1: Account Information */}
+              {currentStep === 1 && (
+                <>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">First Name *</Label>
+                      <Input
+                        id="firstName"
+                        value={accountInfo.firstName}
+                        onChange={(e) => updateAccountInfo('firstName', e.target.value)}
+                        placeholder="John"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Last Name *</Label>
+                      <Input
+                        id="lastName"
+                        value={accountInfo.lastName}
+                        onChange={(e) => updateAccountInfo('lastName', e.target.value)}
+                        placeholder="Smith"
+                      />
+                    </div>
+                  </div>
+
                   <div>
-                    <Label htmlFor="firstName">First Name *</Label>
+                    <Label htmlFor="email">Email Address *</Label>
                     <Input
-                      id="firstName"
-                      value={accountInfo.firstName}
-                      onChange={(e) => updateAccountInfo('firstName', e.target.value)}
-                      placeholder="John"
+                      id="email"
+                      type="email"
+                      value={accountInfo.email}
+                      onChange={(e) => updateAccountInfo('email', e.target.value)}
+                      placeholder="john@smithdental.com"
                     />
                   </div>
+
                   <div>
-                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Label htmlFor="phone">Phone Number</Label>
                     <Input
-                      id="lastName"
-                      value={accountInfo.lastName}
-                      onChange={(e) => updateAccountInfo('lastName', e.target.value)}
-                      placeholder="Smith"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="email">Email Address *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={accountInfo.email}
-                    onChange={(e) => updateAccountInfo('email', e.target.value)}
-                    placeholder="john@smithdental.com"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    value={accountInfo.phone}
-                    onChange={(e) => updateAccountInfo('phone', e.target.value)}
-                    placeholder="(555) 123-4567"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="practiceWebsite">Practice Website</Label>
-                  <Input
-                    id="practiceWebsite"
-                    value={accountInfo.practiceWebsite}
-                    onChange={(e) => updateAccountInfo('practiceWebsite', e.target.value)}
-                    placeholder="https://smithdental.com"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="password">Password *</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={accountInfo.password}
-                    onChange={(e) => updateAccountInfo('password', e.target.value)}
-                    placeholder="Create a secure password"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="howDidYouHear">How did you hear about us?</Label>
-                  <Select value={accountInfo.howDidYouHear} onValueChange={(value) => updateAccountInfo('howDidYouHear', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select an option" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {howDidYouHearOptions.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </>
-            )}
-
-            {/* Step 2: Practice Details */}
-            {currentStep === 2 && (
-              <>
-                <div>
-                  <Label htmlFor="practiceName">Practice Name *</Label>
-                  <Input
-                    id="practiceName"
-                    value={practiceDetails.practiceName}
-                    onChange={(e) => updatePracticeDetails('practiceName', e.target.value)}
-                    placeholder="Smith Family Dental"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="streetAddress">Street Address *</Label>
-                  <Input
-                    id="streetAddress"
-                    value={practiceDetails.streetAddress}
-                    onChange={(e) => updatePracticeDetails('streetAddress', e.target.value)}
-                    placeholder="123 Main Street"
-                  />
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="city">City *</Label>
-                    <Input
-                      id="city"
-                      value={practiceDetails.city}
-                      onChange={(e) => updatePracticeDetails('city', e.target.value)}
-                      placeholder="Austin"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="state">State *</Label>
-                    <Input
-                      id="state"
-                      value={practiceDetails.state}
-                      onChange={(e) => updatePracticeDetails('state', e.target.value)}
-                      placeholder="TX"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="zip">Zip Code *</Label>
-                    <Input
-                      id="zip"
-                      value={practiceDetails.zip}
-                      onChange={(e) => updatePracticeDetails('zip', e.target.value)}
-                      placeholder="78701"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="practicePhone">Practice Phone *</Label>
-                    <Input
-                      id="practicePhone"
-                      value={practiceDetails.practicePhone}
-                      onChange={(e) => updatePracticeDetails('practicePhone', e.target.value)}
+                      id="phone"
+                      value={accountInfo.phone}
+                      onChange={(e) => updateAccountInfo('phone', e.target.value)}
                       placeholder="(555) 123-4567"
                     />
                   </div>
+
                   <div>
-                    <Label htmlFor="officeEmail">Office Email *</Label>
+                    <Label htmlFor="practiceWebsite">Practice Website</Label>
                     <Input
-                      id="officeEmail"
-                      type="email"
-                      value={practiceDetails.officeEmail}
-                      onChange={(e) => updatePracticeDetails('officeEmail', e.target.value)}
-                      placeholder="info@smithdental.com"
+                      id="practiceWebsite"
+                      value={accountInfo.practiceWebsite}
+                      onChange={(e) => updateAccountInfo('practiceWebsite', e.target.value)}
+                      placeholder="https://smithdental.com"
                     />
                   </div>
-                </div>
 
-                <OfficeHoursSelector
-                  value={practiceDetails.officeHours}
-                  onChange={(hours) => updatePracticeDetails('officeHours', hours)}
-                />
-
-                <div>
-                  <Label>Services Offered * (Select all that apply)</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {servicesOptions.map((service) => (
-                      <div key={service} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={service}
-                          checked={practiceDetails.servicesOffered.includes(service)}
-                          onCheckedChange={() => toggleService(service)}
-                        />
-                        <Label htmlFor={service} className="text-sm">
-                          {service}
-                        </Label>
-                      </div>
-                    ))}
+                  <div>
+                    <Label htmlFor="password">Password *</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={accountInfo.password}
+                      onChange={(e) => updateAccountInfo('password', e.target.value)}
+                      placeholder="Create a secure password"
+                    />
                   </div>
-                </div>
 
-                <div>
-                  <Label>Insurance Accepted * (Select all that apply)</Label>
-                  <div className="grid grid-cols-1 gap-2 mt-2">
-                    {insuranceOptions.map((insurance) => {
-                      const currentInsurance = practiceDetails.insuranceAccepted.split(',').map(s => s.trim()).filter(Boolean);
-                      return (
-                        <div key={insurance} className="flex items-center space-x-2">
+                  <div>
+                    <Label htmlFor="howDidYouHear">How did you hear about us?</Label>
+                    <Select value={accountInfo.howDidYouHear} onValueChange={(value) => updateAccountInfo('howDidYouHear', value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {howDidYouHearOptions.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </>
+              )}
+
+              {/* Step 2: Practice Details */}
+              {currentStep === 2 && (
+                <>
+                  <div>
+                    <Label htmlFor="practiceName">Practice Name *</Label>
+                    <Input
+                      id="practiceName"
+                      value={practiceDetails.practiceName}
+                      onChange={(e) => updatePracticeDetails('practiceName', e.target.value)}
+                      placeholder="Smith Family Dental"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="streetAddress">Street Address *</Label>
+                    <Input
+                      id="streetAddress"
+                      value={practiceDetails.streetAddress}
+                      onChange={(e) => updatePracticeDetails('streetAddress', e.target.value)}
+                      placeholder="123 Main Street"
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="city">City *</Label>
+                      <Input
+                        id="city"
+                        value={practiceDetails.city}
+                        onChange={(e) => updatePracticeDetails('city', e.target.value)}
+                        placeholder="Austin"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="state">State *</Label>
+                      <Input
+                        id="state"
+                        value={practiceDetails.state}
+                        onChange={(e) => updatePracticeDetails('state', e.target.value)}
+                        placeholder="TX"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="zip">Zip Code *</Label>
+                      <Input
+                        id="zip"
+                        value={practiceDetails.zip}
+                        onChange={(e) => updatePracticeDetails('zip', e.target.value)}
+                        placeholder="78701"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="practicePhone">Practice Phone *</Label>
+                      <Input
+                        id="practicePhone"
+                        value={practiceDetails.practicePhone}
+                        onChange={(e) => updatePracticeDetails('practicePhone', e.target.value)}
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="officeEmail">Office Email *</Label>
+                      <Input
+                        id="officeEmail"
+                        type="email"
+                        value={practiceDetails.officeEmail}
+                        onChange={(e) => updatePracticeDetails('officeEmail', e.target.value)}
+                        placeholder="info@smithdental.com"
+                      />
+                    </div>
+                  </div>
+
+                  <OfficeHoursSelector
+                    value={practiceDetails.officeHours}
+                    onChange={(hours) => updatePracticeDetails('officeHours', hours)}
+                  />
+
+                  <div>
+                    <Label>Services Offered * (Select all that apply)</Label>
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      {servicesOptions.map((service) => (
+                        <div key={service} className="flex items-center space-x-2">
                           <Checkbox
-                            id={insurance}
-                            checked={currentInsurance.includes(insurance)}
-                            onCheckedChange={() => toggleInsurance(insurance)}
+                            id={service}
+                            checked={practiceDetails.servicesOffered.includes(service)}
+                            onCheckedChange={() => toggleService(service)}
                           />
-                          <Label htmlFor={insurance} className="text-sm">
-                            {insurance}
+                          <Label htmlFor={service} className="text-sm">
+                            {service}
                           </Label>
                         </div>
-                      );
-                    })}
-                    <div className="flex items-center space-x-2 mt-2">
-                      <Checkbox
-                        id="other-insurance"
-                        checked={false}
-                        disabled
-                      />
-                      <Label htmlFor="other-insurance" className="text-sm">
-                        Other:
-                      </Label>
-                      <Input
-                        placeholder="Enter other insurance carriers"
-                        onChange={(e) => handleOtherInsuranceChange(e.target.value)}
-                        className="flex-1"
-                      />
+                      ))}
                     </div>
                   </div>
-                </div>
 
-                <div>
-                  <Label htmlFor="emergencyPolicy">Emergency Policy / After-Hours Instructions *</Label>
-                  <Textarea
-                    id="emergencyPolicy"
-                    value={practiceDetails.emergencyPolicy}
-                    onChange={(e) => updatePracticeDetails('emergencyPolicy', e.target.value)}
-                    placeholder="For dental emergencies after hours, call (555) 123-4567 and follow the prompts..."
-                    rows={3}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="practiceDescription">Short Practice Description</Label>
-                  <Textarea
-                    id="practiceDescription"
-                    value={practiceDetails.practiceDescription}
-                    onChange={(e) => updatePracticeDetails('practiceDescription', e.target.value)}
-                    placeholder="A family-friendly dental practice serving the Austin community for over 20 years..."
-                    rows={2}
-                  />
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="needInstallHelp"
-                    checked={practiceDetails.needInstallHelp}
-                    onCheckedChange={(checked) => updatePracticeDetails('needInstallHelp', checked)}
-                  />
-                  <Label htmlFor="needInstallHelp">
-                    Do you need help installing the AI Assistant on your website? (+$100 one-time setup fee)
-                  </Label>
-                </div>
-              </>
-            )}
-
-            {/* Step 3: Payment Summary */}
-            {currentStep === 3 && (
-              <div className="space-y-6">
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border-2 border-blue-200">
-                  <h3 className="text-xl font-semibold mb-4">Subscription Summary</h3>
-                  
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span>Monthly Subscription</span>
-                      <span className="font-semibold">$10.00/month</span>
-                    </div>
-                    
-                    {practiceDetails.needInstallHelp && (
-                      <div className="flex justify-between">
-                        <span>One-time Setup Fee</span>
-                        <span className="font-semibold">$100.00</span>
+                  <div>
+                    <Label>Insurance Accepted * (Select all that apply)</Label>
+                    <div className="grid grid-cols-1 gap-2 mt-2">
+                      {insuranceOptions.map((insurance) => {
+                        const currentInsurance = practiceDetails.insuranceAccepted.split(',').map(s => s.trim()).filter(Boolean);
+                        return (
+                          <div key={insurance} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={insurance}
+                              checked={currentInsurance.includes(insurance)}
+                              onCheckedChange={() => toggleInsurance(insurance)}
+                            />
+                            <Label htmlFor={insurance} className="text-sm">
+                              {insurance}
+                            </Label>
+                          </div>
+                        );
+                      })}
+                      <div className="flex items-center space-x-2 mt-2">
+                        <Checkbox
+                          id="other-insurance"
+                          checked={false}
+                          disabled
+                        />
+                        <Label htmlFor="other-insurance" className="text-sm">
+                          Other:
+                        </Label>
+                        <Input
+                          placeholder="Enter other insurance carriers"
+                          onChange={(e) => handleOtherInsuranceChange(e.target.value)}
+                          className="flex-1"
+                        />
                       </div>
-                    )}
-                    
-                    <hr className="my-2" />
-                    
-                    <div className="flex justify-between text-lg font-bold">
-                      <span>Total Today</span>
-                      <span>${practiceDetails.needInstallHelp ? '110.00' : '10.00'}</span>
                     </div>
                   </div>
-                </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">What's Included:</h4>
-                  <ul className="space-y-1 text-sm text-gray-700">
-                    <li>✓ 24/7 AI-powered patient support</li>
-                    <li>✓ Custom training on your practice information</li>
-                    <li>✓ Unlimited patient conversations</li>
-                    <li>✓ Easy website integration</li>
-                    <li>✓ Mobile-responsive design</li>
-                    {practiceDetails.needInstallHelp && (
-                      <li>✓ Professional installation and setup</li>
-                    )}
-                  </ul>
-                </div>
+                  <div>
+                    <Label htmlFor="emergencyPolicy">Emergency Policy / After-Hours Instructions *</Label>
+                    <Textarea
+                      id="emergencyPolicy"
+                      value={practiceDetails.emergencyPolicy}
+                      onChange={(e) => updatePracticeDetails('emergencyPolicy', e.target.value)}
+                      placeholder="For dental emergencies after hours, call (555) 123-4567 and follow the prompts..."
+                      rows={3}
+                    />
+                  </div>
 
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-4">
-                    Click below to complete your subscription with Stripe's secure checkout.
-                    You can cancel anytime - no long-term contracts.
-                  </p>
-                </div>
-              </div>
-            )}
+                  <div>
+                    <Label htmlFor="practiceDescription">Short Practice Description</Label>
+                    <Textarea
+                      id="practiceDescription"
+                      value={practiceDetails.practiceDescription}
+                      onChange={(e) => updatePracticeDetails('practiceDescription', e.target.value)}
+                      placeholder="A family-friendly dental practice serving the Austin community for over 20 years..."
+                      rows={2}
+                    />
+                  </div>
 
-            {/* Navigation Buttons */}
-            <div className="flex justify-between pt-6">
-              <Button 
-                variant="outline"
-                onClick={currentStep === 1 ? () => navigate('/') : handleBack}
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                {currentStep === 1 ? 'Cancel' : 'Back'}
-              </Button>
-              
-              {currentStep < 3 ? (
-                <Button 
-                  onClick={handleNext}
-                  disabled={currentStep === 1 ? !isStep1Valid() : !isStep2Valid()}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  Continue
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
-              ) : (
-                <Button 
-                  onClick={handlePayment}
-                  disabled={isLoading}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  {isLoading ? 'Processing...' : 'Complete Payment'}
-                  <CreditCard className="h-4 w-4 ml-2" />
-                </Button>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="needInstallHelp"
+                      checked={practiceDetails.needInstallHelp}
+                      onCheckedChange={(checked) => updatePracticeDetails('needInstallHelp', checked)}
+                    />
+                    <Label htmlFor="needInstallHelp">
+                      Do you need help installing the AI Assistant on your website? (+$100 one-time setup fee)
+                    </Label>
+                  </div>
+                </>
               )}
-            </div>
-          </CardContent>
-        </Card>
+
+              {/* Step 3: Payment Summary */}
+              {currentStep === 3 && (
+                <div className="space-y-6">
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border-2 border-blue-200">
+                    <h3 className="text-xl font-semibold mb-4">Subscription Summary</h3>
+                    
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span>Monthly Subscription</span>
+                        <span className="font-semibold">$10.00/month</span>
+                      </div>
+                      
+                      {practiceDetails.needInstallHelp && (
+                        <div className="flex justify-between">
+                          <span>One-time Setup Fee</span>
+                          <span className="font-semibold">$100.00</span>
+                        </div>
+                      )}
+                      
+                      <hr className="my-2" />
+                      
+                      <div className="flex justify-between text-lg font-bold">
+                        <span>Total Today</span>
+                        <span>${practiceDetails.needInstallHelp ? '110.00' : '10.00'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h4 className="font-semibold mb-2">What's Included:</h4>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li>✓ 24/7 AI-powered patient support</li>
+                      <li>✓ Custom training on your practice information</li>
+                      <li>✓ Unlimited patient conversations</li>
+                      <li>✓ Easy website integration</li>
+                      <li>✓ Mobile-responsive design</li>
+                      {practiceDetails.needInstallHelp && (
+                        <li>✓ Professional installation and setup</li>
+                      )}
+                    </ul>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-4">
+                      Click below to complete your subscription with Stripe's secure checkout.
+                      You can cancel anytime - no long-term contracts.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between pt-6">
+                <Button 
+                  variant="outline"
+                  onClick={currentStep === 1 ? () => navigate('/') : handleBack}
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  {currentStep === 1 ? 'Cancel' : 'Back'}
+                </Button>
+                
+                {currentStep < 3 ? (
+                  <Button 
+                    onClick={handleNext}
+                    disabled={currentStep === 1 ? !isStep1Valid() : !isStep2Valid()}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    Continue
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                ) : (
+                  <Button 
+                    onClick={handlePayment}
+                    disabled={isLoading}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    {isLoading ? 'Processing...' : 'Complete Payment'}
+                    <CreditCard className="h-4 w-4 ml-2" />
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
