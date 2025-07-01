@@ -10,15 +10,16 @@ import SuperAdminLogin from '@/components/SuperAdminLogin';
 import { useChatDemo } from '@/hooks/useChatDemo';
 import { useSuperAdminAuth } from '@/hooks/useSuperAdminAuth';
 import { MessageSquare, Users, Activity, Settings, LogOut } from 'lucide-react';
+import { useStagingChat } from '@/hooks/useStagingChat';
+import ClientSelector from '@/components/ClientSelector';
 
 const SuperAdmin = () => {
   const { isAuthenticated, isLoading, login, logout } = useSuperAdminAuth();
   const [clinics, setClinics] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
-  const [selectedClinicId, setSelectedClinicId] = useState('demo-clinic-123');
 
-  // Use the chat demo hook for testing
+  // Use the staging chat hook for testing
   const {
     messages,
     message,
@@ -28,7 +29,7 @@ const SuperAdmin = () => {
     setMessage,
     handleSendMessage,
     handleKeyPress
-  } = useChatDemo();
+  } = useStagingChat();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -104,7 +105,7 @@ const SuperAdmin = () => {
       <div className="mb-8 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Super Admin Dashboard</h1>
-          <p className="text-gray-600 mt-2">Monitor and manage all dental practice chatbots</p>
+          <p className="text-gray-600 mt-2">Test features in staging, then deploy to selected clients</p>
         </div>
         <Button onClick={logout} variant="outline" className="flex items-center space-x-2">
           <LogOut className="h-4 w-4" />
@@ -147,20 +148,28 @@ const SuperAdmin = () => {
         </Card>
       </div>
 
-      <Tabs defaultValue="test-chatbot" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="test-chatbot">Test Master Chatbot</TabsTrigger>
-          <TabsTrigger value="clinics">All Clinics</TabsTrigger>
+      <Tabs defaultValue="staging-test" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="staging-test">Staging Test</TabsTrigger>
+          <TabsTrigger value="deploy-updates">Deploy Updates</TabsTrigger>
+          <TabsTrigger value="clinics">All Clients</TabsTrigger>
           <TabsTrigger value="messages">Recent Messages</TabsTrigger>
           <TabsTrigger value="settings">System Settings</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="test-chatbot" className="space-y-6">
+        <TabsContent value="staging-test" className="space-y-6">
           <Card className="p-6">
-            <h3 className="text-xl font-semibold mb-4">Master Chatbot Testing</h3>
-            <p className="text-gray-600 mb-6">
-              Test the master chatbot behavior here. Changes to edge functions will be reflected immediately.
-            </p>
+            <h3 className="text-xl font-semibold mb-4">Staging Environment - Safe Testing</h3>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="font-medium text-blue-900">STAGING MODE</span>
+              </div>
+              <p className="text-blue-700 text-sm">
+                This is your safe testing environment. All changes and tests here are isolated from your live clients. 
+                When you're ready to deploy updates, use the "Deploy Updates" tab.
+              </p>
+            </div>
             
             <div className="max-w-4xl">
               <ChatWidget
@@ -176,6 +185,13 @@ const SuperAdmin = () => {
               />
             </div>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="deploy-updates" className="space-y-6">
+          <ClientSelector 
+            clinics={clinics} 
+            onUpdate={fetchDashboardData}
+          />
         </TabsContent>
 
         <TabsContent value="clinics" className="space-y-6">
@@ -240,32 +256,35 @@ const SuperAdmin = () => {
           <Card className="p-6">
             <h3 className="text-xl font-semibold mb-4">System Settings</h3>
             <div className="space-y-4">
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">Master Chatbot Configuration</h4>
-                <p className="text-sm text-blue-700 mb-3">
-                  To modify the master chatbot behavior, edit these edge functions:
-                </p>
-                <ul className="text-sm text-blue-700 space-y-1">
-                  <li>• <code>supabase/functions/demo-chat/index.ts</code> - Demo chatbot logic</li>
-                  <li>• <code>supabase/functions/chat-ai/index.ts</code> - Production chatbot logic</li>
-                  <li>• <code>supabase/functions/get-clinic-config/index.ts</code> - Client configurations</li>
+              <div className="p-4 bg-green-50 rounded-lg">
+                <h4 className="font-medium text-green-900 mb-2">Staging vs Production</h4>
+                <ul className="text-sm text-green-700 space-y-1">
+                  <li>• <code>supabase/functions/staging-chat/index.ts</code> - Your safe testing environment</li>
+                  <li>• <code>supabase/functions/demo-chat/index.ts</code> - Homepage demo (not client-facing)</li>
+                  <li>• <code>supabase/functions/chat-ai/index.ts</code> - Live production chatbot for all clients</li>
                 </ul>
               </div>
               
-              <div className="p-4 bg-green-50 rounded-lg">
-                <h4 className="font-medium text-green-900 mb-2">Deployment Status</h4>
-                <p className="text-sm text-green-700">
-                  ✅ All changes deploy automatically and instantly to all client chatbots
-                </p>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-2">How It Works</h4>
+                <ol className="text-sm text-blue-700 space-y-1">
+                  <li>1. Test new features in the Staging Test tab</li>
+                  <li>2. When satisfied, copy staging changes to production edge function</li>
+                  <li>3. Use Deploy Updates tab to push to selected clients</li>
+                  <li>4. Monitor client messages and feedback</li>
+                </ol>
               </div>
 
               <div className="p-4 bg-orange-50 rounded-lg">
-                <h4 className="font-medium text-orange-900 mb-2">Testing Locations</h4>
-                <ul className="text-sm text-orange-700 space-y-1">
-                  <li>• Homepage demo widget</li>
-                  <li>• <code>/embed-demo</code> page</li>
-                  <li>• This testing interface above</li>
-                </ul>
+                <h4 className="font-medium text-orange-900 mb-2">Deployment Process</h4>
+                <p className="text-sm text-orange-700 mb-2">
+                  To deploy staging changes to production:
+                </p>
+                <ol className="text-sm text-orange-700 space-y-1">
+                  <li>1. Edit <code>supabase/functions/chat-ai/index.ts</code> with your staging changes</li>
+                  <li>2. Use the Deploy Updates tab to select which clients get the update</li>
+                  <li>3. Changes are deployed instantly to selected clients</li>
+                </ol>
               </div>
             </div>
           </Card>
