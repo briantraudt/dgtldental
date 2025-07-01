@@ -8,6 +8,7 @@ const EmbeddedChatDemo = () => {
     message,
     isLoading,
     scrollAreaRef,
+    inputRef,
     setMessage,
     handleSendMessage,
     handleKeyPress
@@ -20,6 +21,7 @@ const EmbeddedChatDemo = () => {
         message={message}
         isLoading={isLoading}
         scrollAreaRef={scrollAreaRef}
+        inputRef={inputRef}
         onMessageChange={setMessage}
         onSendMessage={handleSendMessage}
         onKeyPress={handleKeyPress}

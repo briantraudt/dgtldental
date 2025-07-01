@@ -16,6 +16,7 @@ export const useChatDemo = () => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Improved scroll behavior - scroll to show the user's message and start of response
@@ -63,6 +64,13 @@ export const useChatDemo = () => {
             }
           }, 150);
         }
+      }
+      
+      // Focus the input after assistant responds
+      if (inputRef.current) {
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 200);
       }
     }
   }, [isLoading, messages.length]);
@@ -138,6 +146,7 @@ export const useChatDemo = () => {
     message,
     isLoading,
     scrollAreaRef,
+    inputRef,
     setMessage,
     handleSendMessage,
     handleKeyPress

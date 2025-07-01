@@ -11,6 +11,7 @@ interface ChatWidgetProps {
   message: string;
   isLoading: boolean;
   scrollAreaRef: React.RefObject<HTMLDivElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
   onMessageChange: (value: string) => void;
   onSendMessage: () => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
@@ -22,6 +23,7 @@ const ChatWidget = ({
   message,
   isLoading,
   scrollAreaRef,
+  inputRef,
   onMessageChange,
   onSendMessage,
   onKeyPress,
@@ -84,6 +86,7 @@ const ChatWidget = ({
 
       {/* Input area */}
       <ChatInput
+        ref={inputRef}
         message={message}
         isLoading={isLoading}
         onChange={onMessageChange}
