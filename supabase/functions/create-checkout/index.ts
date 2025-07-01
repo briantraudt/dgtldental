@@ -31,8 +31,7 @@ serve(async (req) => {
       hasStripeKey: !!stripeKey,
       hasSupabaseUrl: !!supabaseUrl,
       hasSupabaseAnonKey: !!supabaseAnonKey,
-      stripeKeyPrefix: stripeKey ? stripeKey.substring(0, 8) + "..." : "missing",
-      stripeKeyType: stripeKey ? (stripeKey.startsWith('sk_live_') ? 'live' : stripeKey.startsWith('sk_test_') ? 'test' : 'unknown') : 'missing'
+      stripeKeyPrefix: stripeKey ? stripeKey.substring(0, 8) + "..." : "missing"
     });
 
     if (!stripeKey) {
@@ -156,7 +155,7 @@ serve(async (req) => {
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Create checkout session with enhanced configuration
+    // Create checkout session with simplified, proven configuration
     const sessionConfig = {
       customer: customerId,
       line_items: lineItems,
@@ -168,12 +167,10 @@ serve(async (req) => {
         clinic_name: clinicName,
         needs_install_help: needInstallHelp.toString()
       },
+      allow_promotion_codes: true,
+      billing_address_collection: "auto",
       payment_method_types: ["card"],
-      billing_address_collection: "required",
-      // Add these for better session handling
-      expires_at: Math.floor(Date.now() / 1000) + (30 * 60), // 30 minutes
-      locale: "auto",
-      automatic_tax: { enabled: false }
+      // Simplified session without complex configurations that might cause issues
     };
 
     logStep("⚙️ Creating checkout session", { 
@@ -181,8 +178,7 @@ serve(async (req) => {
       mode: sessionConfig.mode,
       successUrl: sessionConfig.success_url,
       cancelUrl: sessionConfig.cancel_url,
-      lineItemsCount: lineItems.length,
-      expiresAt: sessionConfig.expires_at
+      lineItemsCount: lineItems.length
     });
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
@@ -190,8 +186,7 @@ serve(async (req) => {
     logStep("🎉 Checkout session created successfully", { 
       sessionId: session.id, 
       hasUrl: !!session.url,
-      urlLength: session.url?.length,
-      urlPrefix: session.url?.substring(0, 50) + '...',
+      url: session.url,
       sessionMode: session.mode,
       customerId: session.customer,
       paymentStatus: session.payment_status,
@@ -203,43 +198,26 @@ serve(async (req) => {
       throw new Error("Stripe did not return a checkout URL");
     }
 
-    // Enhanced URL validation and testing
+    // Basic URL validation
     const isValidStripeUrl = session.url.startsWith('https://checkout.stripe.com/');
-    const hasSessionId = session.url.includes(session.id);
     
     logStep("🔗 URL validation", { 
       url: session.url,
       isValidStripeUrl,
-      hasSessionId,
-      sessionIdInUrl: session.id,
+      sessionId: session.id,
       isTestMode: stripeKey.startsWith('sk_test_')
     });
 
     if (!isValidStripeUrl) {
-      logStep("⚠️ Unexpected URL format", { url: session.url });
-      // Don't throw error for potentially valid URLs, just log warning
-    }
-
-    // Test the URL accessibility (basic check)
-    try {
-      logStep("🧪 Testing checkout URL accessibility");
-      const testResponse = await fetch(session.url, { method: 'HEAD' });
-      logStep("✅ URL accessibility test", { 
-        status: testResponse.status,
-        ok: testResponse.ok,
-        headers: Object.fromEntries(testResponse.headers.entries())
-      });
-    } catch (testError) {
-      logStep("⚠️ URL accessibility test failed", { error: testError.message });
-      // Don't throw error, just log for debugging
+      logStep("❌ Invalid checkout URL format", { url: session.url });
+      throw new Error("Invalid checkout URL format received from payment service");
     }
 
     logStep("🔗 Returning checkout URL", { 
       sessionId: session.id,
       redirectUrl: session.url,
       isTestMode: stripeKey.startsWith('sk_test_'),
-      paymentStatus: session.payment_status,
-      customerEmail: session.customer_details?.email || 'not_set'
+      paymentStatus: session.payment_status
     });
 
     return new Response(JSON.stringify({ 

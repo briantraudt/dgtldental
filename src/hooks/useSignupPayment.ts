@@ -127,32 +127,12 @@ export const useSignupPayment = () => {
         description: data.testMode ? "Redirecting to test payment..." : "Redirecting to secure payment..."
       });
 
-      // Enhanced redirect with fallback mechanisms
+      // Simple, direct redirect to Stripe checkout
       console.log('=== REDIRECT PROCESS ===');
-      console.log('🔄 Attempting redirect to Stripe checkout:', checkoutUrl);
+      console.log('🔄 Redirecting to Stripe checkout:', checkoutUrl);
       
-      // Try multiple redirect methods as fallback
-      setTimeout(() => {
-        try {
-          console.log('Method 1: Using window.location.href');
-          window.location.href = checkoutUrl;
-        } catch (redirectError) {
-          console.error('❌ Redirect method 1 failed:', redirectError);
-          
-          try {
-            console.log('Method 2: Using window.open with self target');
-            window.open(checkoutUrl, '_self');
-          } catch (openError) {
-            console.error('❌ Redirect method 2 failed:', openError);
-            
-            // Final fallback - show manual link
-            toast({
-              title: "Please complete payment",
-              description: "Click the link below to complete your payment manually"
-            });
-          }
-        }
-      }, 1500);
+      // Use simple redirect without delays or fallbacks that might cause issues
+      window.location.href = checkoutUrl;
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);
