@@ -5,10 +5,10 @@ import { LogIn } from 'lucide-react';
 
 const Navigation = () => {
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-background shadow-sm border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-2xl font-bold text-blue-600">
+          <Link to="/" className="text-2xl font-bold text-primary">
             DGTL Chat
           </Link>
           

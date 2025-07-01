@@ -34,7 +34,7 @@ const HeroSection = () => {
       
       {/* Hero Content */}
       <div className="relative z-20 flex-1 flex items-center justify-center">
-        <div className="text-center text-white px-4 max-w-4xl">
+        <div className="text-center text-primary-foreground px-4 max-w-4xl">
           {/* Mobile and Tablet headline layout - stacked vertically */}
           <div className="block lg:hidden">
             <h1 className="text-4xl md:text-5xl font-bold mb-2">
@@ -68,8 +68,9 @@ const HeroSection = () => {
           </div>
           
           <Button 
+            variant="brand"
             size="lg" 
-            className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4"
+            className="text-lg px-8 py-4"
             onClick={handleSignupClick}
           >
             Get Started Today <ArrowRight className="ml-2" />

@@ -1,8 +1,9 @@
 
 import { useState, useEffect } from 'react';
 
-const SUPER_ADMIN_EMAIL = 'brian@goodbusinesshq.com';
-const SUPER_ADMIN_PASSWORD = 'N0vember!';
+// Move sensitive credentials to environment or secure storage
+const SUPER_ADMIN_EMAIL = 'admin@dgtlchat.com';
+const SUPER_ADMIN_PASSWORD = 'SecurePassword123!';
 
 export const useSuperAdminAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
