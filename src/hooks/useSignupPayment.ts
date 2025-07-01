@@ -92,16 +92,32 @@ export const useSignupPayment = () => {
         throw new Error('No checkout URL received from payment service');
       }
 
-      // Enhanced URL validation
+      // Enhanced URL validation and debugging
       const checkoutUrl = data.url;
+      console.log('=== CHECKOUT URL ANALYSIS ===');
       console.log('Checkout URL received:', checkoutUrl);
+      console.log('URL length:', checkoutUrl.length);
       console.log('Test mode:', data.testMode);
+      console.log('Session ID:', data.sessionId);
       
+      // More comprehensive URL validation
       const isValidStripeUrl = checkoutUrl.startsWith('https://checkout.stripe.com/');
+      const hasSessionId = checkoutUrl.includes('cs_');
+      
+      console.log('URL validation:', {
+        isValidStripeUrl,
+        hasSessionId,
+        urlType: checkoutUrl.includes('/c/pay/') ? 'checkout_session' : 'unknown'
+      });
       
       if (!isValidStripeUrl) {
         console.error('❌ Invalid checkout URL format:', checkoutUrl);
         throw new Error('Invalid checkout URL format received from payment service');
+      }
+
+      if (!hasSessionId) {
+        console.error('❌ No session ID found in URL:', checkoutUrl);
+        throw new Error('Invalid checkout session URL - missing session ID');
       }
 
       console.log('✅ Valid Stripe checkout URL received');
@@ -111,12 +127,41 @@ export const useSignupPayment = () => {
         description: data.testMode ? "Redirecting to test payment..." : "Redirecting to secure payment..."
       });
 
-      // Small delay to show the toast, then redirect
+      // Enhanced redirect with fallback mechanisms
+      console.log('=== REDIRECT PROCESS ===');
+      console.log('🔄 Attempting redirect to Stripe checkout:', checkoutUrl);
+      
+      // Try multiple redirect methods as fallback
       setTimeout(() => {
-        console.log('🔄 Redirecting to Stripe checkout:', checkoutUrl);
-        console.log('Using window.location.href for redirect');
-        // Use window.location.href for a proper redirect
-        window.location.href = checkoutUrl;
+        try {
+          console.log('Method 1: Using window.location.href');
+          window.location.href = checkoutUrl;
+        } catch (redirectError) {
+          console.error('❌ Redirect method 1 failed:', redirectError);
+          
+          try {
+            console.log('Method 2: Using window.open with self target');
+            window.open(checkoutUrl, '_self');
+          } catch (openError) {
+            console.error('❌ Redirect method 2 failed:', openError);
+            
+            // Final fallback - show manual link
+            toast({
+              title: "Please complete payment",
+              description: "Click here to complete your payment",
+              action: (
+                <a 
+                  href={checkoutUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  Complete Payment
+                </a>
+              )
+            });
+          }
+        }
       }, 1500);
 
     } catch (error) {
