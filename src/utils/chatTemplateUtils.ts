@@ -1,3 +1,4 @@
+
 import { DEMO_CLINIC_DATA } from '@/data/demoClinicData';
 
 const DISCLAIMER = "\n\nPlease remember that this is for informational purposes only and not a substitute for professional dental advice. For specific concerns, consult with a qualified dentist.";
@@ -5,17 +6,17 @@ const DISCLAIMER = "\n\nPlease remember that this is for informational purposes 
 export const getTemplatedResponse = (userMessage: string): string | null => {
   const lowerMessage = userMessage.toLowerCase();
   
-  // Office hours - improved mobile formatting
+  // Office hours - individual day format
   if (lowerMessage.includes('hours') || lowerMessage.includes('open') || lowerMessage.includes('closed')) {
     return `Our office hours are:
 
-📅 Monday: ${DEMO_CLINIC_DATA.officeHours.monday}
-📅 Tuesday: ${DEMO_CLINIC_DATA.officeHours.tuesday}
-📅 Wednesday: ${DEMO_CLINIC_DATA.officeHours.wednesday}
-📅 Thursday: ${DEMO_CLINIC_DATA.officeHours.thursday}
-📅 Friday: ${DEMO_CLINIC_DATA.officeHours.friday}
-📅 Saturday: ${DEMO_CLINIC_DATA.officeHours.saturday}
-📅 Sunday: ${DEMO_CLINIC_DATA.officeHours.sunday}
+Monday: ${DEMO_CLINIC_DATA.officeHours.monday}
+Tuesday: ${DEMO_CLINIC_DATA.officeHours.tuesday}
+Wednesday: ${DEMO_CLINIC_DATA.officeHours.wednesday}
+Thursday: ${DEMO_CLINIC_DATA.officeHours.thursday}
+Friday: ${DEMO_CLINIC_DATA.officeHours.friday}
+Saturday: ${DEMO_CLINIC_DATA.officeHours.saturday}
+Sunday: ${DEMO_CLINIC_DATA.officeHours.sunday}
 
 📞 Call us at ${DEMO_CLINIC_DATA.phone} to schedule your appointment!${DISCLAIMER}`;
   }
