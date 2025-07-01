@@ -19,15 +19,27 @@ export const useChatDemo = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Smooth scroll to bottom after new messages are added
+    // Smart scroll behavior - show user question and start of assistant response
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
         setTimeout(() => {
-          scrollElement.scrollTo({ 
-            top: scrollElement.scrollHeight, 
-            behavior: 'smooth' 
-          });
+          const messageElements = scrollElement.querySelectorAll('[data-message]');
+          
+          if (messageElements.length >= 2) {
+            // Show both the user question and start of assistant response
+            const userMessageElement = messageElements[messageElements.length - 2];
+            userMessageElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start' 
+            });
+          } else {
+            // Fallback to normal scroll for single messages
+            scrollElement.scrollTo({ 
+              top: scrollElement.scrollHeight, 
+              behavior: 'smooth' 
+            });
+          }
         }, 100);
       }
     }
