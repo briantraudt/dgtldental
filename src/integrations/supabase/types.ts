@@ -84,6 +84,7 @@ export type Database = {
           stripe_subscription_id: string | null
           subscription_status: string | null
           updated_at: string
+          user_id: string | null
           website_url: string | null
         }
         Insert: {
@@ -107,6 +108,7 @@ export type Database = {
           stripe_subscription_id?: string | null
           subscription_status?: string | null
           updated_at?: string
+          user_id?: string | null
           website_url?: string | null
         }
         Update: {
@@ -130,6 +132,7 @@ export type Database = {
           stripe_subscription_id?: string | null
           subscription_status?: string | null
           updated_at?: string
+          user_id?: string | null
           website_url?: string | null
         }
         Relationships: []
@@ -168,6 +171,33 @@ export type Database = {
             referencedColumns: ["clinic_id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       subscribers: {
         Row: {
