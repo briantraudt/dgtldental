@@ -71,7 +71,10 @@ const ClientSelector = ({ clinics, onUpdate }: ClientSelectorProps) => {
     }
   };
 
-  const activeClients = clinics.filter(clinic => clinic.subscription_status === 'active');
+  // Include all clinics (including demo) and filter for active ones or demo
+  const availableClients = clinics.filter(clinic => 
+    clinic.subscription_status === 'active' || clinic.clinic_id === 'demo-clinic-123'
+  );
   const selectedCount = selectedClients.length;
 
   return (
@@ -82,7 +85,7 @@ const ClientSelector = ({ clinics, onUpdate }: ClientSelectorProps) => {
           <span>Deploy Updates to Clients</span>
         </CardTitle>
         <p className="text-gray-600 text-sm">
-          Select which clients should receive the latest chatbot updates. Only active subscriptions are shown.
+          Select which clients should receive the latest chatbot updates. Includes demo client for testing.
         </p>
       </CardHeader>
       
@@ -93,17 +96,17 @@ const ClientSelector = ({ clinics, onUpdate }: ClientSelectorProps) => {
             size="sm"
             onClick={handleSelectAll}
           >
-            {selectedCount === activeClients.length ? 'Deselect All' : 'Select All Active'}
+            {selectedCount === availableClients.length ? 'Deselect All' : 'Select All Available'}
           </Button>
           
           <div className="text-sm text-gray-600">
-            {selectedCount} of {activeClients.length} clients selected
+            {selectedCount} of {availableClients.length} clients selected
           </div>
         </div>
 
         <ScrollArea className="h-64 border rounded-lg p-4">
           <div className="space-y-3">
-            {activeClients.map((clinic) => (
+            {availableClients.map((clinic) => (
               <div key={clinic.clinic_id} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg">
                 <Checkbox
                   id={clinic.clinic_id}
@@ -119,12 +122,15 @@ const ClientSelector = ({ clinics, onUpdate }: ClientSelectorProps) => {
                     >
                       {clinic.name}
                     </label>
-                    <Badge variant="default" className="text-xs">
-                      {clinic.subscription_status}
+                    <Badge 
+                      variant={clinic.clinic_id === 'demo-clinic-123' ? 'secondary' : 'default'} 
+                      className="text-xs"
+                    >
+                      {clinic.clinic_id === 'demo-clinic-123' ? 'demo' : clinic.subscription_status}
                     </Badge>
                   </div>
                   <p className="text-xs text-gray-500 truncate">
-                    {clinic.clinic_id} • {clinic.email}
+                    {clinic.clinic_id} • {clinic.email || 'demo@example.com'}
                   </p>
                 </div>
               </div>

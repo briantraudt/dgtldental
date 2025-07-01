@@ -39,6 +39,9 @@ const SuperAdmin = () => {
 
   const fetchDashboardData = async () => {
     try {
+      // Ensure demo clinic exists
+      await ensureDemoClinicExists();
+
       // Fetch all clinics
       const { data: clinicsData, error: clinicsError } = await supabase
         .from('clinics')
@@ -62,6 +65,43 @@ const SuperAdmin = () => {
       console.error('Error fetching dashboard data:', error);
     } finally {
       setIsDataLoading(false);
+    }
+  };
+
+  const ensureDemoClinicExists = async () => {
+    try {
+      // Check if demo clinic exists
+      const { data: existingDemo } = await supabase
+        .from('clinics')
+        .select('id')
+        .eq('clinic_id', 'demo-clinic-123')
+        .single();
+
+      if (!existingDemo) {
+        // Create demo clinic
+        const { error } = await supabase
+          .from('clinics')
+          .insert({
+            clinic_id: 'demo-clinic-123',
+            name: 'Demo Dental Practice',
+            address: '123 Demo Street, Demo City, DC 12345',
+            phone: '(555) 123-DEMO',
+            email: 'demo@example.com',
+            office_hours: 'Monday-Friday: 8:00 AM - 5:00 PM, Saturday: 9:00 AM - 1:00 PM',
+            services_offered: ['General Dentistry', 'Cleanings', 'Fillings', 'Crowns', 'Root Canals', 'Teeth Whitening'],
+            insurance_accepted: ['Most Major Insurance Plans', 'Delta Dental', 'Aetna', 'Cigna', 'MetLife'],
+            emergency_instructions: 'For dental emergencies after hours, please call our main number and follow the prompts for emergency care.',
+            subscription_status: 'demo'
+          });
+
+        if (error) {
+          console.error('Error creating demo clinic:', error);
+        } else {
+          console.log('Demo clinic created successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Error ensuring demo clinic exists:', error);
     }
   };
 
