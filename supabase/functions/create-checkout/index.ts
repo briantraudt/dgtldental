@@ -77,29 +77,30 @@ serve(async (req) => {
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Simplified session creation - let's use the most basic configuration possible
+    // Use actual price IDs instead of price_data
+    // TODO: Replace these with your actual Stripe price IDs
+    const MONTHLY_SUBSCRIPTION_PRICE_ID = "price_1QbzEsEP5uVdJQ2nK8zUhMnP"; // Replace with your $10/month price ID
+    const SETUP_FEE_PRICE_ID = "price_1QbzF7EP5uVdJQ2nXW7XHqQs"; // Replace with your $100 setup fee price ID
+    
+    const line_items = [
+      {
+        price: MONTHLY_SUBSCRIPTION_PRICE_ID,
+        quantity: 1,
+      },
+    ];
+
+    if (needInstallation) {
+      logStep("💰 Adding setup fee to line items");
+      line_items.push({
+        price: SETUP_FEE_PRICE_ID,
+        quantity: 1,
+      });
+    }
+
     const sessionData = {
       customer: customer.id,
       mode: "subscription" as const,
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            unit_amount: 1000, // $10.00
-            recurring: { 
-              interval: "month" as const 
-            },
-            product_data: {
-              name: "DGTL Chat Widget - Monthly Subscription",
-              description: "AI-powered chat widget for your practice",
-              metadata: {
-                clinic_id: clinicId
-              }
-            },
-          },
-          quantity: 1,
-        }
-      ],
+      line_items: line_items,
       success_url: `${origin}/success?clinic_id=${clinicId}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/signup-flow?step=3&error=payment_cancelled`,
       allow_promotion_codes: false,
@@ -115,32 +116,12 @@ serve(async (req) => {
       }
     };
 
-    // Add installation service if requested - as a separate line item
-    if (needInstallation) {
-      logStep("💰 Adding installation service");
-      sessionData.line_items.push({
-        price_data: {
-          currency: "usd",
-          unit_amount: 10000, // $100.00
-          product_data: {
-            name: "Professional Installation Service",
-            description: "One-time setup and installation assistance",
-            metadata: {
-              clinic_id: clinicId,
-              service_type: "installation"
-            }
-          },
-        },
-        quantity: 1,
-      });
-      logStep("✅ Added installation service");
-    }
-
     logStep("⚙️ Creating checkout session", { 
       customerId: customer.id, 
-      lineItemsCount: sessionData.line_items.length,
+      lineItemsCount: line_items.length,
       successUrl: sessionData.success_url,
-      cancelUrl: sessionData.cancel_url
+      cancelUrl: sessionData.cancel_url,
+      lineItems: line_items
     });
 
     const session = await stripe.checkout.sessions.create(sessionData);

@@ -76,24 +76,23 @@ export const useSignupPayment = () => {
       }
 
       console.log('✅ Valid Stripe checkout URL received:', data.url);
+      console.log('Session details:', {
+        sessionId: data.sessionId,
+        testMode: data.testMode,
+        status: data.status,
+        paymentStatus: data.paymentStatus
+      });
 
       toast({
         title: "Redirecting to checkout...",
         description: "Opening secure payment page..."
       });
 
-      console.log('🔄 Opening Stripe checkout in new window...');
+      console.log('🔄 Redirecting to Stripe checkout...');
       console.log('Target URL:', data.url);
       
-      // Open in new window instead of redirect - this often works better
-      const stripeWindow = window.open(data.url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
-      
-      if (!stripeWindow) {
-        console.log('Popup blocked, trying direct redirect...');
-        window.location.href = data.url;
-      } else {
-        console.log('✅ Stripe checkout opened in new window');
-      }
+      // Direct redirect to Stripe checkout
+      window.location.href = data.url;
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);
