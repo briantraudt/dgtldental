@@ -46,15 +46,11 @@ const ClientSelector = ({ clinics, onUpdate }: ClientSelectorProps) => {
     setUpdateStatus('Pushing updates to selected clients...');
 
     try {
-      // Here you would implement the logic to push updates
-      // For now, we'll simulate the update process
-      
       // Update the database to mark these clients as having the latest version
       const { error } = await supabase
         .from('clinics')
         .update({ 
-          last_updated: new Date().toISOString(),
-          chatbot_version: 'latest' 
+          updated_at: new Date().toISOString()
         })
         .in('clinic_id', selectedClients);
 
