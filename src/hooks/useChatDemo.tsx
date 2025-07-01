@@ -104,9 +104,18 @@ export const useChatDemo = () => {
         };
         setMessages(prev => [...prev, assistantMessage]);
       } else {
-        // Fall back to AI response for general dental questions
+        // Build conversation history for OpenAI API
+        const conversationHistory = [...messages, userMessage].map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }));
+
+        // Fall back to AI response for general dental questions with full context
         const { data, error } = await supabase.functions.invoke('demo-chat', {
-          body: { message: currentMessage }
+          body: { 
+            message: currentMessage,
+            messages: conversationHistory // Send full conversation history
+          }
         });
 
         if (error) throw error;
