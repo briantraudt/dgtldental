@@ -67,6 +67,11 @@ export type Database = {
           address: string
           clinic_id: string
           created_at: string
+          custom_common_questions: string[] | null
+          custom_header_subtitle: string | null
+          custom_header_title: string | null
+          custom_intro_message: string | null
+          custom_intro_subtitle: string | null
           email: string
           emergency_instructions: string
           id: string
@@ -85,6 +90,11 @@ export type Database = {
           address: string
           clinic_id: string
           created_at?: string
+          custom_common_questions?: string[] | null
+          custom_header_subtitle?: string | null
+          custom_header_title?: string | null
+          custom_intro_message?: string | null
+          custom_intro_subtitle?: string | null
           email: string
           emergency_instructions: string
           id?: string
@@ -103,6 +113,11 @@ export type Database = {
           address?: string
           clinic_id?: string
           created_at?: string
+          custom_common_questions?: string[] | null
+          custom_header_subtitle?: string | null
+          custom_header_title?: string | null
+          custom_intro_message?: string | null
+          custom_intro_subtitle?: string | null
           email?: string
           emergency_instructions?: string
           id?: string
@@ -118,6 +133,41 @@ export type Database = {
           website_url?: string | null
         }
         Relationships: []
+      }
+      custom_qa_pairs: {
+        Row: {
+          answer: string
+          clinic_id: string
+          created_at: string
+          id: string
+          question: string
+          updated_at: string
+        }
+        Insert: {
+          answer: string
+          clinic_id: string
+          created_at?: string
+          id?: string
+          question: string
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          clinic_id?: string
+          created_at?: string
+          id?: string
+          question?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_qa_pairs_clinic_id_fkey"
+            columns: ["clinic_id"]
+            isOneToOne: false
+            referencedRelation: "clinics"
+            referencedColumns: ["clinic_id"]
+          },
+        ]
       }
       subscribers: {
         Row: {
