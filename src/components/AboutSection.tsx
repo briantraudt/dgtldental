@@ -1,4 +1,3 @@
-
 import { Bot, Code, Activity, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -54,7 +53,7 @@ const AboutSection = () => {
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 leading-relaxed">
-                At the end of signup, you'll receive a line of code customized for your practice. Just paste it into your website—no tech experience needed. Want help? We'll handle the install for a one-time $100 fee. Once it's live, your assistant starts answering patient questions immediately—saving time and freeing up your staff, even after hours.
+                At the end of signup, you'll receive a line of code customized for your practice. Just paste it into your website—no tech experience needed. Once it's live, your assistant starts answering patient questions immediately—saving time and freeing up your staff, even after hours.
               </p>
             </CardContent>
           </Card>
