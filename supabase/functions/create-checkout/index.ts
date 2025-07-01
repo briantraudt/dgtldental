@@ -21,7 +21,6 @@ serve(async (req) => {
   try {
     logStep("🚀 Function started");
 
-    // Verify environment variables
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
     
     logStep("🔧 Environment check", {
@@ -38,7 +37,6 @@ serve(async (req) => {
     const requestData = await req.json();
     logStep("📥 Request received", requestData);
 
-    // Extract and validate required fields
     const { email, clinicName, clinicId, needInstallation } = requestData;
 
     if (!email || !clinicName || !clinicId) {
@@ -46,7 +44,6 @@ serve(async (req) => {
       throw new Error("Missing required fields: email, clinicName, or clinicId");
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       logStep("❌ Invalid email format", { email });
@@ -55,15 +52,12 @@ serve(async (req) => {
 
     logStep("✅ Input validation passed", { email, clinicName, clinicId, needInstallation });
 
-    // Initialize Stripe
-    logStep("🔄 Initializing Stripe");
     const stripe = new Stripe(stripeKey, { 
       apiVersion: "2023-10-16",
       typescript: true
     });
     logStep("✅ Stripe initialized");
     
-    // Create or find customer
     logStep("👤 Checking for existing customer", { email });
     const customers = await stripe.customers.list({ 
       email: email.toLowerCase().trim(), 
@@ -83,60 +77,65 @@ serve(async (req) => {
       logStep("✅ Created new customer", { id: customer.id });
     }
 
+    // Create a standard price object first
+    logStep("💰 Creating subscription price");
+    const subscriptionPrice = await stripe.prices.create({
+      currency: "usd",
+      unit_amount: 1000, // $10.00
+      recurring: { interval: "month" },
+      product_data: {
+        name: "DGTL Chat Widget - Monthly Subscription",
+        description: "AI-powered chat widget for your practice"
+      },
+    });
+    logStep("✅ Created subscription price", { priceId: subscriptionPrice.id });
+
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Create the most basic checkout session
-    const lineItems = [
-      {
-        price_data: {
-          currency: "usd",
-          product_data: { 
-            name: "DGTL Chat Widget - Monthly Subscription",
-            description: "AI-powered chat widget for your practice"
-          },
-          unit_amount: 1000, // $10.00
-          recurring: { 
-            interval: "month" as const
-          },
-        },
-        quantity: 1,
-      }
-    ];
-
-    // Add installation service if requested
-    if (needInstallation) {
-      lineItems.push({
-        price_data: {
-          currency: "usd",
-          product_data: { 
-            name: "Professional Installation Service",
-            description: "One-time setup and installation assistance"
-          },
-          unit_amount: 10000, // $100.00
-        },
-        quantity: 1,
-      });
-      logStep("💰 Added installation service");
-    }
-
+    // Use the standard Stripe configuration
     const sessionData = {
       customer: customer.id,
-      line_items: lineItems,
       mode: "subscription" as const,
+      line_items: [
+        {
+          price: subscriptionPrice.id,
+          quantity: 1,
+        }
+      ],
       success_url: `${origin}/success?clinic_id=${clinicId}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/signup-flow?step=3&error=payment_cancelled`,
-      allow_promotion_codes: false,
       billing_address_collection: "auto" as const,
       customer_update: {
         address: "auto" as const,
         name: "auto" as const
-      }
+      },
+      payment_method_types: ["card"],
+      automatic_tax: { enabled: false }
     };
+
+    // Add installation service if requested
+    if (needInstallation) {
+      logStep("💰 Adding installation service");
+      const installationPrice = await stripe.prices.create({
+        currency: "usd",
+        unit_amount: 10000, // $100.00
+        product_data: {
+          name: "Professional Installation Service",
+          description: "One-time setup and installation assistance"
+        },
+      });
+      
+      sessionData.line_items.push({
+        price: installationPrice.id,
+        quantity: 1,
+      });
+      logStep("✅ Added installation service", { priceId: installationPrice.id });
+    }
 
     logStep("⚙️ Creating checkout session", { 
       customerId: customer.id, 
-      lineItemsCount: lineItems.length,
+      lineItemsCount: sessionData.line_items.length,
       successUrl: sessionData.success_url,
       cancelUrl: sessionData.cancel_url
     });

@@ -16,15 +16,12 @@ export const useSignupPayment = () => {
     setIsLoading(true);
     
     try {
-      // Generate unique clinic ID
       const clinicId = generateClinicId(practiceDetails.practiceName);
       console.log('Generated Clinic ID:', clinicId);
       
-      // Format office hours for storage
       const formattedOfficeHours = formatOfficeHours(practiceDetails.officeHours);
       console.log('Formatted Office Hours:', formattedOfficeHours);
       
-      // Insert clinic data
       console.log('Inserting clinic data...');
       const { error: clinicError } = await supabase
         .from('clinics')
@@ -49,7 +46,6 @@ export const useSignupPayment = () => {
 
       console.log('✅ Clinic data inserted successfully');
 
-      // Create the simplest possible checkout data
       const checkoutData = {
         email: accountInfo.email.trim(),
         clinicName: practiceDetails.practiceName.trim(),
@@ -108,40 +104,8 @@ export const useSignupPayment = () => {
       console.log('Current window location:', window.location.href);
       console.log('Target URL:', data.url);
       
-      // Try multiple redirect methods as fallback
-      try {
-        // Method 1: Direct assignment (most reliable)
-        console.log('Attempting direct window.location redirect...');
-        window.location.href = data.url;
-        
-        // Fallback method after 2 seconds if direct doesn't work
-        setTimeout(() => {
-          console.log('Fallback: Attempting window.open...');
-          const newWindow = window.open(data.url, '_self');
-          if (!newWindow) {
-            console.error('Popup blocked, trying top-level navigation...');
-            window.top!.location.href = data.url;
-          }
-        }, 2000);
-        
-      } catch (redirectError) {
-        console.error('❌ Redirect failed:', redirectError);
-        // Final fallback - copy URL to clipboard and show manual instruction
-        try {
-          await navigator.clipboard.writeText(data.url);
-          toast({
-            title: "Redirect Failed",
-            description: "Checkout URL copied to clipboard. Please paste it in your browser.",
-            variant: "destructive"
-          });
-        } catch (clipboardError) {
-          toast({
-            title: "Redirect Failed",
-            description: `Please copy this URL manually: ${data.url}`,
-            variant: "destructive"
-          });
-        }
-      }
+      // Direct redirect - most reliable method
+      window.location.href = data.url;
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);
