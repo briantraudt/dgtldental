@@ -98,7 +98,7 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "http://localhost:3000";
     
-    // Create checkout session with improved configuration
+    // Create checkout session with corrected configuration
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: lineItems,
@@ -117,9 +117,7 @@ serve(async (req) => {
       phone_number_collection: {
         enabled: false,
       },
-      invoice_creation: {
-        enabled: false,
-      },
+      // Removed invoice_creation as it conflicts with subscription mode
     });
 
     logStep("Checkout session created", { sessionId: session.id, url: session.url });
