@@ -14,11 +14,16 @@ const DentalChatWidget = () => {
   const [clinicId, setClinicId] = useState('demo-clinic-123');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
-  const { messages, isLoading, sendMessage, clinicConfig } = useChatMessages(clinicId);
+  const { messages, isLoading, sendMessage, clinicConfig, isConfigLoading } = useChatMessages(clinicId);
 
   useEffect(() => {
-    // Get clinic ID from window config (simulating script injection)
-    if (window.DENTAL_CHAT_CONFIG?.clinicId) {
+    // Get clinic ID from URL params (for embedded mode) or window config
+    const urlParams = new URLSearchParams(window.location.search);
+    const embeddedClinicId = urlParams.get('clinic');
+    
+    if (embeddedClinicId) {
+      setClinicId(embeddedClinicId);
+    } else if (window.DENTAL_CHAT_CONFIG?.clinicId) {
       setClinicId(window.DENTAL_CHAT_CONFIG.clinicId);
     }
   }, []);
@@ -58,7 +63,7 @@ const DentalChatWidget = () => {
   };
 
   // Show loading state if clinic config is not loaded
-  if (!clinicConfig) {
+  if (isConfigLoading) {
     return (
       <Button
         className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gray-400 shadow-lg z-50"
@@ -70,14 +75,19 @@ const DentalChatWidget = () => {
     );
   }
 
+  // Use dynamic colors from config
+  const primaryColor = clinicConfig?.widget_config?.primaryColor || '#2563eb';
+  const greeting = clinicConfig?.widget_config?.greeting || 'How can I help you today?';
+
   return (
     <>
       {/* Chat bubble */}
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg z-50"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
           size="icon"
+          style={{ backgroundColor: primaryColor }}
         >
           <MessageCircle className="h-6 w-6 text-white" />
         </Button>
@@ -87,16 +97,19 @@ const DentalChatWidget = () => {
       {isOpen && (
         <Card className="fixed bottom-6 right-6 w-80 h-96 bg-white shadow-2xl border-0 z-50 flex flex-col">
           {/* Header */}
-          <div className="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+          <div 
+            className="text-white p-4 rounded-t-lg flex justify-between items-center"
+            style={{ backgroundColor: primaryColor }}
+          >
             <div>
-              <h3 className="font-semibold">{clinicConfig.name}</h3>
-              <p className="text-sm text-blue-100">How can I help you today?</p>
+              <h3 className="font-semibold">{clinicConfig?.name || 'Dental Practice'}</h3>
+              <p className="text-sm opacity-90">{greeting}</p>
             </div>
             <Button
               onClick={() => setIsOpen(false)}
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-blue-700 h-8 w-8"
+              className="text-white hover:bg-black/10 h-8 w-8"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -120,9 +133,10 @@ const DentalChatWidget = () => {
                   <div
                     className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
                       msg.role === 'user'
-                        ? 'bg-blue-600 text-white'
+                        ? 'text-white'
                         : 'bg-gray-100 text-gray-800'
                     }`}
+                    style={msg.role === 'user' ? { backgroundColor: primaryColor } : {}}
                   >
                     {msg.content}
                   </div>
@@ -158,7 +172,8 @@ const DentalChatWidget = () => {
                 onClick={handleSendMessage}
                 disabled={isLoading || !message.trim()}
                 size="icon"
-                className="bg-blue-600 hover:bg-blue-700"
+                style={{ backgroundColor: primaryColor }}
+                className="hover:opacity-90"
               >
                 <Send className="h-4 w-4" />
               </Button>

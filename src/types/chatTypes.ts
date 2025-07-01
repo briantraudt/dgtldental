@@ -6,6 +6,13 @@ export interface Message {
   timestamp: Date;
 }
 
+export interface WidgetConfig {
+  primaryColor?: string;
+  theme?: 'light' | 'dark';
+  position?: 'bottom-right' | 'bottom-left';
+  greeting?: string;
+}
+
 export interface ClinicConfig {
   clinic_id: string;
   name: string;
@@ -15,4 +22,5 @@ export interface ClinicConfig {
   services_offered: string[];
   insurance_accepted: string[];
   emergency_instructions: string;
+  widget_config?: WidgetConfig;
 }

@@ -8,7 +8,7 @@ import { useClinicConfig } from './useClinicConfig';
 export const useChatMessages = (clinicId: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const clinicConfig = useClinicConfig(clinicId);
+  const { clinicConfig, isLoading: isConfigLoading, error: configError } = useClinicConfig(clinicId);
 
   const sendMessage = useCallback(async (content: string) => {
     if (!clinicConfig) {
@@ -27,13 +27,28 @@ export const useChatMessages = (clinicId: string) => {
     setIsLoading(true);
 
     try {
-      // For demo clinic, use the demo chat endpoint
+      console.log('Sending message to AI for clinic:', clinicConfig.clinic_id);
+      
+      // For demo clinic, use the demo chat endpoint, otherwise use the centralized chat-ai
       const endpoint = clinicConfig.clinic_id === 'demo-clinic-123' ? 'demo-chat' : 'chat-ai';
       
-      // Call the edge function
+      // Prepare message history for context
+      const messageHistory = messages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+
+      // Add current message to history
+      messageHistory.push({
+        role: 'user',
+        content: content
+      });
+
+      // Call the edge function with full context
       const { data, error } = await supabase.functions.invoke(endpoint, {
         body: {
           message: content,
+          messages: messageHistory,
           clinicId: clinicConfig.clinic_id
         }
       });
@@ -55,12 +70,14 @@ export const useChatMessages = (clinicId: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [clinicConfig]);
+  }, [clinicConfig, messages]);
 
   return {
     messages,
     isLoading,
     sendMessage,
-    clinicConfig
+    clinicConfig,
+    isConfigLoading,
+    configError
   };
 };

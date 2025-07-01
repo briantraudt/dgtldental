@@ -2,32 +2,38 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { ClinicConfig } from '@/types/chatTypes';
-import { DEMO_CLINIC_CONFIG } from '@/utils/clinicConfig';
 
 export const useClinicConfig = (clinicId: string) => {
   const [clinicConfig, setClinicConfig] = useState<ClinicConfig | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchClinicConfig = async () => {
-      // If it's the demo clinic, use the demo config
-      if (clinicId === 'demo-clinic-123') {
-        setClinicConfig(DEMO_CLINIC_CONFIG);
+      if (!clinicId) {
+        setIsLoading(false);
         return;
       }
 
       try {
-        const { data, error } = await supabase
-          .from('clinics')
-          .select('*')
-          .eq('clinic_id', clinicId)
-          .single();
+        setIsLoading(true);
+        setError(null);
+
+        console.log('Fetching config for clinic:', clinicId);
+
+        // Use the new centralized config endpoint
+        const { data, error } = await supabase.functions.invoke('get-clinic-config', {
+          body: { clientId: clinicId }
+        });
 
         if (error) {
           console.error('Error fetching clinic config:', error);
+          setError(error.message);
           return;
         }
 
         if (data) {
+          console.log('Received clinic config:', data);
           setClinicConfig({
             clinic_id: data.clinic_id,
             name: data.name,
@@ -36,18 +42,20 @@ export const useClinicConfig = (clinicId: string) => {
             office_hours: data.office_hours,
             services_offered: data.services_offered || [],
             insurance_accepted: data.insurance_accepted || [],
-            emergency_instructions: data.emergency_instructions
+            emergency_instructions: data.emergency_instructions,
+            widget_config: data.widget_config
           });
         }
       } catch (error) {
         console.error('Error fetching clinic config:', error);
+        setError(error instanceof Error ? error.message : 'Failed to fetch clinic config');
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    if (clinicId) {
-      fetchClinicConfig();
-    }
+    fetchClinicConfig();
   }, [clinicId]);
 
-  return clinicConfig;
+  return { clinicConfig, isLoading, error };
 };
