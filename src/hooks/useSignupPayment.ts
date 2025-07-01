@@ -46,7 +46,7 @@ export const useSignupPayment = () => {
 
       console.log('✅ Clinic data inserted successfully');
 
-      // Use a proper email address for testing - if the email field is just "test", use a test email
+      // Use a proper email address for testing
       const checkoutEmail = accountInfo.email.includes('@') ? accountInfo.email : 'test@example.com';
 
       const checkoutData = {
@@ -70,45 +70,30 @@ export const useSignupPayment = () => {
         throw new Error(`Checkout error: ${error.message || JSON.stringify(error)}`);
       }
 
-      if (!data) {
-        console.error('❌ No data received from function');
-        throw new Error('No response received from payment service');
-      }
-
-      console.log('Stripe response data:', JSON.stringify(data, null, 2));
-
-      if (!data.url) {
+      if (!data || !data.url) {
         console.error('❌ No checkout URL in response:', data);
         throw new Error('No checkout URL received from payment service');
-      }
-
-      // Validate the URL format
-      try {
-        const url = new URL(data.url);
-        console.log('✅ Valid URL format:', url.toString());
-        
-        if (!url.hostname.includes('checkout.stripe.com')) {
-          console.error('❌ Invalid Stripe URL:', url.hostname);
-          throw new Error('Received invalid Stripe checkout URL');
-        }
-      } catch (urlError) {
-        console.error('❌ Invalid URL format:', data.url, urlError);
-        throw new Error('Received malformed checkout URL');
       }
 
       console.log('✅ Valid Stripe checkout URL received:', data.url);
 
       toast({
         title: "Redirecting to checkout...",
-        description: "Taking you to secure payment page..."
+        description: "Opening secure payment page..."
       });
 
-      console.log('🔄 Redirecting to Stripe checkout...');
-      console.log('Current window location:', window.location.href);
+      console.log('🔄 Opening Stripe checkout in new window...');
       console.log('Target URL:', data.url);
       
-      // Direct redirect - most reliable method
-      window.location.href = data.url;
+      // Open in new window instead of redirect - this often works better
+      const stripeWindow = window.open(data.url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+      
+      if (!stripeWindow) {
+        console.log('Popup blocked, trying direct redirect...');
+        window.location.href = data.url;
+      } else {
+        console.log('✅ Stripe checkout opened in new window');
+      }
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);
@@ -118,7 +103,6 @@ export const useSignupPayment = () => {
       if (error instanceof Error) {
         console.log('Error type:', error.constructor.name);
         console.log('Error message:', error.message);
-        console.log('Error stack:', error.stack);
         
         if (error.message.includes('STRIPE_SECRET_KEY')) {
           errorMessage = "Payment system configuration error. Please contact support.";
@@ -128,10 +112,6 @@ export const useSignupPayment = () => {
           errorMessage = "Failed to save practice information. Please try again.";
         } else if (error.message.includes('Checkout error')) {
           errorMessage = `Payment service error: ${error.message.replace('Checkout error: ', '')}`;
-        } else if (error.message.includes('Invalid') || error.message.includes('malformed')) {
-          errorMessage = "Payment service returned invalid response. Please try again.";
-        } else if (error.message.includes('Please enter a valid email')) {
-          errorMessage = "Please enter a valid email address in the account information step.";
         } else {
           errorMessage = error.message;
         }

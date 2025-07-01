@@ -44,13 +44,6 @@ serve(async (req) => {
       throw new Error("Missing required fields: email, clinicName, or clinicId");
     }
 
-    // More lenient email validation - just check for basic format
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(email)) {
-      logStep("❌ Invalid email format", { email });
-      throw new Error("Please enter a valid email address");
-    }
-
     logStep("✅ Input validation passed", { email, clinicName, clinicId, needInstallation });
 
     const stripe = new Stripe(stripeKey, { 
@@ -73,7 +66,10 @@ serve(async (req) => {
       logStep("👤 Creating new customer");
       customer = await stripe.customers.create({
         email: email.toLowerCase().trim(),
-        name: clinicName
+        name: clinicName,
+        metadata: {
+          clinic_id: clinicId
+        }
       });
       logStep("✅ Created new customer", { id: customer.id });
     }
@@ -81,53 +77,64 @@ serve(async (req) => {
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Create line items array
-    const lineItems = [
-      {
-        price_data: {
-          currency: "usd",
-          unit_amount: 1000, // $10.00
-          recurring: { interval: "month" as const },
-          product_data: {
-            name: "DGTL Chat Widget - Monthly Subscription",
-            description: "AI-powered chat widget for your practice"
-          },
-        },
-        quantity: 1,
-      }
-    ];
-
-    // Add installation service if requested
-    if (needInstallation) {
-      logStep("💰 Adding installation service");
-      lineItems.push({
-        price_data: {
-          currency: "usd",
-          unit_amount: 10000, // $100.00
-          product_data: {
-            name: "Professional Installation Service",
-            description: "One-time setup and installation assistance"
-          },
-        },
-        quantity: 1,
-      });
-      logStep("✅ Added installation service");
-    }
-
+    // Simplified session creation - let's use the most basic configuration possible
     const sessionData = {
       customer: customer.id,
       mode: "subscription" as const,
-      line_items: lineItems,
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            unit_amount: 1000, // $10.00
+            recurring: { 
+              interval: "month" as const 
+            },
+            product_data: {
+              name: "DGTL Chat Widget - Monthly Subscription",
+              description: "AI-powered chat widget for your practice",
+              metadata: {
+                clinic_id: clinicId
+              }
+            },
+          },
+          quantity: 1,
+        }
+      ],
       success_url: `${origin}/success?clinic_id=${clinicId}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/signup-flow?step=3&error=payment_cancelled`,
+      allow_promotion_codes: false,
       billing_address_collection: "auto" as const,
       customer_update: {
         address: "auto" as const,
         name: "auto" as const
       },
       payment_method_types: ["card"],
-      automatic_tax: { enabled: false }
+      metadata: {
+        clinic_id: clinicId,
+        clinic_name: clinicName
+      }
     };
+
+    // Add installation service if requested - as a separate line item
+    if (needInstallation) {
+      logStep("💰 Adding installation service");
+      sessionData.line_items.push({
+        price_data: {
+          currency: "usd",
+          unit_amount: 10000, // $100.00
+          product_data: {
+            name: "Professional Installation Service",
+            description: "One-time setup and installation assistance",
+            metadata: {
+              clinic_id: clinicId,
+              service_type: "installation"
+            }
+          },
+        },
+        quantity: 1,
+      });
+      logStep("✅ Added installation service");
+    }
 
     logStep("⚙️ Creating checkout session", { 
       customerId: customer.id, 
@@ -149,18 +156,6 @@ serve(async (req) => {
     if (!session.url) {
       logStep("❌ No URL in session response");
       throw new Error("Stripe checkout session created but no URL returned");
-    }
-
-    // Validate the URL
-    try {
-      const url = new URL(session.url);
-      if (!url.hostname.includes('checkout.stripe.com')) {
-        throw new Error(`Invalid Stripe URL: ${url.hostname}`);
-      }
-      logStep("✅ URL validation passed", { hostname: url.hostname });
-    } catch (urlError) {
-      logStep("❌ URL validation failed", { url: session.url, error: urlError });
-      throw new Error("Invalid checkout URL format");
     }
 
     const response = { 
