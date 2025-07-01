@@ -1,23 +1,33 @@
 
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
-import { Settings } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 
 const Navigation = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="absolute top-6 right-6 z-30">
-      <Button 
-        variant="outline" 
-        size="sm"
-        onClick={() => navigate('/portal')}
-        className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-      >
-        <Settings className="h-4 w-4 mr-2" />
-        Portal
-      </Button>
-    </div>
+    <nav className="bg-white shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          <Link to="/" className="text-2xl font-bold text-blue-600">
+            DGTL Chat
+          </Link>
+          
+          <div className="flex items-center space-x-4">
+            <Link to="/auth">
+              <Button variant="outline" size="sm">
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign In
+              </Button>
+            </Link>
+            <Link to="/signup-flow">
+              <Button size="sm">
+                Get Started
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 
