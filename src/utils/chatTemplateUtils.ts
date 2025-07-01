@@ -6,88 +6,111 @@ const DISCLAIMER = "\n\nPlease remember that this is for informational purposes 
 export const getTemplatedResponse = (userMessage: string): string | null => {
   const lowerMessage = userMessage.toLowerCase();
   
-  // Office hours
+  // Office hours - improved mobile formatting
   if (lowerMessage.includes('hours') || lowerMessage.includes('open') || lowerMessage.includes('closed')) {
     return `Our office hours are:
-    
-Monday - Thursday: ${DEMO_CLINIC_DATA.officeHours.monday}
-Friday: ${DEMO_CLINIC_DATA.officeHours.friday}
-Saturday: ${DEMO_CLINIC_DATA.officeHours.saturday}
-Sunday: ${DEMO_CLINIC_DATA.officeHours.sunday}
 
-You can schedule an appointment by calling us at ${DEMO_CLINIC_DATA.phone} or through our website at ${DEMO_CLINIC_DATA.website}.${DISCLAIMER}`;
+📅 **Monday - Thursday**
+${DEMO_CLINIC_DATA.officeHours.monday}
+
+📅 **Friday**
+${DEMO_CLINIC_DATA.officeHours.friday}
+
+📅 **Saturday**
+${DEMO_CLINIC_DATA.officeHours.saturday}
+
+📅 **Sunday**
+${DEMO_CLINIC_DATA.officeHours.sunday}
+
+📞 Call us at ${DEMO_CLINIC_DATA.phone} to schedule your appointment!${DISCLAIMER}`;
   }
   
-  // Location/Address
+  // Location/Address - improved formatting
   if (lowerMessage.includes('location') || lowerMessage.includes('address') || lowerMessage.includes('where') || lowerMessage.includes('directions')) {
-    return `We're located at ${DEMO_CLINIC_DATA.address}. 
+    return `📍 **Our Location:**
 
-We're conveniently located in downtown with easy parking available. You can find detailed directions on our website at ${DEMO_CLINIC_DATA.website} or call us at ${DEMO_CLINIC_DATA.phone} if you need help finding us.${DISCLAIMER}`;
+${DEMO_CLINIC_DATA.address}
+
+We're conveniently located in downtown with easy parking available.
+
+🌐 Find us online: ${DEMO_CLINIC_DATA.website}
+📞 Call for directions: ${DEMO_CLINIC_DATA.phone}${DISCLAIMER}`;
   }
   
-  // Services
+  // Services - improved mobile formatting
   if (lowerMessage.includes('service') || lowerMessage.includes('treatment') || lowerMessage.includes('what do you do') || lowerMessage.includes('procedures')) {
-    return `At ${DEMO_CLINIC_DATA.name}, we offer a comprehensive range of dental services including:
+    return `At ${DEMO_CLINIC_DATA.name}, we offer:
 
-• ${DEMO_CLINIC_DATA.services.join('\n• ')}
+🦷 **Our Services:**
+${DEMO_CLINIC_DATA.services.map(service => `• ${service}`).join('\n')}
 
-We provide personalized care for patients of all ages. Would you like to know more about any specific treatment or schedule a consultation? Call us at ${DEMO_CLINIC_DATA.phone}.${DISCLAIMER}`;
+We provide personalized care for patients of all ages.
+
+📞 Call ${DEMO_CLINIC_DATA.phone} to learn more about any specific treatment or schedule a consultation.${DISCLAIMER}`;
   }
   
-  // Insurance
+  // Insurance - improved formatting
   if (lowerMessage.includes('insurance') || lowerMessage.includes('coverage') || lowerMessage.includes('accepted')) {
-    return `We accept most major dental insurance plans, including:
+    return `💳 **Insurance We Accept:**
 
-• ${DEMO_CLINIC_DATA.insurance.join('\n• ')}
+${DEMO_CLINIC_DATA.insurance.map(plan => `• ${plan}`).join('\n')}
 • Most PPO plans
 
-We also offer flexible payment options and financing plans. Our team will help verify your benefits and maximize your insurance coverage. Please bring your insurance card to your appointment or call us at ${DEMO_CLINIC_DATA.phone} to verify coverage.${DISCLAIMER}`;
+💰 **Payment Options:**
+• Flexible payment plans
+• Financing available
+• Insurance benefit maximization
+
+📞 Call ${DEMO_CLINIC_DATA.phone} to verify your coverage.${DISCLAIMER}`;
   }
   
-  // Contact/Phone
+  // Contact/Phone - improved formatting
   if (lowerMessage.includes('phone') || lowerMessage.includes('call') || lowerMessage.includes('contact') || lowerMessage.includes('number')) {
-    return `You can reach ${DEMO_CLINIC_DATA.name} at:
+    return `📞 **Contact ${DEMO_CLINIC_DATA.name}:**
 
-📞 Phone: ${DEMO_CLINIC_DATA.phone}
-📧 Email: ${DEMO_CLINIC_DATA.email}
-🌐 Website: ${DEMO_CLINIC_DATA.website}
-📍 Address: ${DEMO_CLINIC_DATA.address}
+**Phone:** ${DEMO_CLINIC_DATA.phone}
+**Email:** ${DEMO_CLINIC_DATA.email}
+**Website:** ${DEMO_CLINIC_DATA.website}
+**Address:** ${DEMO_CLINIC_DATA.address}
 
 We're here to help with any questions or to schedule your appointment!${DISCLAIMER}`;
   }
   
-  // Emergency
+  // Emergency - improved formatting
   if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent') || lowerMessage.includes('pain') || lowerMessage.includes('after hours')) {
-    return `For dental emergencies:
+    return `🚨 **Dental Emergency Care:**
 
-During office hours: Call us immediately at ${DEMO_CLINIC_DATA.phone}
-After hours: ${DEMO_CLINIC_DATA.emergencyInstructions}
+**During Office Hours:**
+Call immediately: ${DEMO_CLINIC_DATA.phone}
 
-Common dental emergencies we treat:
+**After Hours:**
+${DEMO_CLINIC_DATA.emergencyInstructions}
+
+**We Treat:**
 • Severe tooth pain
 • Knocked-out teeth
 • Broken or chipped teeth
 • Lost fillings or crowns
 • Dental abscesses
 
-Don't wait - dental emergencies require prompt attention!${DISCLAIMER}`;
+⚠️ Don't wait - dental emergencies require prompt attention!${DISCLAIMER}`;
   }
   
-  // Appointment scheduling
+  // Appointment scheduling - improved formatting
   if (lowerMessage.includes('appointment') || lowerMessage.includes('schedule') || lowerMessage.includes('book') || lowerMessage.includes('visit')) {
-    return `I'd be happy to help you schedule an appointment at ${DEMO_CLINIC_DATA.name}!
+    return `📅 **Schedule Your Appointment:**
 
-You can schedule by:
-📞 Calling us at ${DEMO_CLINIC_DATA.phone}
-🌐 Online booking at ${DEMO_CLINIC_DATA.website}
-📧 Emailing us at ${DEMO_CLINIC_DATA.email}
+**How to Book:**
+📞 Call: ${DEMO_CLINIC_DATA.phone}
+🌐 Online: ${DEMO_CLINIC_DATA.website}
+📧 Email: ${DEMO_CLINIC_DATA.email}
 
-Our current availability:
-• New patient appointments typically available within 1-2 weeks
-• Urgent care appointments often same-day
-• We offer early morning and Saturday appointments
+**Availability:**
+• New patients: 1-2 weeks
+• Urgent care: Often same-day
+• Early morning & Saturday appointments available
 
-What type of appointment are you looking for?${DISCLAIMER}`;
+What type of appointment would you like to schedule?${DISCLAIMER}`;
   }
   
   return null;
