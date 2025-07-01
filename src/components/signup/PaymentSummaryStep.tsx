@@ -53,7 +53,7 @@ const PaymentSummaryStep = ({ practiceDetails }: PaymentSummaryStepProps) => {
           </li>
           <li className="flex items-start">
             <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-            <span className="text-gray-700 leading-relaxed">Easy, one-line website install (or free setup by us)</span>
+            <span className="text-gray-700 leading-relaxed">Easy, one-line website install (or setup by us)</span>
           </li>
           <li className="flex items-start">
             <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
