@@ -77,10 +77,9 @@ serve(async (req) => {
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Use actual price IDs instead of price_data
-    // TODO: Replace these with your actual Stripe price IDs
-    const MONTHLY_SUBSCRIPTION_PRICE_ID = "price_1QbzEsEP5uVdJQ2nK8zUhMnP"; // Replace with your $10/month price ID
-    const SETUP_FEE_PRICE_ID = "price_1QbzF7EP5uVdJQ2nXW7XHqQs"; // Replace with your $100 setup fee price ID
+    // Use your actual Stripe price IDs
+    const MONTHLY_SUBSCRIPTION_PRICE_ID = "price_1Rg8UYD11m5HbaW36vDyhbco"; // $10/month subscription
+    const SETUP_FEE_PRICE_ID = "price_1Rg8XXD11m5HbaW3XPUdef7y"; // $100 setup fee
     
     const line_items = [
       {
