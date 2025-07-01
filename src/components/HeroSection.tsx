@@ -35,19 +35,6 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-20 flex-1 flex items-center justify-center">
         <div className="text-center text-white px-4 max-w-4xl">
-          {/* Dental Icon */}
-          <div className="flex justify-center mb-6">
-            <img 
-              src="/lovable-uploads/86e29185-fd00-4d84-965c-1c4760689215.png" 
-              alt="Dental AI Assistant" 
-              className="w-20 h-20 md:w-24 md:h-24 opacity-90"
-              style={{
-                filter: 'brightness(0) invert(1)',
-                mixBlendMode: 'screen'
-              }}
-            />
-          </div>
-
           {/* Mobile and Tablet headline layout - stacked vertically */}
           <div className="block lg:hidden">
             <h1 className="text-4xl md:text-5xl font-bold mb-2">
