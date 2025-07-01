@@ -3,6 +3,7 @@ import DGTLChatWidget from '@/components/DGTLChatWidget';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import DemoSection from '@/components/DemoSection';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   return (
@@ -10,6 +11,7 @@ const Index = () => {
       <HeroSection />
       <AboutSection />
       <DemoSection />
+      <Footer />
       <DGTLChatWidget />
     </div>
   );

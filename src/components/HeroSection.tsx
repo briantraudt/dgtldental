@@ -1,7 +1,7 @@
+
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import Navigation from './Navigation';
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -31,9 +31,6 @@ const HeroSection = () => {
       
       {/* Elegant gradient overlay that transitions to next section */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-slate-900/40 z-10"></div>
-      
-      {/* Navigation */}
-      <Navigation />
       
       {/* Hero Content */}
       <div className="relative z-20 flex-1 flex items-center justify-center">
