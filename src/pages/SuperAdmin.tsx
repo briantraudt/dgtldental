@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
@@ -7,13 +6,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatWidget from '@/components/ChatWidget';
+import SuperAdminLogin from '@/components/SuperAdminLogin';
 import { useChatDemo } from '@/hooks/useChatDemo';
-import { MessageSquare, Users, Activity, Settings } from 'lucide-react';
+import { useSuperAdminAuth } from '@/hooks/useSuperAdminAuth';
+import { MessageSquare, Users, Activity, Settings, LogOut } from 'lucide-react';
 
 const SuperAdmin = () => {
+  const { isAuthenticated, isLoading, login, logout } = useSuperAdminAuth();
   const [clinics, setClinics] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isDataLoading, setIsDataLoading] = useState(true);
   const [selectedClinicId, setSelectedClinicId] = useState('demo-clinic-123');
 
   // Use the chat demo hook for testing
@@ -29,8 +31,10 @@ const SuperAdmin = () => {
   } = useChatDemo();
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (isAuthenticated) {
+      fetchDashboardData();
+    }
+  }, [isAuthenticated]);
 
   const fetchDashboardData = async () => {
     try {
@@ -56,7 +60,7 @@ const SuperAdmin = () => {
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
-      setIsLoading(false);
+      setIsDataLoading(false);
     }
   };
 
@@ -71,9 +75,23 @@ const SuperAdmin = () => {
     return { totalClinics, activeClinics, totalMessages, todayMessages };
   };
 
+  // Show loading screen while checking authentication
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return <SuperAdminLogin onLogin={login} />;
+  }
+
   const stats = getStats();
 
-  if (isLoading) {
+  if (isDataLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">Loading Super Admin Dashboard...</div>
@@ -83,9 +101,15 @@ const SuperAdmin = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Super Admin Dashboard</h1>
-        <p className="text-gray-600 mt-2">Monitor and manage all dental practice chatbots</p>
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Super Admin Dashboard</h1>
+          <p className="text-gray-600 mt-2">Monitor and manage all dental practice chatbots</p>
+        </div>
+        <Button onClick={logout} variant="outline" className="flex items-center space-x-2">
+          <LogOut className="h-4 w-4" />
+          <span>Logout</span>
+        </Button>
       </div>
 
       {/* Stats Overview */}
