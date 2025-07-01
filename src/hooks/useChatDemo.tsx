@@ -19,61 +19,34 @@ export const useChatDemo = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Improved scroll behavior - scroll to show the user's message and start of response
+    // Smooth scroll to bottom after new messages are added
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
         setTimeout(() => {
-          // Get the last two messages (user question + assistant response start)
-          const messageElements = scrollElement.querySelectorAll('[data-message]');
-          if (messageElements.length >= 2) {
-            // Scroll to show the user's question (second to last message)
-            const userMessageElement = messageElements[messageElements.length - 2];
-            userMessageElement.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start' 
-            });
-          } else if (messageElements.length === 1) {
-            // If only one message, scroll to it
-            messageElements[0].scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start' 
-            });
-          }
+          scrollElement.scrollTo({ 
+            top: scrollElement.scrollHeight, 
+            behavior: 'smooth' 
+          });
         }, 100);
       }
     }
   }, [messages]);
 
-  // Separate effect for when loading starts/stops to ensure smooth UX
+  // Focus input after assistant responds (not after user messages to avoid interruption)
   useEffect(() => {
     if (!isLoading && messages.length > 0) {
-      // Final scroll adjustment after assistant response is complete
-      if (scrollAreaRef.current) {
-        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (scrollElement) {
+      // Only focus if the last message is from assistant
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage?.role === 'assistant') {
+        if (inputRef.current) {
           setTimeout(() => {
-            const messageElements = scrollElement.querySelectorAll('[data-message]');
-            if (messageElements.length >= 2) {
-              // Scroll to show the user's question and start of assistant response
-              const userMessageElement = messageElements[messageElements.length - 2];
-              userMessageElement.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-              });
-            }
-          }, 150);
+            inputRef.current?.focus();
+          }, 300); // Slightly longer delay to let scroll complete
         }
       }
-      
-      // Focus the input after assistant responds
-      if (inputRef.current) {
-        setTimeout(() => {
-          inputRef.current?.focus();
-        }, 200);
-      }
     }
-  }, [isLoading, messages.length]);
+  }, [isLoading, messages]);
 
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
