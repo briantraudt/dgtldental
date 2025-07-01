@@ -45,7 +45,7 @@ const HowItWorksSection = () => {
               <Code className="h-6 w-6 text-emerald-600" />
             </div>
             <div className="mb-2">
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Install Widget</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Install AI Chatbot</h3>
             </div>
             <p className="text-slate-600 text-sm leading-relaxed">
               Just copy/paste one line of code—or we'll do it for you.
