@@ -23,15 +23,6 @@ const Footer = () => {
             Portal
           </Button>
         </div>
-        
-        {/* Centered dental icon */}
-        <div className="flex justify-center mt-6">
-          <img 
-            src="/lovable-uploads/e61c9ac3-9f9b-422b-84b1-43301d0a0096.png" 
-            alt="Dental AI Assistant" 
-            className="w-12 h-12 opacity-60"
-          />
-        </div>
       </div>
     </footer>
   );
