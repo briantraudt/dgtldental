@@ -49,21 +49,18 @@ export const useSignupPayment = () => {
 
       console.log('✅ Clinic data inserted successfully');
 
-      // Create Stripe checkout session with proper data structure
+      // Create Stripe checkout session with minimal data structure
       const checkoutData = {
         clinicId,
         accountInfo: {
-          ...accountInfo,
           firstName: accountInfo.firstName?.trim() || '',
           lastName: accountInfo.lastName?.trim() || '',
           email: accountInfo.email?.trim() || ''
         },
         practiceDetails: {
-          ...practiceDetails,
           practiceName: practiceDetails.practiceName?.trim() || '',
-          officeHours: formattedOfficeHours
-        },
-        needInstallHelp: practiceDetails.needInstallHelp || false
+          needInstallHelp: practiceDetails.needInstallHelp || false
+        }
       };
 
       console.log('=== CREATING STRIPE CHECKOUT ===');
@@ -88,14 +85,16 @@ export const useSignupPayment = () => {
       console.log('✅ Valid Stripe checkout URL received:', data.url);
 
       toast({
-        title: "Practice registered successfully!",
-        description: data.testMode ? "Redirecting to test payment..." : "Redirecting to secure payment..."
+        title: "Redirecting to checkout...",
+        description: "Taking you to secure payment page..."
       });
 
       console.log('🔄 Redirecting to Stripe checkout:', data.url);
       
-      // Use the most reliable redirect method
-      window.location.href = data.url;
+      // Use a more reliable redirect method - open in same window after a brief delay
+      setTimeout(() => {
+        window.open(data.url, '_self');
+      }, 500);
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);

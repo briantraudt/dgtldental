@@ -1,7 +1,6 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -24,13 +23,9 @@ serve(async (req) => {
 
     // Verify environment variables
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
     
     logStep("🔧 Environment variables check", {
       hasStripeKey: !!stripeKey,
-      hasSupabaseUrl: !!supabaseUrl,
-      hasSupabaseAnonKey: !!supabaseAnonKey,
       stripeKeyPrefix: stripeKey ? stripeKey.substring(0, 8) + "..." : "missing"
     });
 
@@ -39,17 +34,11 @@ serve(async (req) => {
       throw new Error("STRIPE_SECRET_KEY is not set in environment variables");
     }
 
-    if (!supabaseUrl || !supabaseAnonKey) {
-      logStep("❌ Supabase credentials missing");
-      throw new Error("Missing Supabase environment variables");
-    }
-
     const requestData = await req.json();
     logStep("📥 Request data received", { 
       hasClinicId: !!requestData.clinicId,
       hasAccountInfo: !!requestData.accountInfo,
-      hasPracticeDetails: !!requestData.practiceDetails,
-      needInstallHelp: requestData.needInstallHelp
+      hasPracticeDetails: !!requestData.practiceDetails
     });
 
     // Extract data from the signup flow structure
@@ -58,7 +47,7 @@ serve(async (req) => {
     const email = requestData.accountInfo?.email;
     const firstName = requestData.accountInfo?.firstName || '';
     const lastName = requestData.accountInfo?.lastName || '';
-    const needInstallHelp = requestData.needInstallHelp || false;
+    const needInstallHelp = requestData.practiceDetails?.needInstallHelp || false;
 
     logStep("📋 Extracted data", { 
       clinicId, 
@@ -105,11 +94,7 @@ serve(async (req) => {
       logStep("👤 Creating new customer", { email, firstName, lastName });
       const customer = await stripe.customers.create({
         email: email.toLowerCase().trim(),
-        name: `${firstName} ${lastName}`.trim() || email,
-        metadata: {
-          clinic_id: clinicId,
-          clinic_name: clinicName
-        }
+        name: `${firstName} ${lastName}`.trim() || email
       });
       customerId = customer.id;
       logStep("✅ New customer created", { customerId });
@@ -118,7 +103,7 @@ serve(async (req) => {
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Create checkout session with minimal, proven configuration
+    // Create the most basic checkout session possible
     const sessionConfig = {
       customer: customerId,
       line_items: [
@@ -126,8 +111,7 @@ serve(async (req) => {
           price_data: {
             currency: "usd",
             product_data: { 
-              name: "DGTL Chat Widget - Premium Plan",
-              description: "Unlimited AI chat features for your practice"
+              name: "DGTL Chat Widget - Premium Plan"
             },
             unit_amount: 1000, // $10.00 in cents
             recurring: { interval: "month" },
@@ -136,13 +120,8 @@ serve(async (req) => {
         }
       ],
       mode: "subscription" as const,
-      success_url: `${origin}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/signup-flow?step=3`,
-      metadata: {
-        clinic_id: clinicId,
-        clinic_name: clinicName,
-        needs_install_help: needInstallHelp.toString()
-      }
+      success_url: `${origin}/success?clinic_id=${clinicId}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/signup-flow?step=3`
     };
 
     // Add setup fee if needed ($100 installation)
@@ -151,8 +130,7 @@ serve(async (req) => {
         price_data: {
           currency: "usd",
           product_data: { 
-            name: "Widget Installation Service",
-            description: "Professional setup and installation of your chat widget"
+            name: "Widget Installation Service"
           },
           unit_amount: 10000, // $100.00 in cents
         },
@@ -184,21 +162,6 @@ serve(async (req) => {
     if (!session.url) {
       logStep("❌ Stripe did not return a checkout URL");
       throw new Error("Stripe did not return a checkout URL");
-    }
-
-    // Basic URL validation
-    const isValidStripeUrl = session.url.startsWith('https://checkout.stripe.com/');
-    
-    logStep("🔗 URL validation", { 
-      url: session.url,
-      isValidStripeUrl,
-      sessionId: session.id,
-      isTestMode: stripeKey.startsWith('sk_test_')
-    });
-
-    if (!isValidStripeUrl) {
-      logStep("❌ Invalid checkout URL format", { url: session.url });
-      throw new Error("Invalid checkout URL format received from payment service");
     }
 
     logStep("🔗 Returning checkout URL", { 
