@@ -124,23 +124,39 @@ const SignupFlow = () => {
 
       console.log('Checkout session created:', data);
 
+      if (!data?.url) {
+        throw new Error('No checkout URL received from server');
+      }
+
       toast({
         title: "Practice registered successfully!",
         description: "Redirecting to secure payment..."
       });
 
-      // Redirect to Stripe checkout
-      if (data?.url) {
+      // Add a small delay to ensure the toast is visible
+      setTimeout(() => {
+        // Redirect to Stripe checkout in the same window
         window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
+      }, 1000);
 
     } catch (error) {
       console.error('Error processing signup:', error);
+      
+      let errorMessage = "An unexpected error occurred. Please try again.";
+      
+      if (error instanceof Error) {
+        if (error.message.includes('STRIPE_SECRET_KEY')) {
+          errorMessage = "Payment system configuration error. Please contact support.";
+        } else if (error.message.includes('No checkout URL')) {
+          errorMessage = "Failed to create payment session. Please try again.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "Signup failed",
-        description: error instanceof Error ? error.message : "Please try again or contact support.",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
@@ -238,6 +254,7 @@ const SignupFlow = () => {
                   variant="outline"
                   onClick={currentStep === 1 ? () => navigate('/') : handleBack}
                   className="transition-all duration-200 hover:bg-gray-50"
+                  disabled={isLoading}
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   {currentStep === 1 ? 'Cancel' : 'Back'}

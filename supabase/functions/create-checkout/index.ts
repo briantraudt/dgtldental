@@ -53,6 +53,7 @@ serve(async (req) => {
       // Create new customer
       const customer = await stripe.customers.create({
         email,
+        name: `${requestData.accountInfo?.firstName || ''} ${requestData.accountInfo?.lastName || ''}`.trim(),
         metadata: {
           clinic_id: clinicId,
           clinic_name: clinicName
@@ -97,13 +98,13 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "http://localhost:3000";
     
-    // Create checkout session
+    // Create checkout session with improved configuration
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: lineItems,
       mode: "subscription",
-      success_url: `${origin}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}`,
-      cancel_url: `${origin}/signup-flow`,
+      success_url: `${origin}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/signup-flow?step=3`,
       metadata: {
         clinic_id: clinicId,
         clinic_name: clinicName,
@@ -111,11 +112,19 @@ serve(async (req) => {
       },
       automatic_tax: { enabled: false },
       billing_address_collection: "auto",
+      payment_method_types: ["card"],
+      allow_promotion_codes: false,
+      phone_number_collection: {
+        enabled: false,
+      },
+      invoice_creation: {
+        enabled: false,
+      },
     });
 
     logStep("Checkout session created", { sessionId: session.id, url: session.url });
 
-    return new Response(JSON.stringify({ url: session.url }), {
+    return new Response(JSON.stringify({ url: session.url, sessionId: session.id }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
