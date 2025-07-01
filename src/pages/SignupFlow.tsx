@@ -128,16 +128,22 @@ const SignupFlow = () => {
         throw new Error('No checkout URL received from server');
       }
 
+      // Validate the URL format
+      if (!data.url.startsWith('https://checkout.stripe.com/')) {
+        throw new Error('Invalid checkout URL format received');
+      }
+
       toast({
         title: "Practice registered successfully!",
         description: "Redirecting to secure payment..."
       });
 
-      // Add a small delay to ensure the toast is visible
+      // Small delay to show the toast, then redirect
       setTimeout(() => {
-        // Redirect to Stripe checkout in the same window
+        console.log('Redirecting to:', data.url);
+        // Use window.location.href for a proper redirect
         window.location.href = data.url;
-      }, 1000);
+      }, 1500);
 
     } catch (error) {
       console.error('Error processing signup:', error);
@@ -149,6 +155,8 @@ const SignupFlow = () => {
           errorMessage = "Payment system configuration error. Please contact support.";
         } else if (error.message.includes('No checkout URL')) {
           errorMessage = "Failed to create payment session. Please try again.";
+        } else if (error.message.includes('Invalid checkout URL')) {
+          errorMessage = "Payment system returned invalid URL. Please contact support.";
         } else {
           errorMessage = error.message;
         }

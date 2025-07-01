@@ -97,12 +97,13 @@ serve(async (req) => {
     logStep("Line items prepared", { lineItems, needInstallHelp });
 
     const origin = req.headers.get("origin") || "http://localhost:3000";
+    logStep("Origin determined", { origin });
     
-    // Create checkout session with corrected configuration
-    const session = await stripe.checkout.sessions.create({
+    // Create checkout session with minimal configuration
+    const sessionConfig = {
       customer: customerId,
       line_items: lineItems,
-      mode: "subscription",
+      mode: "subscription" as const,
       success_url: `${origin}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/signup-flow?step=3`,
       metadata: {
@@ -110,26 +111,49 @@ serve(async (req) => {
         clinic_name: clinicName,
         needs_install_help: needInstallHelp.toString()
       },
-      automatic_tax: { enabled: false },
-      billing_address_collection: "auto",
       payment_method_types: ["card"],
-      allow_promotion_codes: false,
-      phone_number_collection: {
-        enabled: false,
-      },
-      // Removed invoice_creation as it conflicts with subscription mode
+    };
+
+    logStep("Creating checkout session with config", sessionConfig);
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
+
+    logStep("Checkout session created successfully", { 
+      sessionId: session.id, 
+      url: session.url,
+      urlLength: session.url?.length 
     });
 
-    logStep("Checkout session created", { sessionId: session.id, url: session.url });
+    if (!session.url) {
+      throw new Error("Stripe did not return a checkout URL");
+    }
 
-    return new Response(JSON.stringify({ url: session.url, sessionId: session.id }), {
+    // Validate the URL format
+    if (!session.url.startsWith('https://checkout.stripe.com/')) {
+      logStep("WARNING: Unexpected URL format", { url: session.url });
+    }
+
+    return new Response(JSON.stringify({ 
+      url: session.url, 
+      sessionId: session.id 
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    logStep("ERROR in create-checkout", { message: errorMessage, stack: error instanceof Error ? error.stack : undefined });
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    
+    logStep("ERROR in create-checkout", { 
+      message: errorMessage, 
+      stack: errorStack,
+      errorType: error.constructor?.name 
+    });
+    
+    return new Response(JSON.stringify({ 
+      error: errorMessage,
+      details: errorStack 
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
