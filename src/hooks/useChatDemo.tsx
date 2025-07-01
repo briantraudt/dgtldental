@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,7 +18,7 @@ export const useChatDemo = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Smart scroll behavior - show user question and start of assistant response
+    // Improved scroll behavior for both mobile and desktop
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
@@ -27,22 +26,42 @@ export const useChatDemo = () => {
           const messageElements = scrollElement.querySelectorAll('[data-message]');
           
           if (messageElements.length >= 2) {
-            // Position to show both the user question and assistant response
+            // Get the user message (second to last) and assistant message (last)
             const userMessageElement = messageElements[messageElements.length - 2];
-            const rect = userMessageElement.getBoundingClientRect();
-            const containerRect = scrollElement.getBoundingClientRect();
+            const assistantMessageElement = messageElements[messageElements.length - 1];
             
-            // Check if we're on mobile or desktop and adjust padding accordingly
-            const isMobile = window.innerWidth < 768;
-            const topPadding = isMobile ? 12 : 24; // 3 (p-3) vs 6 (p-6) * 4px = 12px vs 24px
-            
-            // Calculate scroll position to show user message with appropriate padding
-            const targetScrollTop = scrollElement.scrollTop + rect.top - containerRect.top - topPadding;
-            
-            scrollElement.scrollTo({ 
-              top: Math.max(0, targetScrollTop), 
-              behavior: 'smooth' 
-            });
+            if (userMessageElement && assistantMessageElement) {
+              const userRect = userMessageElement.getBoundingClientRect();
+              const assistantRect = assistantMessageElement.getBoundingClientRect();
+              const containerRect = scrollElement.getBoundingClientRect();
+              
+              // Calculate the total height needed to show both messages
+              const userMessageTop = scrollElement.scrollTop + userRect.top - containerRect.top;
+              const assistantMessageBottom = scrollElement.scrollTop + assistantRect.bottom - containerRect.top;
+              
+              // Determine if we need to scroll to show both messages
+              const availableHeight = containerRect.height;
+              const neededHeight = assistantMessageBottom - userMessageTop;
+              
+              if (neededHeight <= availableHeight) {
+                // Both messages can fit, position user message at top with padding
+                const topPadding = 16; // Consistent padding for all screen sizes
+                const targetScrollTop = Math.max(0, userMessageTop - topPadding);
+                
+                scrollElement.scrollTo({ 
+                  top: targetScrollTop, 
+                  behavior: 'smooth' 
+                });
+              } else {
+                // Messages don't fit, prioritize showing user question and start of assistant response
+                const targetScrollTop = Math.max(0, userMessageTop - 16);
+                
+                scrollElement.scrollTo({ 
+                  top: targetScrollTop, 
+                  behavior: 'smooth' 
+                });
+              }
+            }
           } else {
             // Fallback to normal scroll for single messages
             scrollElement.scrollTo({ 
@@ -50,7 +69,7 @@ export const useChatDemo = () => {
               behavior: 'smooth' 
             });
           }
-        }, 100);
+        }, 150); // Slightly longer delay to ensure DOM is updated
       }
     }
   }, [messages]);
