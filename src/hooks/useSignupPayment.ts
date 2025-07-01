@@ -92,11 +92,14 @@ export const useSignupPayment = () => {
         throw new Error('No checkout URL received from payment service');
       }
 
-      // Validate the URL format
+      // Enhanced URL validation
       const checkoutUrl = data.url;
       console.log('Checkout URL received:', checkoutUrl);
+      console.log('Test mode:', data.testMode);
       
-      if (!checkoutUrl.startsWith('https://checkout.stripe.com/')) {
+      const isValidStripeUrl = checkoutUrl.startsWith('https://checkout.stripe.com/');
+      
+      if (!isValidStripeUrl) {
         console.error('❌ Invalid checkout URL format:', checkoutUrl);
         throw new Error('Invalid checkout URL format received from payment service');
       }
@@ -105,12 +108,13 @@ export const useSignupPayment = () => {
 
       toast({
         title: "Practice registered successfully!",
-        description: "Redirecting to secure payment..."
+        description: data.testMode ? "Redirecting to test payment..." : "Redirecting to secure payment..."
       });
 
       // Small delay to show the toast, then redirect
       setTimeout(() => {
         console.log('🔄 Redirecting to Stripe checkout:', checkoutUrl);
+        console.log('Using window.location.href for redirect');
         // Use window.location.href for a proper redirect
         window.location.href = checkoutUrl;
       }, 1500);
@@ -134,6 +138,8 @@ export const useSignupPayment = () => {
           errorMessage = "Failed to save practice information. Please try again.";
         } else if (error.message.includes('Checkout error')) {
           errorMessage = `Payment service error: ${error.message.replace('Checkout error: ', '')}`;
+        } else if (error.message.includes('Missing Supabase environment variables')) {
+          errorMessage = "System configuration error. Please contact support.";
         } else {
           errorMessage = error.message;
         }
