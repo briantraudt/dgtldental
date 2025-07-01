@@ -83,7 +83,9 @@ serve(async (req) => {
 
     // Initialize Stripe with enhanced logging
     logStep("🔄 Initializing Stripe client");
-    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
+    const stripe = new Stripe(stripeKey, { 
+      apiVersion: "2023-10-16"
+    });
     logStep("✅ Stripe client initialized successfully");
     
     // Check if customer already exists
@@ -113,25 +115,39 @@ serve(async (req) => {
       logStep("✅ New customer created", { customerId });
     }
 
-    // Prepare line items - monthly subscription ($10/month)
-    const lineItems = [
-      {
-        price_data: {
-          currency: "usd",
-          product_data: { 
-            name: "DGTL Chat Widget - Premium Plan",
-            description: "Unlimited AI chat features for your practice"
+    const origin = req.headers.get("origin") || "http://localhost:3000";
+    logStep("🌐 Origin determined", { origin });
+    
+    // Create checkout session with minimal, proven configuration
+    const sessionConfig = {
+      customer: customerId,
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: { 
+              name: "DGTL Chat Widget - Premium Plan",
+              description: "Unlimited AI chat features for your practice"
+            },
+            unit_amount: 1000, // $10.00 in cents
+            recurring: { interval: "month" },
           },
-          unit_amount: 1000, // $10.00 in cents
-          recurring: { interval: "month" },
-        },
-        quantity: 1,
+          quantity: 1,
+        }
+      ],
+      mode: "subscription" as const,
+      success_url: `${origin}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/signup-flow?step=3`,
+      metadata: {
+        clinic_id: clinicId,
+        clinic_name: clinicName,
+        needs_install_help: needInstallHelp.toString()
       }
-    ];
+    };
 
     // Add setup fee if needed ($100 installation)
     if (needInstallHelp) {
-      lineItems.push({
+      sessionConfig.line_items.push({
         price_data: {
           currency: "usd",
           product_data: { 
@@ -145,40 +161,12 @@ serve(async (req) => {
       logStep("💰 Installation service added to line items");
     }
 
-    logStep("📋 Line items prepared", { 
-      itemCount: lineItems.length, 
-      hasInstallation: needInstallHelp,
-      monthlyAmount: 1000,
-      installationAmount: needInstallHelp ? 10000 : 0
-    });
-
-    const origin = req.headers.get("origin") || "http://localhost:3000";
-    logStep("🌐 Origin determined", { origin });
-    
-    // Create checkout session with simplified, proven configuration
-    const sessionConfig = {
-      customer: customerId,
-      line_items: lineItems,
-      mode: "subscription" as const,
-      success_url: `${origin}/success?clinic_id=${clinicId}&clinic_name=${encodeURIComponent(clinicName)}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/signup-flow?step=3`,
-      metadata: {
-        clinic_id: clinicId,
-        clinic_name: clinicName,
-        needs_install_help: needInstallHelp.toString()
-      },
-      allow_promotion_codes: true,
-      billing_address_collection: "auto",
-      payment_method_types: ["card"],
-      // Simplified session without complex configurations that might cause issues
-    };
-
     logStep("⚙️ Creating checkout session", { 
       customerId, 
       mode: sessionConfig.mode,
       successUrl: sessionConfig.success_url,
       cancelUrl: sessionConfig.cancel_url,
-      lineItemsCount: lineItems.length
+      lineItemsCount: sessionConfig.line_items.length
     });
 
     const session = await stripe.checkout.sessions.create(sessionConfig);

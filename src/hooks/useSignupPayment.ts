@@ -80,59 +80,22 @@ export const useSignupPayment = () => {
         throw new Error(`Checkout error: ${error.message || 'Unknown error'}`);
       }
 
-      if (!data) {
-        console.error('❌ No data received from checkout function');
-        throw new Error('No response received from payment service');
-      }
-
-      console.log('Raw checkout response:', data);
-
-      if (!data.url) {
-        console.error('❌ No checkout URL in response:', data);
+      if (!data || !data.url) {
+        console.error('❌ No checkout URL received:', data);
         throw new Error('No checkout URL received from payment service');
       }
 
-      // Enhanced URL validation and debugging
-      const checkoutUrl = data.url;
-      console.log('=== CHECKOUT URL ANALYSIS ===');
-      console.log('Checkout URL received:', checkoutUrl);
-      console.log('URL length:', checkoutUrl.length);
-      console.log('Test mode:', data.testMode);
-      console.log('Session ID:', data.sessionId);
-      
-      // More comprehensive URL validation
-      const isValidStripeUrl = checkoutUrl.startsWith('https://checkout.stripe.com/');
-      const hasSessionId = checkoutUrl.includes('cs_');
-      
-      console.log('URL validation:', {
-        isValidStripeUrl,
-        hasSessionId,
-        urlType: checkoutUrl.includes('/c/pay/') ? 'checkout_session' : 'unknown'
-      });
-      
-      if (!isValidStripeUrl) {
-        console.error('❌ Invalid checkout URL format:', checkoutUrl);
-        throw new Error('Invalid checkout URL format received from payment service');
-      }
-
-      if (!hasSessionId) {
-        console.error('❌ No session ID found in URL:', checkoutUrl);
-        throw new Error('Invalid checkout session URL - missing session ID');
-      }
-
-      console.log('✅ Valid Stripe checkout URL received');
+      console.log('✅ Valid Stripe checkout URL received:', data.url);
 
       toast({
         title: "Practice registered successfully!",
         description: data.testMode ? "Redirecting to test payment..." : "Redirecting to secure payment..."
       });
 
-      // Simple, direct redirect to Stripe checkout
-      console.log('=== REDIRECT PROCESS ===');
-      console.log('🔄 Redirecting to Stripe checkout:', checkoutUrl);
+      console.log('🔄 Redirecting to Stripe checkout:', data.url);
       
-      // Use simple redirect without delays or fallbacks that might cause issues
-      window.location.href = checkoutUrl;
+      // Use the most reliable redirect method
+      window.location.href = data.url;
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);
@@ -147,14 +110,10 @@ export const useSignupPayment = () => {
           errorMessage = "Payment system configuration error. Please contact support.";
         } else if (error.message.includes('No checkout URL')) {
           errorMessage = "Failed to create payment session. Please try again.";
-        } else if (error.message.includes('Invalid checkout URL')) {
-          errorMessage = "Payment system returned invalid URL. Please contact support.";
         } else if (error.message.includes('Database error')) {
           errorMessage = "Failed to save practice information. Please try again.";
         } else if (error.message.includes('Checkout error')) {
           errorMessage = `Payment service error: ${error.message.replace('Checkout error: ', '')}`;
-        } else if (error.message.includes('Missing Supabase environment variables')) {
-          errorMessage = "System configuration error. Please contact support.";
         } else {
           errorMessage = error.message;
         }
