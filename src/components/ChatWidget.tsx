@@ -46,8 +46,8 @@ const ChatWidget = ({
         </div>
       </div>
 
-      {/* Messages area */}
-      <ScrollArea ref={scrollAreaRef} className="flex-1 p-3 md:p-6 bg-gray-50">
+      {/* Messages area - Updated padding for better text spacing */}
+      <ScrollArea ref={scrollAreaRef} className="flex-1 p-2 md:p-4 bg-gray-50">
         <div className="space-y-3 md:space-y-4">
           {messages.length === 0 && (
             <>
