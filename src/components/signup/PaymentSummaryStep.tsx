@@ -34,16 +34,15 @@ const PaymentSummaryStep = ({ practiceDetails }: PaymentSummaryStepProps) => {
       </div>
 
       <div className="bg-gray-50 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2">What's Included:</h4>
+        <h4 className="font-semibold mb-2">✅ What's Included:</h4>
         <ul className="space-y-1 text-sm text-gray-700">
-          <li>✓ 24/7 AI-powered patient support</li>
-          <li>✓ Custom training on your practice information</li>
-          <li>✓ Unlimited patient conversations</li>
-          <li>✓ Easy website integration</li>
-          <li>✓ Mobile-responsive design</li>
-          {practiceDetails.needInstallHelp && (
-            <li>✓ Professional installation and setup</li>
-          )}
+          <li>24/7 AI assistant to answer patient questions</li>
+          <li>Customized responses based on your practice info</li>
+          <li>Smart follow-ups to handle multiple patient queries</li>
+          <li>Easy, one-line website install (or free setup by us)</li>
+          <li>Works after hours, weekends, and holidays</li>
+          <li>Real-time updates from your practice dashboard</li>
+          <li>Cancel anytime — no long-term contracts</li>
         </ul>
       </div>
 
