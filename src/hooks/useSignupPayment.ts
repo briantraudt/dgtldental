@@ -148,17 +148,7 @@ export const useSignupPayment = () => {
             // Final fallback - show manual link
             toast({
               title: "Please complete payment",
-              description: "Click here to complete your payment",
-              action: (
-                <a 
-                  href={checkoutUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="underline"
-                >
-                  Complete Payment
-                </a>
-              )
+              description: "Click the link below to complete your payment manually"
             });
           }
         }
