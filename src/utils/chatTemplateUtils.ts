@@ -1,4 +1,3 @@
-
 import { DEMO_CLINIC_DATA } from '@/data/demoClinicData';
 
 const DISCLAIMER = "\n\nPlease remember that this is for informational purposes only and not a substitute for professional dental advice. For specific concerns, consult with a qualified dentist.";
