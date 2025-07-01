@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -232,66 +233,86 @@ const Portal = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p>Loading...</p>
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">DGTL Chat Portal</h1>
-          <p className="text-xl text-gray-600">Manage your AI chat widget and view analytics</p>
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            DGTL Chat Portal
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Manage your AI chat widget and view analytics
+          </p>
         </div>
 
         {!user ? (
-          <Card className="max-w-md mx-auto">
-            <CardHeader>
-              <CardTitle>Sign In to Your Portal</CardTitle>
-              <p className="text-gray-600">Use the email and password from your signup</p>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Your password"
-                    required
-                  />
-                </div>
-                <Button type="submit" disabled={isAuthLoading} className="w-full">
-                  {isAuthLoading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Signing In...
-                    </>
-                  ) : (
-                    'Sign In'
-                  )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+          <div className="max-w-md mx-auto">
+            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-2xl">
+              <CardHeader className="text-center pb-2">
+                <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
+                  Sign In to Your Portal
+                </CardTitle>
+                <p className="text-gray-600 text-sm">
+                  Use the email and password from your signup
+                </p>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <form onSubmit={handleLogin} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-gray-700 font-medium">
+                      Email Address
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      required
+                      className="h-12 text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-gray-700 font-medium">
+                      Password
+                    </Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Your password"
+                      required
+                      className="h-12 text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    disabled={isAuthLoading} 
+                    className="w-full h-12 text-base bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
+                  >
+                    {isAuthLoading ? (
+                      <>
+                        <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                        Signing In...
+                      </>
+                    ) : (
+                      'Sign In'
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
         ) : (
           <div className="space-y-6">
             {/* Header with clinic info and logout */}
