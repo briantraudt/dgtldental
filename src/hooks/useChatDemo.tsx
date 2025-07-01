@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { supabase } from '@/integrations/supabase/client';
@@ -31,11 +32,15 @@ export const useChatDemo = () => {
             const rect = userMessageElement.getBoundingClientRect();
             const containerRect = scrollElement.getBoundingClientRect();
             
-            // Calculate scroll position to show user message with some padding
-            const targetScrollTop = scrollElement.scrollTop + rect.top - containerRect.top - 20;
+            // Check if we're on mobile or desktop and adjust padding accordingly
+            const isMobile = window.innerWidth < 768;
+            const topPadding = isMobile ? 12 : 24; // 3 (p-3) vs 6 (p-6) * 4px = 12px vs 24px
+            
+            // Calculate scroll position to show user message with appropriate padding
+            const targetScrollTop = scrollElement.scrollTop + rect.top - containerRect.top - topPadding;
             
             scrollElement.scrollTo({ 
-              top: targetScrollTop, 
+              top: Math.max(0, targetScrollTop), 
               behavior: 'smooth' 
             });
           } else {
