@@ -91,8 +91,10 @@ export const useSignupPayment = () => {
       console.log('🔄 Redirecting to Stripe checkout...');
       console.log('Target URL:', data.url);
       
-      // Direct redirect to Stripe checkout
-      window.location.href = data.url;
+      // Force redirect to Stripe checkout - use top-level window location
+      setTimeout(() => {
+        window.top!.location.href = data.url;
+      }, 100);
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);
