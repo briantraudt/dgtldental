@@ -22,7 +22,7 @@ const ChatInput = forwardRef<HTMLInputElement, ChatInputProps>(
             value={message}
             onChange={(e) => onChange(e.target.value)}
             onKeyPress={onKeyPress}
-            placeholder="Ask about our services, hours, location..."
+            placeholder="Ask us anything"
             disabled={isLoading}
             className="flex-1 border-2 border-blue-200 focus:border-blue-500 focus:ring-blue-500/20 focus:ring-4 rounded-xl px-4 md:px-6 py-3 md:py-4 text-base md:text-lg text-gray-700 placeholder-gray-500 shadow-sm transition-all duration-200 hover:border-blue-300 h-12 md:h-14 placeholder:text-sm md:placeholder:text-base"
           />
