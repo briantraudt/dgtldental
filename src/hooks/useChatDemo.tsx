@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,14 +23,22 @@ export const useChatDemo = () => {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
         setTimeout(() => {
-          // Less aggressive scroll that keeps some context visible
-          const scrollHeight = scrollElement.scrollHeight;
-          const clientHeight = scrollElement.clientHeight;
-          const maxScroll = scrollHeight - clientHeight;
-          
-          // Scroll to show recent messages but not hide the user's question
-          const targetScroll = Math.max(0, maxScroll - 100);
-          scrollElement.scrollTop = targetScroll;
+          // Get the last two messages (user question + assistant response start)
+          const messageElements = scrollElement.querySelectorAll('[data-message]');
+          if (messageElements.length >= 2) {
+            // Scroll to show the user's question (second to last message)
+            const userMessageElement = messageElements[messageElements.length - 2];
+            userMessageElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start' 
+            });
+          } else if (messageElements.length === 1) {
+            // If only one message, scroll to it
+            messageElements[0].scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start' 
+            });
+          }
         }, 100);
       }
     }
@@ -43,13 +52,15 @@ export const useChatDemo = () => {
         const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
         if (scrollElement) {
           setTimeout(() => {
-            const scrollHeight = scrollElement.scrollHeight;
-            const clientHeight = scrollElement.clientHeight;
-            const maxScroll = scrollHeight - clientHeight;
-            
-            // Show the beginning of the assistant's response
-            const targetScroll = Math.max(0, maxScroll - 80);
-            scrollElement.scrollTop = targetScroll;
+            const messageElements = scrollElement.querySelectorAll('[data-message]');
+            if (messageElements.length >= 2) {
+              // Scroll to show the user's question and start of assistant response
+              const userMessageElement = messageElements[messageElements.length - 2];
+              userMessageElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+              });
+            }
           }, 150);
         }
       }

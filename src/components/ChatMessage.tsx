@@ -1,3 +1,4 @@
+
 import { Message } from '@/types/chatTypes';
 
 interface ChatMessageProps {
@@ -6,7 +7,10 @@ interface ChatMessageProps {
 
 const ChatMessage = ({ message }: ChatMessageProps) => {
   return (
-    <div className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+    <div 
+      className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+      data-message
+    >
       <div
         className={`max-w-[85%] rounded-2xl px-5 py-4 whitespace-pre-line shadow-sm ${
           message.role === 'user'
