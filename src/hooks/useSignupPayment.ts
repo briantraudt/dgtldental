@@ -71,7 +71,7 @@ export const useSignupPayment = () => {
       }
 
       if (!data || !data.url) {
-        console.error('❌ No checkout URL in response:', data);
+        console.error('❌ Checkout function succeeded but no checkout URL in response:', data);
         throw new Error('No checkout URL received from payment service');
       }
 
@@ -80,8 +80,22 @@ export const useSignupPayment = () => {
         sessionId: data.sessionId,
         testMode: data.testMode,
         status: data.status,
-        paymentStatus: data.paymentStatus
+        paymentStatus: data.paymentStatus,
+        customerId: data.customerId
       });
+
+      // Test the URL format before redirecting
+      try {
+        const testUrl = new URL(data.url);
+        console.log('✅ URL format validation passed:', {
+          protocol: testUrl.protocol,
+          hostname: testUrl.hostname,
+          pathname: testUrl.pathname
+        });
+      } catch (urlError) {
+        console.error('❌ Invalid URL format received:', data.url);
+        throw new Error(`Invalid checkout URL format: ${data.url}`);
+      }
 
       toast({
         title: "Redirecting to checkout...",
@@ -90,11 +104,19 @@ export const useSignupPayment = () => {
 
       console.log('🔄 Redirecting to Stripe checkout...');
       console.log('Target URL:', data.url);
+      console.log('Current window location:', window.location.href);
       
-      // Force redirect to Stripe checkout - use top-level window location
-      setTimeout(() => {
-        window.top!.location.href = data.url;
-      }, 100);
+      // Test direct window.open first for debugging
+      console.log('Testing window.open in new tab...');
+      const newWindow = window.open(data.url, '_blank');
+      
+      if (!newWindow) {
+        console.log('Popup blocked, trying direct redirect...');
+        // If popup is blocked, try direct redirect
+        window.location.href = data.url;
+      } else {
+        console.log('✅ New window opened successfully');
+      }
 
     } catch (error) {
       console.error('💥 Error processing signup:', error);
@@ -104,6 +126,7 @@ export const useSignupPayment = () => {
       if (error instanceof Error) {
         console.log('Error type:', error.constructor.name);
         console.log('Error message:', error.message);
+        console.log('Error stack:', error.stack);
         
         if (error.message.includes('STRIPE_SECRET_KEY')) {
           errorMessage = "Payment system configuration error. Please contact support.";
@@ -113,6 +136,10 @@ export const useSignupPayment = () => {
           errorMessage = "Failed to save practice information. Please try again.";
         } else if (error.message.includes('Checkout error')) {
           errorMessage = `Payment service error: ${error.message.replace('Checkout error: ', '')}`;
+        } else if (error.message.includes('Invalid price configuration')) {
+          errorMessage = "Payment configuration error. Please contact support.";
+        } else if (error.message.includes('Invalid checkout URL')) {
+          errorMessage = "Payment system error. Please try again or contact support.";
         } else {
           errorMessage = error.message;
         }

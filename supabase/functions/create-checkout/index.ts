@@ -81,6 +81,7 @@ serve(async (req) => {
     const MONTHLY_SUBSCRIPTION_PRICE_ID = "price_1Rg8UYD11m5HbaW36vDyhbco"; // $10/month subscription
     const SETUP_FEE_PRICE_ID = "price_1Rg8XXD11m5HbaW3XPUdef7y"; // $100 setup fee
     
+    logStep("💰 Building line items", { needInstallation });
     const line_items = [
       {
         price: MONTHLY_SUBSCRIPTION_PRICE_ID,
@@ -96,6 +97,28 @@ serve(async (req) => {
       });
     }
 
+    // Verify prices exist in Stripe
+    try {
+      const monthlyPrice = await stripe.prices.retrieve(MONTHLY_SUBSCRIPTION_PRICE_ID);
+      logStep("✅ Monthly price verified", { 
+        id: monthlyPrice.id, 
+        amount: monthlyPrice.unit_amount,
+        active: monthlyPrice.active 
+      });
+      
+      if (needInstallation) {
+        const setupPrice = await stripe.prices.retrieve(SETUP_FEE_PRICE_ID);
+        logStep("✅ Setup price verified", { 
+          id: setupPrice.id, 
+          amount: setupPrice.unit_amount,
+          active: setupPrice.active 
+        });
+      }
+    } catch (priceError) {
+      logStep("❌ Price verification failed", { error: priceError });
+      throw new Error(`Invalid price configuration: ${priceError}`);
+    }
+
     const sessionData = {
       customer: customer.id,
       mode: "subscription" as const,
@@ -104,11 +127,19 @@ serve(async (req) => {
       cancel_url: `${origin}/signup-flow?step=3&error=payment_cancelled`,
       allow_promotion_codes: false,
       billing_address_collection: "auto" as const,
+      payment_method_collection: "always" as const,
       customer_update: {
         address: "auto" as const,
         name: "auto" as const
       },
       payment_method_types: ["card"],
+      subscription_data: {
+        description: `${clinicName} - DGTL Chat Widget Subscription`,
+        metadata: {
+          clinic_id: clinicId,
+          clinic_name: clinicName
+        }
+      },
       metadata: {
         clinic_id: clinicId,
         clinic_name: clinicName
@@ -120,7 +151,8 @@ serve(async (req) => {
       lineItemsCount: line_items.length,
       successUrl: sessionData.success_url,
       cancelUrl: sessionData.cancel_url,
-      lineItems: line_items
+      lineItems: line_items,
+      paymentMethodCollection: sessionData.payment_method_collection
     });
 
     const session = await stripe.checkout.sessions.create(sessionData);
@@ -130,12 +162,22 @@ serve(async (req) => {
       url: session.url,
       mode: session.mode,
       status: session.status,
-      paymentStatus: session.payment_status
+      paymentStatus: session.payment_status,
+      customer: session.customer
     });
 
     if (!session.url) {
-      logStep("❌ No URL in session response");
+      logStep("❌ No URL in session response", { sessionData: session });
       throw new Error("Stripe checkout session created but no URL returned");
+    }
+
+    // Test URL validity
+    try {
+      const urlTest = new URL(session.url);
+      logStep("✅ URL validation passed", { protocol: urlTest.protocol, host: urlTest.host });
+    } catch (urlError) {
+      logStep("❌ Invalid URL format", { url: session.url, error: urlError });
+      throw new Error(`Invalid checkout URL format: ${session.url}`);
     }
 
     const response = { 
@@ -143,7 +185,8 @@ serve(async (req) => {
       sessionId: session.id,
       testMode: stripeKey.startsWith('sk_test_'),
       status: session.status,
-      paymentStatus: session.payment_status
+      paymentStatus: session.payment_status,
+      customerId: customer.id
     };
 
     logStep("🚀 Returning successful response", response);
@@ -165,7 +208,8 @@ serve(async (req) => {
     
     return new Response(JSON.stringify({ 
       error: errorMessage,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      stack: errorStack
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
