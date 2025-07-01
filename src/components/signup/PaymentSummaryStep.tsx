@@ -1,5 +1,6 @@
 
 import { PracticeDetails } from '@/types/signupTypes';
+import { Check } from 'lucide-react';
 
 interface PaymentSummaryStepProps {
   practiceDetails: PracticeDetails;
@@ -33,16 +34,40 @@ const PaymentSummaryStep = ({ practiceDetails }: PaymentSummaryStepProps) => {
         </div>
       </div>
 
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2">✅ What's Included:</h4>
-        <ul className="space-y-1 text-sm text-gray-700">
-          <li>24/7 AI assistant to answer patient questions</li>
-          <li>Customized responses based on your practice info</li>
-          <li>Smart follow-ups to handle multiple patient queries</li>
-          <li>Easy, one-line website install (or free setup by us)</li>
-          <li>Works after hours, weekends, and holidays</li>
-          <li>Real-time updates from your practice dashboard</li>
-          <li>Cancel anytime — no long-term contracts</li>
+      <div className="bg-gray-50 p-6 rounded-lg">
+        <h4 className="font-semibold mb-4 text-lg flex items-center">
+          <Check className="h-5 w-5 text-green-600 mr-2" />
+          What's Included:
+        </h4>
+        <ul className="space-y-3">
+          <li className="flex items-start">
+            <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-700 leading-relaxed">24/7 AI assistant to answer patient questions</span>
+          </li>
+          <li className="flex items-start">
+            <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-700 leading-relaxed">Customized responses based on your practice info</span>
+          </li>
+          <li className="flex items-start">
+            <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-700 leading-relaxed">Smart follow-ups to handle multiple patient queries</span>
+          </li>
+          <li className="flex items-start">
+            <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-700 leading-relaxed">Easy, one-line website install (or free setup by us)</span>
+          </li>
+          <li className="flex items-start">
+            <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-700 leading-relaxed">Works after hours, weekends, and holidays</span>
+          </li>
+          <li className="flex items-start">
+            <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-700 leading-relaxed">Real-time updates from your practice dashboard</span>
+          </li>
+          <li className="flex items-start">
+            <Check className="h-4 w-4 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-700 leading-relaxed">Cancel anytime — no long-term contracts</span>
+          </li>
         </ul>
       </div>
 
