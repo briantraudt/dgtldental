@@ -14,10 +14,10 @@ const HowItWorksSection = () => {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
+      <div className="grid lg:grid-cols-3 md:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
         {/* Step 1 */}
-        <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm hover:-translate-y-1">
-          <CardContent className="pt-6 pb-4 px-4 text-center relative">
+        <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm hover:-translate-y-1 md:aspect-square flex flex-col">
+          <CardContent className="pt-6 pb-4 px-4 text-center relative flex-1 flex flex-col justify-center">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
             <div className="absolute top-4 left-4 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
               1
@@ -35,8 +35,8 @@ const HowItWorksSection = () => {
         </Card>
 
         {/* Step 2 */}
-        <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-emerald-50/50 to-white/90 backdrop-blur-sm hover:-translate-y-1">
-          <CardContent className="pt-6 pb-4 px-4 text-center relative">
+        <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-emerald-50/50 to-white/90 backdrop-blur-sm hover:-translate-y-1 md:aspect-square flex flex-col">
+          <CardContent className="pt-6 pb-4 px-4 text-center relative flex-1 flex flex-col justify-center">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
             <div className="absolute top-4 left-4 w-6 h-6 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
               2
@@ -54,8 +54,8 @@ const HowItWorksSection = () => {
         </Card>
 
         {/* Step 3 */}
-        <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50/50 to-white/90 backdrop-blur-sm hover:-translate-y-1">
-          <CardContent className="pt-6 pb-4 px-4 text-center relative">
+        <Card className="group relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50/50 to-white/90 backdrop-blur-sm hover:-translate-y-1 md:aspect-square flex flex-col">
+          <CardContent className="pt-6 pb-4 px-4 text-center relative flex-1 flex flex-col justify-center">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
             <div className="absolute top-4 left-4 w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
               3
