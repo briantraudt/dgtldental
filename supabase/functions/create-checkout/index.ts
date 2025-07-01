@@ -24,160 +24,161 @@ serve(async (req) => {
     // Verify environment variables
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
     
-    logStep("🔧 Environment variables check", {
+    logStep("🔧 Environment check", {
       hasStripeKey: !!stripeKey,
-      stripeKeyPrefix: stripeKey ? stripeKey.substring(0, 8) + "..." : "missing"
+      stripeKeyLength: stripeKey ? stripeKey.length : 0,
+      stripeKeyPrefix: stripeKey ? stripeKey.substring(0, 7) + "..." : "missing"
     });
 
     if (!stripeKey) {
-      logStep("❌ STRIPE_SECRET_KEY not found in environment");
-      throw new Error("STRIPE_SECRET_KEY is not set in environment variables");
+      logStep("❌ STRIPE_SECRET_KEY missing");
+      throw new Error("STRIPE_SECRET_KEY is not configured");
     }
 
     const requestData = await req.json();
-    logStep("📥 Request data received", { 
-      hasClinicId: !!requestData.clinicId,
-      hasAccountInfo: !!requestData.accountInfo,
-      hasPracticeDetails: !!requestData.practiceDetails
-    });
+    logStep("📥 Request received", requestData);
 
-    // Extract data from the signup flow structure
-    const clinicId = requestData.clinicId;
-    const clinicName = requestData.practiceDetails?.practiceName;
-    const email = requestData.accountInfo?.email;
-    const firstName = requestData.accountInfo?.firstName || '';
-    const lastName = requestData.accountInfo?.lastName || '';
-    const needInstallHelp = requestData.practiceDetails?.needInstallHelp || false;
+    // Extract and validate required fields
+    const { email, clinicName, clinicId, needInstallation } = requestData;
 
-    logStep("📋 Extracted data", { 
-      clinicId, 
-      clinicName, 
-      email, 
-      firstName,
-      lastName,
-      needInstallHelp 
-    });
-
-    if (!clinicId || !clinicName || !email) {
-      logStep("❌ Missing required fields", { clinicId, clinicName, email });
-      throw new Error("Missing required fields: clinicId, clinicName, or email");
+    if (!email || !clinicName || !clinicId) {
+      logStep("❌ Missing required fields", { email: !!email, clinicName: !!clinicName, clinicId: !!clinicId });
+      throw new Error("Missing required fields: email, clinicName, or clinicId");
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       logStep("❌ Invalid email format", { email });
-      throw new Error("Invalid email format provided");
+      throw new Error("Invalid email format");
     }
 
-    // Initialize Stripe with enhanced logging
-    logStep("🔄 Initializing Stripe client");
+    logStep("✅ Input validation passed", { email, clinicName, clinicId, needInstallation });
+
+    // Initialize Stripe
+    logStep("🔄 Initializing Stripe");
     const stripe = new Stripe(stripeKey, { 
-      apiVersion: "2023-10-16"
+      apiVersion: "2023-10-16",
+      typescript: true
     });
-    logStep("✅ Stripe client initialized successfully");
+    logStep("✅ Stripe initialized");
     
-    // Check if customer already exists
-    logStep("🔍 Checking for existing customer", { email });
+    // Create or find customer
+    logStep("👤 Checking for existing customer", { email });
     const customers = await stripe.customers.list({ 
       email: email.toLowerCase().trim(), 
       limit: 1 
     });
     
-    let customerId;
-    
+    let customer;
     if (customers.data.length > 0) {
-      customerId = customers.data[0].id;
-      logStep("👤 Existing customer found", { customerId });
+      customer = customers.data[0];
+      logStep("👤 Found existing customer", { id: customer.id });
     } else {
-      // Create new customer
-      logStep("👤 Creating new customer", { email, firstName, lastName });
-      const customer = await stripe.customers.create({
+      logStep("👤 Creating new customer");
+      customer = await stripe.customers.create({
         email: email.toLowerCase().trim(),
-        name: `${firstName} ${lastName}`.trim() || email
+        name: clinicName
       });
-      customerId = customer.id;
-      logStep("✅ New customer created", { customerId });
+      logStep("✅ Created new customer", { id: customer.id });
     }
 
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Create the most basic checkout session possible
-    const sessionConfig = {
-      customer: customerId,
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: { 
-              name: "DGTL Chat Widget - Premium Plan"
-            },
-            unit_amount: 1000, // $10.00 in cents
-            recurring: { interval: "month" },
-          },
-          quantity: 1,
-        }
-      ],
-      mode: "subscription" as const,
-      success_url: `${origin}/success?clinic_id=${clinicId}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/signup-flow?step=3`
-    };
-
-    // Add setup fee if needed ($100 installation)
-    if (needInstallHelp) {
-      sessionConfig.line_items.push({
+    // Create the most basic checkout session
+    const lineItems = [
+      {
         price_data: {
           currency: "usd",
           product_data: { 
-            name: "Widget Installation Service"
+            name: "DGTL Chat Widget - Monthly Subscription",
+            description: "AI-powered chat widget for your practice"
           },
-          unit_amount: 10000, // $100.00 in cents
+          unit_amount: 1000, // $10.00
+          recurring: { 
+            interval: "month" as const
+          },
+        },
+        quantity: 1,
+      }
+    ];
+
+    // Add installation service if requested
+    if (needInstallation) {
+      lineItems.push({
+        price_data: {
+          currency: "usd",
+          product_data: { 
+            name: "Professional Installation Service",
+            description: "One-time setup and installation assistance"
+          },
+          unit_amount: 10000, // $100.00
         },
         quantity: 1,
       });
-      logStep("💰 Installation service added to line items");
+      logStep("💰 Added installation service");
     }
+
+    const sessionData = {
+      customer: customer.id,
+      line_items: lineItems,
+      mode: "subscription" as const,
+      success_url: `${origin}/success?clinic_id=${clinicId}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/signup-flow?step=3&error=payment_cancelled`,
+      allow_promotion_codes: false,
+      billing_address_collection: "auto" as const,
+      customer_update: {
+        address: "auto" as const,
+        name: "auto" as const
+      }
+    };
 
     logStep("⚙️ Creating checkout session", { 
-      customerId, 
-      mode: sessionConfig.mode,
-      successUrl: sessionConfig.success_url,
-      cancelUrl: sessionConfig.cancel_url,
-      lineItemsCount: sessionConfig.line_items.length
+      customerId: customer.id, 
+      lineItemsCount: lineItems.length,
+      successUrl: sessionData.success_url,
+      cancelUrl: sessionData.cancel_url
     });
 
-    const session = await stripe.checkout.sessions.create(sessionConfig);
+    const session = await stripe.checkout.sessions.create(sessionData);
 
-    logStep("🎉 Checkout session created successfully", { 
+    logStep("🎉 Checkout session created", { 
       sessionId: session.id, 
-      hasUrl: !!session.url,
       url: session.url,
-      sessionMode: session.mode,
-      customerId: session.customer,
-      paymentStatus: session.payment_status,
-      status: session.status
-    });
-
-    if (!session.url) {
-      logStep("❌ Stripe did not return a checkout URL");
-      throw new Error("Stripe did not return a checkout URL");
-    }
-
-    logStep("🔗 Returning checkout URL", { 
-      sessionId: session.id,
-      redirectUrl: session.url,
-      isTestMode: stripeKey.startsWith('sk_test_'),
+      mode: session.mode,
+      status: session.status,
       paymentStatus: session.payment_status
     });
 
-    return new Response(JSON.stringify({ 
+    if (!session.url) {
+      logStep("❌ No URL in session response");
+      throw new Error("Stripe checkout session created but no URL returned");
+    }
+
+    // Validate the URL
+    try {
+      const url = new URL(session.url);
+      if (!url.hostname.includes('checkout.stripe.com')) {
+        throw new Error(`Invalid Stripe URL: ${url.hostname}`);
+      }
+      logStep("✅ URL validation passed", { hostname: url.hostname });
+    } catch (urlError) {
+      logStep("❌ URL validation failed", { url: session.url, error: urlError });
+      throw new Error("Invalid checkout URL format");
+    }
+
+    const response = { 
       url: session.url, 
       sessionId: session.id,
       testMode: stripeKey.startsWith('sk_test_'),
-      paymentStatus: session.payment_status,
-      status: session.status
-    }), {
+      status: session.status,
+      paymentStatus: session.payment_status
+    };
+
+    logStep("🚀 Returning successful response", response);
+
+    return new Response(JSON.stringify(response), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
@@ -186,16 +187,16 @@ serve(async (req) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     const errorStack = error instanceof Error ? error.stack : undefined;
     
-    logStep("💥 ERROR in create-checkout", { 
+    logStep("💥 ERROR", { 
       message: errorMessage, 
       stack: errorStack,
-      errorType: error?.constructor?.name 
+      type: error?.constructor?.name 
     });
     
     return new Response(JSON.stringify({ 
       error: errorMessage,
-      details: errorStack,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      details: process.env.NODE_ENV === 'development' ? errorStack : undefined
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
