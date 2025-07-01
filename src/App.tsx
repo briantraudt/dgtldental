@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Signup from "./pages/Signup";
 import SignupFlow from "./pages/SignupFlow";
 import Success from "./pages/Success";
+import Portal from "./pages/Portal";
 import EmbedDemo from "./pages/EmbedDemo";
 import NotFound from "./pages/NotFound";
 
@@ -24,12 +25,13 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/signup-flow" element={<SignupFlow />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/portal" element={<Portal />} />
           <Route path="/embed-demo" element={<EmbedDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-    </TooltipProvider>
+    </ToToolipProvider>
   </QueryClientProvider>
 );
 

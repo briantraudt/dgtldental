@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Copy, ExternalLink, Settings, Loader2 } from 'lucide-react';
+import { CheckCircle, Copy, ExternalLink, Settings, Loader2, RefreshCw } from 'lucide-react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -14,6 +14,7 @@ const Success = () => {
   const [embedCode, setEmbedCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(true);
   const [subscriptionActive, setSubscriptionActive] = useState(false);
+  const [isCopying, setIsCopying] = useState(false);
   
   const clinicId = searchParams.get('clinic_id') || location.state?.clinicId;
   const clinicName = searchParams.get('clinic_name') || location.state?.clinicName;
@@ -73,6 +74,7 @@ const Success = () => {
   };
 
   const copyToClipboard = async () => {
+    setIsCopying(true);
     try {
       await navigator.clipboard.writeText(embedCode);
       toast({
@@ -80,12 +82,26 @@ const Success = () => {
         description: "Embed code copied to clipboard"
       });
     } catch (error) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = embedCode;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
       toast({
-        title: "Copy failed",
-        description: "Please manually copy the code",
-        variant: "destructive"
+        title: "Copied!",
+        description: "Embed code copied to clipboard"
       });
+    } finally {
+      setIsCopying(false);
     }
+  };
+
+  const refreshSubscription = async () => {
+    setIsVerifying(true);
+    await verifySubscription();
   };
 
   if (!clinicId) {
@@ -108,49 +124,78 @@ const Success = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
-      <div className="container mx-auto px-4 max-w-3xl">
+      <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-8">
           <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             {subscriptionActive ? 'Welcome to DGTL Chat!' : 'Registration Complete!'}
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-600 mb-4">
             {subscriptionActive 
-              ? 'Your AI chat widget is ready to go' 
+              ? `Your AI chat widget for ${clinicName} is ready to go` 
               : 'Your widget is being set up'
             }
           </p>
           {subscriptionActive && (
-            <div className="mt-4 p-3 bg-green-100 border border-green-300 rounded-lg">
-              <p className="text-green-800 font-medium">
-                ✅ Subscription Active - Premium features enabled
-              </p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 border border-green-300 rounded-lg">
+              <CheckCircle className="h-5 w-5 text-green-600" />
+              <span className="text-green-800 font-medium">Subscription Active - Premium features enabled</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={refreshSubscription}
+                className="h-6 w-6 p-0 ml-2"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
             </div>
           )}
         </div>
 
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Custom Embed Code</CardTitle>
+          {/* Main Embed Code Card */}
+          <Card className="border-2 border-blue-200 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+              <CardTitle className="text-xl text-blue-900">Your Personalized Chat Widget Code</CardTitle>
+              <p className="text-blue-700">Copy and paste this code into your website's HTML (before the closing &lt;/body&gt; tag)</p>
             </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-gray-600">
-                Copy this code and paste it into your website's HTML, preferably before the closing &lt;/body&gt; tag:
-              </p>
-              
-              <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
-                <code className="text-sm break-all">{embedCode}</code>
+            <CardContent className="p-6">
+              <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4 relative group">
+                <code className="text-sm break-all font-mono leading-relaxed block pr-12">
+                  {embedCode}
+                </code>
+                <Button
+                  onClick={copyToClipboard}
+                  disabled={isCopying}
+                  className="absolute top-2 right-2 h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                  variant="secondary"
+                >
+                  {isCopying ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
               </div>
               
-              <div className="flex gap-2">
-                <Button onClick={copyToClipboard} variant="outline">
-                  <Copy className="h-4 w-4 mr-2" />
-                  Copy Code
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button onClick={copyToClipboard} disabled={isCopying} className="flex-1">
+                  {isCopying ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Copying...
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copy Code
+                    </>
+                  )}
                 </Button>
                 <Button 
                   onClick={() => window.open('/?clinic=' + clinicId, '_blank')}
                   variant="outline"
+                  className="flex-1"
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Preview Widget
@@ -160,51 +205,89 @@ const Success = () => {
           </Card>
 
           <div className="grid md:grid-cols-2 gap-6">
+            {/* Setup Status */}
             <Card>
               <CardHeader>
-                <CardTitle>Setup Complete ✅</CardTitle>
+                <CardTitle className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                  Setup Complete
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  <span>Practice information saved</span>
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                  <span className="text-sm">Practice information saved</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  <span>AI assistant configured</span>
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                  <span className="text-sm">AI assistant configured</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                  <span>Embed code generated</span>
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                  <span className="text-sm">Personalized embed code generated</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className={`h-5 w-5 mr-2 ${subscriptionActive ? 'text-green-500' : 'text-yellow-500'}`} />
-                  <span>{subscriptionActive ? 'Premium subscription active' : 'Subscription being processed'}</span>
+                  <CheckCircle className={`h-4 w-4 mr-2 flex-shrink-0 ${subscriptionActive ? 'text-green-500' : 'text-yellow-500'}`} />
+                  <span className="text-sm">{subscriptionActive ? 'Premium subscription active' : 'Subscription being processed'}</span>
                 </div>
               </CardContent>
             </Card>
 
+            {/* Next Steps */}
             <Card>
               <CardHeader>
-                <CardTitle>Next Steps</CardTitle>
+                <CardTitle>Quick Start Guide</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-medium mb-1">1. Add to Your Website</h4>
-                  <p className="text-sm text-gray-600">Paste the embed code into your site's HTML</p>
+                  <h4 className="font-medium mb-1 text-sm">1. Add to Your Website</h4>
+                  <p className="text-xs text-gray-600">Paste the embed code into your site's HTML</p>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-1">2. Test the Widget</h4>
-                  <p className="text-sm text-gray-600">Try asking questions to see how it responds</p>
+                  <h4 className="font-medium mb-1 text-sm">2. Test the Widget</h4>
+                  <p className="text-xs text-gray-600">Try asking questions to see how it responds</p>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-1">3. Monitor Performance</h4>
-                  <p className="text-sm text-gray-600">Check back for analytics and updates</p>
+                  <h4 className="font-medium mb-1 text-sm">3. Access Your Portal</h4>
+                  <p className="text-xs text-gray-600">Bookmark this page or log in anytime to manage your widget</p>
                 </div>
               </CardContent>
             </Card>
           </div>
 
+          {/* Account Access Info */}
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold mb-2 text-blue-900">Important: Save Your Access Information</h3>
+                <div className="bg-white p-4 rounded-lg mb-4 border border-blue-200">
+                  <p className="text-sm text-gray-700 mb-2">
+                    <strong>Clinic ID:</strong> <code className="bg-gray-100 px-2 py-1 rounded text-xs">{clinicId}</code>
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    To access your widget code and portal later, visit: <br />
+                    <a href={`${window.location.origin}/portal?clinic=${clinicId}`} className="text-blue-600 hover:underline font-mono text-xs">
+                      {window.location.origin}/portal?clinic={clinicId}
+                    </a>
+                  </p>
+                </div>
+                <p className="text-sm text-blue-700 mb-4">
+                  Bookmark the portal link above to easily access your embed code and manage your widget settings.
+                </p>
+                <div className="flex justify-center gap-4">
+                  <Button 
+                    onClick={() => navigate(`/portal?clinic=${clinicId}`)}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Go to Portal
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Support Section */}
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
@@ -216,9 +299,12 @@ const Success = () => {
                   <Button variant="outline">
                     Contact Support
                   </Button>
-                  <Button variant="outline">
+                  <Button 
+                    variant="outline"
+                    onClick={() => navigate(`/portal?clinic=${clinicId}`)}
+                  >
                     <Settings className="h-4 w-4 mr-2" />
-                    Edit Practice Info
+                    Manage Settings
                   </Button>
                 </div>
               </div>
@@ -228,9 +314,16 @@ const Success = () => {
           <div className="text-center">
             <Button 
               onClick={() => navigate('/')}
-              className="bg-blue-600 hover:bg-blue-700"
+              variant="outline"
+              className="mr-4"
             >
               Back to Home
+            </Button>
+            <Button 
+              onClick={() => navigate(`/portal?clinic=${clinicId}`)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Access Portal
             </Button>
           </div>
         </div>
