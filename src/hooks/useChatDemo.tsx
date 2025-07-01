@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,11 +26,17 @@ export const useChatDemo = () => {
           const messageElements = scrollElement.querySelectorAll('[data-message]');
           
           if (messageElements.length >= 2) {
-            // Show both the user question and start of assistant response
+            // Position to show both the user question and assistant response
             const userMessageElement = messageElements[messageElements.length - 2];
-            userMessageElement.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start' 
+            const rect = userMessageElement.getBoundingClientRect();
+            const containerRect = scrollElement.getBoundingClientRect();
+            
+            // Calculate scroll position to show user message with some padding
+            const targetScrollTop = scrollElement.scrollTop + rect.top - containerRect.top - 20;
+            
+            scrollElement.scrollTo({ 
+              top: targetScrollTop, 
+              behavior: 'smooth' 
             });
           } else {
             // Fallback to normal scroll for single messages
