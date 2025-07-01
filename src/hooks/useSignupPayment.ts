@@ -9,16 +9,23 @@ export const useSignupPayment = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePayment = async (accountInfo: AccountInfo, practiceDetails: PracticeDetails) => {
+    console.log('=== PAYMENT PROCESS STARTED ===');
+    console.log('Account Info:', JSON.stringify(accountInfo, null, 2));
+    console.log('Practice Details:', JSON.stringify(practiceDetails, null, 2));
+    
     setIsLoading(true);
     
     try {
       // Generate unique clinic ID
       const clinicId = generateClinicId(practiceDetails.practiceName);
+      console.log('Generated Clinic ID:', clinicId);
       
       // Format office hours for storage
       const formattedOfficeHours = formatOfficeHours(practiceDetails.officeHours);
+      console.log('Formatted Office Hours:', formattedOfficeHours);
       
       // Insert clinic data
+      console.log('Inserting clinic data...');
       const { error: clinicError } = await supabase
         .from('clinics')
         .insert({
@@ -37,44 +44,64 @@ export const useSignupPayment = () => {
 
       if (clinicError) {
         console.error('Clinic insertion error:', clinicError);
-        throw clinicError;
+        throw new Error(`Database error: ${clinicError.message}`);
       }
 
-      console.log('Clinic data inserted successfully');
+      console.log('✅ Clinic data inserted successfully');
 
       // Create Stripe checkout session with proper data structure
       const checkoutData = {
         clinicId,
-        accountInfo,
+        accountInfo: {
+          ...accountInfo,
+          firstName: accountInfo.firstName?.trim() || '',
+          lastName: accountInfo.lastName?.trim() || '',
+          email: accountInfo.email?.trim() || ''
+        },
         practiceDetails: {
           ...practiceDetails,
-          practiceName: practiceDetails.practiceName,
+          practiceName: practiceDetails.practiceName?.trim() || '',
           officeHours: formattedOfficeHours
         },
-        needInstallHelp: practiceDetails.needInstallHelp
+        needInstallHelp: practiceDetails.needInstallHelp || false
       };
 
-      console.log('Sending checkout data:', checkoutData);
+      console.log('=== CREATING STRIPE CHECKOUT ===');
+      console.log('Checkout data being sent:', JSON.stringify(checkoutData, null, 2));
 
       const { data, error } = await supabase.functions.invoke('create-checkout', {
         body: checkoutData
       });
 
+      console.log('Stripe function response:', { data, error });
+
       if (error) {
-        console.error('Checkout creation error:', error);
-        throw error;
+        console.error('❌ Checkout creation error:', error);
+        throw new Error(`Checkout error: ${error.message || 'Unknown error'}`);
       }
 
-      console.log('Checkout session created:', data);
+      if (!data) {
+        console.error('❌ No data received from checkout function');
+        throw new Error('No response received from payment service');
+      }
 
-      if (!data?.url) {
-        throw new Error('No checkout URL received from server');
+      console.log('Raw checkout response:', data);
+
+      if (!data.url) {
+        console.error('❌ No checkout URL in response:', data);
+        throw new Error('No checkout URL received from payment service');
       }
 
       // Validate the URL format
-      if (!data.url.startsWith('https://checkout.stripe.com/')) {
-        throw new Error('Invalid checkout URL format received');
+      const checkoutUrl = data.url;
+      console.log('Checkout URL received:', checkoutUrl);
+      
+      if (!checkoutUrl.startsWith('https://checkout.stripe.com/')) {
+        console.error('❌ Invalid checkout URL format:', checkoutUrl);
+        throw new Error('Invalid checkout URL format received from payment service');
       }
+
+      console.log('✅ Valid Stripe checkout URL received');
 
       toast({
         title: "Practice registered successfully!",
@@ -83,23 +110,30 @@ export const useSignupPayment = () => {
 
       // Small delay to show the toast, then redirect
       setTimeout(() => {
-        console.log('Redirecting to:', data.url);
+        console.log('🔄 Redirecting to Stripe checkout:', checkoutUrl);
         // Use window.location.href for a proper redirect
-        window.location.href = data.url;
+        window.location.href = checkoutUrl;
       }, 1500);
 
     } catch (error) {
-      console.error('Error processing signup:', error);
+      console.error('💥 Error processing signup:', error);
       
       let errorMessage = "An unexpected error occurred. Please try again.";
       
       if (error instanceof Error) {
+        console.log('Error type:', error.constructor.name);
+        console.log('Error message:', error.message);
+        
         if (error.message.includes('STRIPE_SECRET_KEY')) {
           errorMessage = "Payment system configuration error. Please contact support.";
         } else if (error.message.includes('No checkout URL')) {
           errorMessage = "Failed to create payment session. Please try again.";
         } else if (error.message.includes('Invalid checkout URL')) {
           errorMessage = "Payment system returned invalid URL. Please contact support.";
+        } else if (error.message.includes('Database error')) {
+          errorMessage = "Failed to save practice information. Please try again.";
+        } else if (error.message.includes('Checkout error')) {
+          errorMessage = `Payment service error: ${error.message.replace('Checkout error: ', '')}`;
         } else {
           errorMessage = error.message;
         }
@@ -112,6 +146,7 @@ export const useSignupPayment = () => {
       });
     } finally {
       setIsLoading(false);
+      console.log('=== PAYMENT PROCESS ENDED ===');
     }
   };
 
