@@ -44,10 +44,11 @@ serve(async (req) => {
       throw new Error("Missing required fields: email, clinicName, or clinicId");
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // More lenient email validation - just check for basic format
+    const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
       logStep("❌ Invalid email format", { email });
-      throw new Error("Invalid email format");
+      throw new Error("Please enter a valid email address");
     }
 
     logStep("✅ Input validation passed", { email, clinicName, clinicId, needInstallation });
@@ -77,32 +78,46 @@ serve(async (req) => {
       logStep("✅ Created new customer", { id: customer.id });
     }
 
-    // Create a standard price object first
-    logStep("💰 Creating subscription price");
-    const subscriptionPrice = await stripe.prices.create({
-      currency: "usd",
-      unit_amount: 1000, // $10.00
-      recurring: { interval: "month" },
-      product_data: {
-        name: "DGTL Chat Widget - Monthly Subscription",
-        description: "AI-powered chat widget for your practice"
-      },
-    });
-    logStep("✅ Created subscription price", { priceId: subscriptionPrice.id });
-
     const origin = req.headers.get("origin") || "http://localhost:3000";
     logStep("🌐 Origin determined", { origin });
     
-    // Use the standard Stripe configuration
+    // Create line items array
+    const lineItems = [
+      {
+        price_data: {
+          currency: "usd",
+          unit_amount: 1000, // $10.00
+          recurring: { interval: "month" as const },
+          product_data: {
+            name: "DGTL Chat Widget - Monthly Subscription",
+            description: "AI-powered chat widget for your practice"
+          },
+        },
+        quantity: 1,
+      }
+    ];
+
+    // Add installation service if requested
+    if (needInstallation) {
+      logStep("💰 Adding installation service");
+      lineItems.push({
+        price_data: {
+          currency: "usd",
+          unit_amount: 10000, // $100.00
+          product_data: {
+            name: "Professional Installation Service",
+            description: "One-time setup and installation assistance"
+          },
+        },
+        quantity: 1,
+      });
+      logStep("✅ Added installation service");
+    }
+
     const sessionData = {
       customer: customer.id,
       mode: "subscription" as const,
-      line_items: [
-        {
-          price: subscriptionPrice.id,
-          quantity: 1,
-        }
-      ],
+      line_items: lineItems,
       success_url: `${origin}/success?clinic_id=${clinicId}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/signup-flow?step=3&error=payment_cancelled`,
       billing_address_collection: "auto" as const,
@@ -113,25 +128,6 @@ serve(async (req) => {
       payment_method_types: ["card"],
       automatic_tax: { enabled: false }
     };
-
-    // Add installation service if requested
-    if (needInstallation) {
-      logStep("💰 Adding installation service");
-      const installationPrice = await stripe.prices.create({
-        currency: "usd",
-        unit_amount: 10000, // $100.00
-        product_data: {
-          name: "Professional Installation Service",
-          description: "One-time setup and installation assistance"
-        },
-      });
-      
-      sessionData.line_items.push({
-        price: installationPrice.id,
-        quantity: 1,
-      });
-      logStep("✅ Added installation service", { priceId: installationPrice.id });
-    }
 
     logStep("⚙️ Creating checkout session", { 
       customerId: customer.id, 
@@ -194,8 +190,7 @@ serve(async (req) => {
     
     return new Response(JSON.stringify({ 
       error: errorMessage,
-      timestamp: new Date().toISOString(),
-      details: process.env.NODE_ENV === 'development' ? errorStack : undefined
+      timestamp: new Date().toISOString()
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,

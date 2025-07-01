@@ -46,8 +46,11 @@ export const useSignupPayment = () => {
 
       console.log('✅ Clinic data inserted successfully');
 
+      // Use a proper email address for testing - if the email field is just "test", use a test email
+      const checkoutEmail = accountInfo.email.includes('@') ? accountInfo.email : 'test@example.com';
+
       const checkoutData = {
-        email: accountInfo.email.trim(),
+        email: checkoutEmail,
         clinicName: practiceDetails.practiceName.trim(),
         clinicId: clinicId,
         needInstallation: practiceDetails.needInstallHelp || false
@@ -127,6 +130,8 @@ export const useSignupPayment = () => {
           errorMessage = `Payment service error: ${error.message.replace('Checkout error: ', '')}`;
         } else if (error.message.includes('Invalid') || error.message.includes('malformed')) {
           errorMessage = "Payment service returned invalid response. Please try again.";
+        } else if (error.message.includes('Please enter a valid email')) {
+          errorMessage = "Please enter a valid email address in the account information step.";
         } else {
           errorMessage = error.message;
         }
