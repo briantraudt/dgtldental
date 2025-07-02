@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,7 +65,8 @@ export default {
 				},
 				brand: {
 					blue: 'hsl(var(--brand-blue))',
-					'blue-hover': 'hsl(var(--brand-blue-hover))'
+					'blue-hover': 'hsl(var(--brand-blue-hover))',
+					light: 'hsl(var(--brand-light))'
 				},
 				success: 'hsl(var(--success))',
 				warning: 'hsl(var(--warning))'
