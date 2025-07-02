@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -54,7 +55,7 @@ All colors MUST be HSL.
 
     --sidebar-ring: 217.2 91.2% 59.8%;
     
-    /* Brand colors for better consistency */
+    /* Brand colors matching the "Not Anymore" text blue */
     --brand-blue: 217 91% 60%;
     --brand-blue-hover: 217 91% 50%;
     --success: 142 71% 45%;

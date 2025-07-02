@@ -20,7 +20,7 @@ const Navigation = () => {
               </Button>
             </Link>
             <Link to="/signup-flow">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button size="sm" className="bg-brand-blue hover:bg-brand-blue-hover text-white">
                 Get Started
               </Button>
             </Link>

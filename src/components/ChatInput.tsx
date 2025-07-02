@@ -24,13 +24,13 @@ const ChatInput = forwardRef<HTMLInputElement, ChatInputProps>(
             onKeyPress={onKeyPress}
             placeholder="Ask us anything"
             disabled={isLoading}
-            className="flex-1 border-2 border-blue-200 focus:border-blue-500 focus:ring-blue-500/20 focus:ring-4 rounded-xl px-4 md:px-6 py-3 md:py-4 text-base md:text-lg text-gray-700 placeholder-gray-500 shadow-sm transition-all duration-200 hover:border-blue-300 h-12 md:h-14 placeholder:text-sm md:placeholder:text-base"
+            className="flex-1 border-2 border-blue-200 focus:border-brand-blue focus:ring-brand-blue/20 focus:ring-4 rounded-xl px-4 md:px-6 py-3 md:py-4 text-base md:text-lg text-gray-700 placeholder-gray-500 shadow-sm transition-all duration-200 hover:border-blue-300 h-12 md:h-14 placeholder:text-sm md:placeholder:text-base"
           />
           <Button
             onClick={onSend}
             disabled={isLoading || !message.trim()}
             size="icon"
-            className="bg-blue-600 hover:bg-blue-700 h-12 w-12 md:h-14 md:w-14 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex-shrink-0"
+            className="bg-brand-blue hover:bg-brand-blue-hover h-12 w-12 md:h-14 md:w-14 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex-shrink-0"
           >
             <Send className="h-4 w-4 md:h-5 md:w-5" />
           </Button>

@@ -146,7 +146,7 @@ What would you like to know more about?`;
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg z-50"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-brand-blue hover:bg-brand-blue-hover shadow-lg z-50"
           size="icon"
         >
           <MessageCircle className="h-6 w-6 text-white" />
@@ -157,7 +157,7 @@ What would you like to know more about?`;
       {isOpen && (
         <Card className="fixed bottom-6 right-6 w-80 h-96 bg-white shadow-2xl border-0 z-50 flex flex-col">
           {/* Header */}
-          <div className="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+          <div className="bg-brand-blue text-white p-4 rounded-t-lg flex justify-between items-center">
             <div>
               <h3 className="font-semibold">DGTL Dental</h3>
               <p className="text-sm text-blue-100">How can I help you today?</p>
@@ -166,7 +166,7 @@ What would you like to know more about?`;
               onClick={() => setIsOpen(false)}
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-blue-700 h-8 w-8"
+              className="text-white hover:bg-black/10 h-8 w-8"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -199,7 +199,7 @@ What would you like to know more about?`;
                       <div
                         className={`max-w-[80%] rounded-lg px-3 py-2 text-sm whitespace-pre-line ${
                           msg.role === 'user'
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-brand-blue text-white'
                             : 'bg-gray-100 text-gray-800'
                         }`}
                       >
@@ -237,7 +237,7 @@ What would you like to know more about?`;
                     onClick={handleSendMessage}
                     disabled={isLoading || !message.trim()}
                     size="icon"
-                    className="bg-blue-600 hover:bg-blue-700"
+                    className="bg-brand-blue hover:bg-brand-blue-hover"
                   >
                     <Send className="h-4 w-4" />
                   </Button>
