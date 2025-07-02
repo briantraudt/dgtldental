@@ -46,7 +46,7 @@ const HeroSection = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Missed Revenue.
             </h1>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-brand-light">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-blue-400">
               Not Anymore.
             </h1>
             <p className="text-lg md:text-xl font-medium mb-6 opacity-90">
@@ -59,7 +59,7 @@ const HeroSection = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
               Missed Calls. Missed Patients. Missed Revenue.
             </h1>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-brand-light">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-blue-400">
               Not Anymore.
             </h1>
             <p className="text-lg md:text-2xl mb-8 opacity-90">
