@@ -9,8 +9,10 @@ import Navigation from '@/components/Navigation';
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <Navigation />
-      <HeroSection />
+      <div className="relative">
+        <Navigation />
+        <HeroSection />
+      </div>
       <AboutSection />
       <DemoSection />
       <Footer />
