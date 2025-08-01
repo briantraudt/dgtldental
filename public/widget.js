@@ -7,20 +7,20 @@
   var clinicId = script ? script.getAttribute('data-clinic-id') : 'demo-clinic-123';
   
   // Set global config
-  window.DENTAL_CHAT_CONFIG = {
+  window.DGTL_CHAT_CONFIG = {
     clinicId: clinicId
   };
 
   // Create and inject the widget iframe
   function createWidget() {
     // Check if widget already exists
-    if (document.getElementById('dental-chat-widget')) {
+    if (document.getElementById('dgtl-chat-widget')) {
       return;
     }
 
     // Create iframe container
     var iframe = document.createElement('iframe');
-    iframe.id = 'dental-chat-widget';
+    iframe.id = 'dgtl-chat-widget';
     iframe.src = window.location.origin + '/?embedded=true&clinic=' + encodeURIComponent(clinicId);
     iframe.style.cssText = [
       'position: fixed',
@@ -42,7 +42,7 @@
     window.addEventListener('message', function(event) {
       if (event.origin !== window.location.origin) return;
       
-      if (event.data.type === 'DENTAL_WIDGET_RESIZE') {
+      if (event.data.type === 'DGTL_WIDGET_RESIZE') {
         iframe.style.width = event.data.width + 'px';
         iframe.style.height = event.data.height + 'px';
       }
