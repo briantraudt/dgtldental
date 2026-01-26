@@ -8,7 +8,7 @@ interface BaseMessageProps {
 // Greeting - warm, welcoming
 export const GreetingMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="text-lg md:text-xl text-gray-800 font-medium leading-relaxed">
+    <div className="text-[17px] md:text-lg text-gray-800 leading-relaxed">
       {children}
     </div>
   </div>
@@ -38,7 +38,7 @@ export const ProofMessage = ({ children, animate = true }: BaseMessageProps) => 
 // Explanation - informative, supportive
 export const ExplanationMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="text-[15px] md:text-base text-gray-600 leading-relaxed">
+    <div className="text-[15px] md:text-base text-gray-700 leading-relaxed">
       {children}
     </div>
   </div>
