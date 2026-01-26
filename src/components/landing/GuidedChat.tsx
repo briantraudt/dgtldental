@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { playMessageFeedback } from './chat/audioFeedback';
@@ -355,6 +356,19 @@ const GuidedChat = () => {
 
       case 'show_demo':
         return null; // Demo is rendered separately to persist
+
+      case 'not_dental_end':
+        return (
+          <div className="flex justify-center pt-4 animate-fade-in">
+            <button
+              onClick={() => window.location.reload()}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Start over
+            </button>
+          </div>
+        );
 
       case 'ask_setup':
         return (
