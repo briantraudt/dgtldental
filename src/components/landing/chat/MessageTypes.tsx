@@ -136,7 +136,7 @@ interface QuickReplyProps {
 }
 
 export const QuickReplyButtons = ({ options }: QuickReplyProps) => (
-  <div className="flex flex-wrap gap-3 animate-fade-in mt-4 ml-9">
+  <div className="flex flex-wrap gap-3 animate-fade-in mt-4 justify-end">
     {options.map((option, index) => (
       <button
         key={index}
