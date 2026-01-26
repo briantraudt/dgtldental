@@ -16,19 +16,13 @@ import ChatInput from './chat/ChatInput';
 
 type ConversationState = 
   | 'initial'
-  | 'show_intro'
   | 'ask_dental'
   | 'not_dental_end'
-  | 'show_authority'
   | 'show_value'
-  | 'show_benefit'
-  | 'show_ease_1'
-  | 'show_ease_2'
   | 'show_process'
-  | 'show_safety'
   | 'show_price'
   | 'ask_setup'
-  | 'show_email_info'
+  | 'show_contact'
   | 'ask_practice_name'
   | 'ask_website'
   | 'ask_email'
@@ -69,13 +63,13 @@ const GuidedChat = () => {
   const addMessage = useCallback((message: Omit<Message, 'id'>): Promise<void> => {
     return new Promise((resolve) => {
       setIsTyping(true);
-      const delay = 400 + Math.random() * 400;
+      const delay = 500 + Math.random() * 300;
       
       setTimeout(() => {
         setIsTyping(false);
         const id = `msg-${Date.now()}-${Math.random()}`;
         setMessages(prev => [...prev, { ...message, id }]);
-        setTimeout(resolve, 100);
+        setTimeout(resolve, 150);
       }, delay);
     });
   }, []);
@@ -93,65 +87,31 @@ const GuidedChat = () => {
       switch (state) {
         case 'initial':
           hasInitialized.current = true;
-          await addMessage({ type: 'greeting', content: "Hi — quick heads up before we start." });
-          setState('show_intro');
-          break;
-
-        case 'show_intro':
           await addMessage({ 
-            type: 'explanation', 
-            content: "This is a short walkthrough of a service we install for dental practices. No sales call. No setup on your end." 
+            type: 'greeting', 
+            content: "Hi, thanks for stopping by! We create AI-powered chatbots for dental practices to help you save time and money while providing a better patient experience." 
           });
           setState('ask_dental');
           break;
 
         case 'ask_dental':
-          await addMessage({ type: 'question', content: "Are you involved in a dental practice?" });
+          await addMessage({ 
+            type: 'question', 
+            content: "Are you a dentist or do you work in a dental office?" 
+          });
           break;
 
         case 'not_dental_end':
           await addMessage({ 
             type: 'explanation', 
-            content: "Got it. This service is built specifically for dental practices. Thanks for taking a look." 
+            content: "Thanks for stopping by! This service is designed specifically for dental practices. Feel free to share with anyone you know in the dental field." 
           });
-          break;
-
-        case 'show_authority':
-          await addMessage({ 
-            type: 'proof', 
-            content: "We've helped dental practices answer 50,000+ real patient questions using AI." 
-          });
-          setState('show_value');
           break;
 
         case 'show_value':
           await addMessage({ 
             type: 'explanation', 
-            content: "We install a custom assistant on your website that answers common patient questions — 24/7 — using safe, non-diagnostic language." 
-          });
-          setState('show_benefit');
-          break;
-
-        case 'show_benefit':
-          await addMessage({ 
-            type: 'explanation', 
-            content: "That means fewer interruptions for your front desk and fewer missed inquiries after hours." 
-          });
-          setState('show_ease_1');
-          break;
-
-        case 'show_ease_1':
-          await addMessage({ 
-            type: 'explanation', 
-            content: "There's nothing for you or your team to learn." 
-          });
-          setState('show_ease_2');
-          break;
-
-        case 'show_ease_2':
-          await addMessage({ 
-            type: 'explanation', 
-            content: "We build it. Your site adds one line of code. That's it." 
+            content: "Our AI assistant answers common patient questions on your website — 24/7 — so your front desk can focus on patients in the office." 
           });
           setState('show_process');
           break;
@@ -162,21 +122,13 @@ const GuidedChat = () => {
             content: (
               <ProcessCard 
                 steps={[
-                  { number: 1, text: "You tell us about your practice" },
-                  { number: 2, text: "We build your assistant" },
-                  { number: 3, text: "Your site adds one line of code" },
+                  { number: 1, text: "Tell us about your practice" },
+                  { number: 2, text: "We build your custom assistant" },
+                  { number: 3, text: "Add one line of code to your site" },
                 ]}
                 footer="Live within 24 hours"
               />
             )
-          });
-          setState('show_safety');
-          break;
-
-        case 'show_safety':
-          await addMessage({ 
-            type: 'explanation', 
-            content: "It never diagnoses, never recommends treatment, and always directs patients to contact your office." 
           });
           setState('show_price');
           break;
@@ -184,46 +136,57 @@ const GuidedChat = () => {
         case 'show_price':
           await addMessage({ 
             type: 'explanation', 
-            content: "It's $99 per month. No setup fee. Cancel anytime." 
+            content: "$99/month. No setup fee. Cancel anytime." 
           });
           setState('ask_setup');
           break;
 
         case 'ask_setup':
-          await addMessage({ type: 'question', content: "Want us to set this up for your website?" });
+          await addMessage({ 
+            type: 'question', 
+            content: "Want us to set this up for you?" 
+          });
           break;
 
-        case 'show_email_info':
+        case 'show_contact':
           await addMessage({ 
             type: 'explanation', 
             content: (
               <>
-                Email us at{' '}
+                No problem! Reach out anytime at{' '}
                 <a href="mailto:hello@dgtldental.com" className="text-blue-600 hover:text-blue-700 underline underline-offset-2">
                   hello@dgtldental.com
                 </a>
-                {' '}— we'll get back to you quickly.
               </>
             )
           });
           break;
 
         case 'ask_practice_name':
-          await addMessage({ type: 'question', content: "Great — what's the name of your practice?" });
+          await addMessage({ 
+            type: 'question', 
+            content: "What's the name of your practice?" 
+          });
           break;
 
         case 'ask_website':
-          await addMessage({ type: 'question', content: "What's your website?" });
+          await addMessage({ 
+            type: 'question', 
+            content: "What's your website URL?" 
+          });
           break;
 
         case 'ask_email':
-          await addMessage({ type: 'question', content: "Best email to reach you?" });
+          await addMessage({ 
+            type: 'question', 
+            content: "What's the best email to reach you?" 
+          });
           break;
 
         case 'complete':
           await addMessage({ 
             type: 'success', 
-            content: "Thanks. We'll review your site and follow up shortly." 
+            content: "Thanks! We'll review your site and follow up within 24 hours." 
           });
           break;
       }
@@ -233,9 +196,9 @@ const GuidedChat = () => {
   }, [state, addMessage]);
 
   // Handlers
-  const handleDentalYes = (response: string) => {
-    addUserMessage(response);
-    setState('show_authority');
+  const handleDentalYes = () => {
+    addUserMessage("Yes");
+    setState('show_value');
   };
 
   const handleDentalNo = () => {
@@ -248,9 +211,9 @@ const GuidedChat = () => {
     setState('ask_practice_name');
   };
 
-  const handleQuestion = () => {
-    addUserMessage("I have a question");
-    setState('show_email_info');
+  const handleSetupNo = () => {
+    addUserMessage("Not right now");
+    setState('show_contact');
   };
 
   const handleBackToSetup = () => {
@@ -306,8 +269,7 @@ const GuidedChat = () => {
         return (
           <QuickReplyButtons
             options={[
-              { label: "Yes — dentist / owner", onClick: () => handleDentalYes("Yes — dentist / owner"), primary: true },
-              { label: "Yes — I work in dental", onClick: () => handleDentalYes("Yes — I work in dental") },
+              { label: "Yes", onClick: handleDentalYes, primary: true },
               { label: "No", onClick: handleDentalNo },
             ]}
           />
@@ -317,29 +279,29 @@ const GuidedChat = () => {
         return (
           <QuickReplyButtons
             options={[
-              { label: "Yes — set it up", onClick: handleSetupYes, primary: true },
-              { label: "I have a question", onClick: handleQuestion },
+              { label: "Yes, let's do it", onClick: handleSetupYes, primary: true },
+              { label: "Not right now", onClick: handleSetupNo },
             ]}
           />
         );
 
-      case 'show_email_info':
+      case 'show_contact':
         return (
           <QuickReplyButtons
             options={[
-              { label: "Actually, let's set it up", onClick: handleBackToSetup },
+              { label: "Actually, let's set it up", onClick: handleBackToSetup, primary: true },
             ]}
           />
         );
 
       case 'ask_practice_name':
-        return <ChatInput placeholder="Enter your practice name..." onSubmit={handlePracticeSubmit} />;
+        return <ChatInput placeholder="Practice name..." onSubmit={handlePracticeSubmit} />;
 
       case 'ask_website':
-        return <ChatInput placeholder="Enter your website URL..." onSubmit={handleWebsiteSubmit} type="url" />;
+        return <ChatInput placeholder="Website URL..." onSubmit={handleWebsiteSubmit} type="url" />;
 
       case 'ask_email':
-        return <ChatInput placeholder="Enter your email..." onSubmit={handleEmailSubmit} isSubmitting={isSubmitting} type="email" />;
+        return <ChatInput placeholder="Email address..." onSubmit={handleEmailSubmit} isSubmitting={isSubmitting} type="email" />;
 
       default:
         return null;
@@ -368,15 +330,9 @@ const GuidedChat = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 via-white to-slate-50 relative">
-      {/* Subtle ambient background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-indigo-100/20 rounded-full blur-3xl" />
-      </div>
-
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
-      <header className="relative z-10 pt-8 md:pt-12 pb-4">
+      <header className="pt-8 md:pt-12 pb-4">
         <div className="max-w-[700px] mx-auto px-6">
           <a 
             href="/" 
@@ -386,16 +342,16 @@ const GuidedChat = () => {
             <img 
               src="/images/dgtl-logo.png" 
               alt="DGTL Dental" 
-              className="h-14 md:h-20 w-auto"
+              className="h-16 md:h-24 w-auto"
             />
           </a>
         </div>
       </header>
 
       {/* Chat Area */}
-      <main className="flex-1 relative z-10">
+      <main className="flex-1">
         <div className="max-w-[700px] mx-auto px-6 py-8">
-          <div className="space-y-5">
+          <div className="space-y-6">
             {messages.map(renderMessage)}
             
             {isTyping && <TypingIndicator />}
@@ -409,7 +365,6 @@ const GuidedChat = () => {
           <div ref={messagesEndRef} className="h-8" />
         </div>
       </main>
-
     </div>
   );
 };
