@@ -420,8 +420,8 @@ const GuidedChat = () => {
       </header>
 
       {/* Chat Area */}
-      <main className="flex-1 overflow-y-auto px-5 md:px-8 py-6">
-        <div className="max-w-[600px] mx-auto">
+      <main className="flex-1 overflow-y-auto px-5 md:px-8 py-6 flex flex-col justify-end">
+        <div className="max-w-[600px] mx-auto w-full">
           <div className="space-y-5">
             {messages.map(renderMessage)}
             

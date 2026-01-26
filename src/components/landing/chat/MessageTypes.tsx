@@ -101,7 +101,7 @@ export const CTAMessage = ({ text, animate = true }: CTAMessageProps) => (
 // User message - distinct bubble
 export const UserMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`flex justify-end ${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-foreground text-background px-5 py-3 rounded-2xl rounded-br-sm max-w-[80%] shadow-sm">
+    <div className="bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-br-sm max-w-[80%] shadow-sm">
       <div className="text-[15px] leading-relaxed">{children}</div>
     </div>
   </div>
