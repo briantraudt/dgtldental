@@ -11,7 +11,7 @@ interface DemoChatProps {
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
 // Typewriter component for streaming text
-const StreamingTypewriter = ({ text, isComplete }: { text: string; isComplete: boolean }) => {
+const StreamingTypewriter = ({ text, isComplete, onTextUpdate }: { text: string; isComplete: boolean; onTextUpdate?: () => void }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   
@@ -22,10 +22,11 @@ const StreamingTypewriter = ({ text, isComplete }: { text: string; isComplete: b
         const charsToAdd = Math.min(3, text.length - currentIndex);
         setDisplayedText(text.slice(0, currentIndex + charsToAdd));
         setCurrentIndex(prev => prev + charsToAdd);
+        onTextUpdate?.();
       }, 15); // Fast typing speed
       return () => clearTimeout(timeout);
     }
-  }, [currentIndex, text]);
+  }, [currentIndex, text, onTextUpdate]);
 
   // Format the displayed text into paragraphs with clickable link
   const formatDisplayedText = (txt: string) => {
@@ -69,10 +70,16 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const [hasCompleted, setHasCompleted] = useState(false);
   const [streamComplete, setStreamComplete] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const responseEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  // Auto-scroll to keep response visible
+  const scrollToBottom = () => {
+    responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  };
 
   const sendMessage = async (message: string) => {
     if (!message.trim() || isLoading) return;
@@ -202,8 +209,9 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
                 <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
               </div>
             ) : (
-              <StreamingTypewriter text={aiResponse} isComplete={streamComplete} />
+              <StreamingTypewriter text={aiResponse} isComplete={streamComplete} onTextUpdate={scrollToBottom} />
             )}
+            <div ref={responseEndRef} />
           </div>
         </div>
       )}
