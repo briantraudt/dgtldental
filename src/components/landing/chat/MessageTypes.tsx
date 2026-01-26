@@ -8,8 +8,8 @@ interface BaseMessageProps {
 // Bot message bubble - consistent styling for all bot messages
 const BotBubble = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[90%]">
-      <div className="text-[15px] text-gray-700 leading-relaxed">
+    <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[90%]">
+      <div className="text-[15px] text-foreground/80 leading-relaxed">
         {children}
       </div>
     </div>
@@ -29,8 +29,8 @@ export const QuestionMessage = ({ children, animate = true }: BaseMessageProps) 
 // Proof - subtle emphasis, credibility
 export const ProofMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
-      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium">
+      <span className="w-1.5 h-1.5 bg-primary rounded-full" />
       {children}
     </span>
   </div>
@@ -55,20 +55,20 @@ interface ProcessCardProps {
 
 export const ProcessCard = ({ steps, footer, animate = true }: ProcessCardProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+    <div className="bg-card rounded-xl border border-border shadow-sm p-4">
       <div className="space-y-2.5">
         {steps.map((step) => (
           <div key={step.number} className="flex items-center gap-3">
-            <span className="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-lg flex items-center justify-center text-xs font-semibold flex-shrink-0">
+            <span className="w-7 h-7 bg-primary text-primary-foreground rounded-lg flex items-center justify-center text-xs font-semibold flex-shrink-0">
               {step.number}
             </span>
-            <span className="text-[14px] text-gray-700">{step.text}</span>
+            <span className="text-[14px] text-foreground/80">{step.text}</span>
           </div>
         ))}
       </div>
       {footer && (
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <p className="text-[13px] font-medium text-gray-900">{footer}</p>
+        <div className="mt-3 pt-3 border-t border-border">
+          <p className="text-[13px] font-medium text-foreground">{footer}</p>
         </div>
       )}
     </div>
@@ -83,7 +83,7 @@ interface CTAMessageProps {
 
 export const CTAMessage = ({ text, animate = true }: CTAMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="text-[15px] md:text-base text-gray-700 leading-relaxed font-medium">
+    <div className="text-[15px] md:text-base text-foreground/80 leading-relaxed font-medium">
       {text}
     </div>
   </div>
@@ -92,7 +92,7 @@ export const CTAMessage = ({ text, animate = true }: CTAMessageProps) => (
 // User message - distinct bubble
 export const UserMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`flex justify-end ${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-gray-900 text-white px-5 py-3 rounded-2xl rounded-br-sm max-w-[80%] shadow-sm">
+    <div className="bg-foreground text-background px-5 py-3 rounded-2xl rounded-br-sm max-w-[80%] shadow-sm">
       <div className="text-[15px] leading-relaxed">{children}</div>
     </div>
   </div>
@@ -101,11 +101,11 @@ export const UserMessage = ({ children, animate = true }: BaseMessageProps) => (
 // Success message
 export const SuccessMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="flex items-start gap-4 bg-green-50 rounded-2xl p-5 border border-green-100">
-      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-        <CheckCircle className="w-5 h-5 text-green-600" />
+    <div className="flex items-start gap-4 bg-success/10 rounded-2xl p-5 border border-success/20">
+      <div className="w-10 h-10 bg-success/20 rounded-full flex items-center justify-center flex-shrink-0">
+        <CheckCircle className="w-5 h-5 text-success" />
       </div>
-      <div className="text-[15px] text-green-800 leading-relaxed pt-2">
+      <div className="text-[15px] text-success leading-relaxed pt-2">
         {children}
       </div>
     </div>
@@ -115,9 +115,9 @@ export const SuccessMessage = ({ children, animate = true }: BaseMessageProps) =
 // Typing indicator
 export const TypingIndicator = () => (
   <div className="flex gap-1.5 py-2">
-    <span className="w-2 h-2 bg-gray-300 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" />
-    <span className="w-2 h-2 bg-gray-300 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '200ms' }} />
-    <span className="w-2 h-2 bg-gray-300 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
+    <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" />
+    <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '200ms' }} />
+    <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
   </div>
 );
 
@@ -132,7 +132,7 @@ export const QuickReplyButtons = ({ options }: QuickReplyProps) => (
       <button
         key={index}
         onClick={option.onClick}
-        className="px-6 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm"
+        className="px-6 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-sm"
       >
         {option.label}
       </button>
