@@ -430,7 +430,7 @@ const GuidedChat = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
-      <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-10">
+      <header className="bg-background/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 border-b border-border/30">
         {/* Mobile: centered icon with hamburger */}
         <div className="md:hidden flex items-center justify-between px-4 py-4">
           <div className="w-10" /> {/* Spacer for balance */}
@@ -454,8 +454,8 @@ const GuidedChat = () => {
         </div>
       </header>
 
-      {/* Chat Area */}
-      <main className="flex-1 overflow-y-auto px-5 md:px-8 py-6 flex flex-col justify-end">
+      {/* Chat Area - add top padding to account for fixed header */}
+      <main className="flex-1 overflow-y-auto px-5 md:px-8 py-6 pt-20 md:pt-24 flex flex-col justify-end">
         <div className="max-w-[600px] mx-auto w-full">
           <div className="space-y-5">
             {messages.map(renderMessage)}
