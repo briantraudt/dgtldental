@@ -14,11 +14,14 @@ import {
 } from './chat/MessageTypes';
 import TypewriterText from './chat/TypewriterText';
 import ChatInput from './chat/ChatInput';
+import DemoChat from './chat/DemoChat';
 
 type ConversationState = 
   | 'initial'
   | 'ask_dental'
   | 'not_dental_end'
+  | 'show_demo_intro'
+  | 'show_demo'
   | 'show_value'
   | 'show_process'
   | 'show_price'
@@ -113,10 +116,22 @@ const GuidedChat = () => {
           });
           break;
 
+        case 'show_demo_intro':
+          await addMessage({ 
+            type: 'explanation', 
+            content: "Let me show you how it works. Here's a quick demo of what your patients would experience:" 
+          });
+          setState('show_demo');
+          break;
+
+        case 'show_demo':
+          // Demo component handles itself
+          break;
+
         case 'show_value':
           await addMessage({ 
             type: 'explanation', 
-            content: "Our AI assistant answers common patient questions on your website — 24/7 — so your front desk can focus on patients in the office." 
+            content: "Pretty cool, right? That's what your patients get — instant, helpful answers 24/7 while your front desk focuses on patients in the office." 
           });
           setState('show_process');
           break;
@@ -203,6 +218,10 @@ const GuidedChat = () => {
   // Handlers
   const handleDentalYes = () => {
     addUserMessage("Yes");
+    setState('show_demo_intro');
+  };
+
+  const handleDemoComplete = () => {
     setState('show_value');
   };
 
@@ -279,6 +298,9 @@ const GuidedChat = () => {
             ]}
           />
         );
+
+      case 'show_demo':
+        return <DemoChat onComplete={handleDemoComplete} />;
 
       case 'ask_setup':
         return (
