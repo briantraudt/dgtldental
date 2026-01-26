@@ -20,6 +20,7 @@ import TypewriterText from './chat/TypewriterText';
 import ChatInput from './chat/ChatInput';
 import DemoChat from './chat/DemoChat';
 import MobileMenu from './MobileMenu';
+import DesktopNav from './DesktopNav';
 
 type ConversationState = 
   | 'initial'
@@ -478,7 +479,7 @@ const GuidedChat = () => {
           >
             <img src={dgtlLogo} alt="DGTL" className="h-8 object-contain" />
           </button>
-          <span className="text-sm text-muted-foreground">AI Assistant</span>
+          <DesktopNav />
         </div>
       </header>
 
