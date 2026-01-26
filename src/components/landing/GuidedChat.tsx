@@ -210,9 +210,16 @@ const GuidedChat = () => {
   const isInputEnabled = formStep && formStep !== 'done' && !isTyping && !isSubmitting;
 
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div className="h-screen flex flex-col bg-gradient-to-b from-white via-gray-50/50 to-gray-100/30 relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.015]" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, gray 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }} />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-100/20 rounded-full blur-3xl" />
       {/* Header */}
-      <header className="border-b border-gray-100 bg-white flex-shrink-0">
+      <header className="border-b border-gray-100/80 bg-white/80 backdrop-blur-sm flex-shrink-0 relative z-10">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-center">
           <img 
             src="/images/dgtl-logo.png" 
