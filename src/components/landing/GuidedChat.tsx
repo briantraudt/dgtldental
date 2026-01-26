@@ -18,6 +18,7 @@ import {
 import TypewriterText from './chat/TypewriterText';
 import ChatInput from './chat/ChatInput';
 import DemoChat from './chat/DemoChat';
+import MobileMenu from './MobileMenu';
 
 type ConversationState = 
   | 'initial'
@@ -413,14 +414,16 @@ const GuidedChat = () => {
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        {/* Mobile: centered icon only */}
-        <div className="md:hidden flex justify-center py-4">
+        {/* Mobile: centered icon with hamburger */}
+        <div className="md:hidden flex items-center justify-between px-4 py-4">
+          <div className="w-10" /> {/* Spacer for balance */}
           <button 
             onClick={() => window.location.reload()} 
             className="hover:opacity-80 transition-opacity"
           >
             <img src={toothIcon} alt="DGTL" className="h-8 w-8 object-contain" />
           </button>
+          <MobileMenu />
         </div>
         {/* Desktop: logo left, AI Assistant right */}
         <div className="hidden md:flex max-w-[1024px] mx-auto items-center justify-between px-8 py-4">
