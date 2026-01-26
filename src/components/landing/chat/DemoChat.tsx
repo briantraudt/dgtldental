@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
+import toothIcon from '@/assets/tooth-icon.png';
 
 interface DemoChatProps {
   onComplete: () => void;
@@ -122,7 +123,7 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
       {/* User message bubble */}
       {hasAsked && userMessage && (
         <div className="flex justify-end animate-fade-in">
-          <div className="bg-foreground text-background px-4 py-3 rounded-2xl rounded-br-sm max-w-[85%]">
+          <div className="bg-primary text-primary-foreground border border-primary px-4 py-3 rounded-2xl rounded-br-sm max-w-[85%]">
             <p className="text-[15px]">{userMessage}</p>
           </div>
         </div>
@@ -130,8 +131,11 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
 
       {/* AI Response */}
       {hasAsked && (
-        <div className="animate-fade-in">
-          <div className="bg-primary/5 border border-primary/10 rounded-2xl p-4">
+        <div className="flex items-start gap-3 animate-fade-in">
+          <div className="w-6 h-6 flex-shrink-0">
+            <img src={toothIcon} alt="Bot" className="w-full h-full object-contain" />
+          </div>
+          <div className="bg-background border border-primary/30 rounded-2xl rounded-tl-sm p-4 max-w-[85%]">
             {isLoading && !aiResponse ? (
               <div className="flex gap-1.5 py-1">
                 <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" />
