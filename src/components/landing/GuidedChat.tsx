@@ -437,24 +437,6 @@ const GuidedChat = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="px-5 md:px-8 py-5 border-t border-border/50 bg-background/60 backdrop-blur-sm">
-        <div className="max-w-[600px] mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-sm">
-          <div className="flex items-center gap-1.5 text-foreground/70">
-            <span className="font-medium text-foreground">$99/mo</span>
-            <span className="text-muted-foreground/50">·</span>
-            <span>No setup fee</span>
-            <span className="text-muted-foreground/50">·</span>
-            <span>Cancel anytime</span>
-          </div>
-          <a 
-            href="mailto:hello@dgtldental.com" 
-            className="text-primary font-medium hover:text-primary/80 transition-colors"
-          >
-            hello@dgtldental.com
-          </a>
-        </div>
-      </footer>
     </div>
   );
 };
