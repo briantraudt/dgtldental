@@ -64,22 +64,19 @@ const MobileMenu = () => {
 
       {/* About Modal */}
       <Dialog open={activeModal === 'about'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <img src={toothIcon} alt="DGTL" className="h-6 w-6" />
-              About DGTL Dental
-            </DialogTitle>
+            <DialogTitle className="text-center font-normal text-lg text-muted-foreground">About Us</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 text-foreground/80">
-            <p>
-              We create AI-powered chatbots for dental practices to help you save time and money while providing a better patient experience.
+          <div className="space-y-5 pt-2">
+            <div className="text-center">
+              <img src={toothIcon} alt="DGTL" className="h-12 w-12 mx-auto mb-4" />
+            </div>
+            <p className="text-[15px] text-foreground/80 leading-relaxed text-center">
+              We create AI assistants for dental practices that answer patient questions 24/7 — with over <span className="text-foreground font-medium">50,000+ questions answered</span> for practices nationwide.
             </p>
-            <p>
-              Our AI assistants answer patient questions 24/7, reducing front desk interruptions and ensuring patients always get the help they need.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Over 50,000+ questions answered for dental practices nationwide.
+            <p className="text-[15px] text-foreground/80 leading-relaxed text-center">
+              Less phone interruptions for your front desk. Better experience for your patients.
             </p>
           </div>
         </DialogContent>
