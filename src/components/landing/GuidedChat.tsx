@@ -428,15 +428,15 @@ const GuidedChat = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="h-full flex flex-col bg-background overflow-hidden">
       {/* Header */}
-      <header className="bg-background/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 border-b border-border/30">
+      <header className="bg-background/95 backdrop-blur-md border-b border-border/30 flex-shrink-0 safe-area-top">
         {/* Mobile: centered icon with hamburger */}
-        <div className="md:hidden flex items-center justify-between px-4 py-4">
+        <div className="md:hidden flex items-center justify-between px-4 py-3">
           <div className="w-10" /> {/* Spacer for balance */}
           <button 
             onClick={() => window.location.reload()} 
-            className="hover:opacity-80 transition-opacity"
+            className="hover:opacity-80 transition-opacity active:scale-95"
           >
             <img src={toothIcon} alt="DGTL" className="h-8 w-8 object-contain" />
           </button>
@@ -454,8 +454,8 @@ const GuidedChat = () => {
         </div>
       </header>
 
-      {/* Chat Area - add top padding to account for fixed header */}
-      <main className="flex-1 overflow-y-auto px-5 md:px-8 py-6 pt-20 md:pt-24 flex flex-col justify-end">
+      {/* Chat Area - scrollable content */}
+      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 flex flex-col justify-end">
         <div className="max-w-[600px] mx-auto w-full">
           <div className="space-y-5">
             {messages.map(renderMessage)}
