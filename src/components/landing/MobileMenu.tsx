@@ -86,7 +86,7 @@ const MobileMenu = () => {
       <Dialog open={activeModal === 'pricing'} onOpenChange={() => setActiveModal(null)}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-center font-normal text-lg text-muted-foreground">Simple Pricing</DialogTitle>
+            <DialogTitle className="text-center font-normal text-lg text-muted-foreground">Really Simple Pricing</DialogTitle>
           </DialogHeader>
           <div className="space-y-6 pt-2">
             <div className="text-center">
@@ -99,9 +99,8 @@ const MobileMenu = () => {
               <ul className="space-y-4">
                 {[
                   'No setup fee',
-                  'Cancel anytime', 
-                  'Live within 24 hours',
-                  'Unlimited conversations'
+                  'Completely customized for your office',
+                  'Cancel anytime'
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-[15px] text-foreground/80">
                     <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
