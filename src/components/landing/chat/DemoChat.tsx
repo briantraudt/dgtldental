@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import toothIcon from '@/assets/tooth-icon.png';
@@ -11,9 +11,10 @@ interface DemoChatProps {
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
 // Typewriter component for streaming text
-const StreamingTypewriter = ({ text, isComplete, onTextUpdate }: { text: string; isComplete: boolean; onTextUpdate?: () => void }) => {
+const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete }: { text: string; isComplete: boolean; onTextUpdate?: () => void; onTypingComplete?: () => void }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const hasCalledComplete = useRef(false);
   
   useEffect(() => {
     if (currentIndex < text.length) {
@@ -24,8 +25,12 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate }: { text: string;
         onTextUpdate?.();
       }, 35); // Match TypewriterText speed (35ms per character)
       return () => clearTimeout(timeout);
+    } else if (isComplete && currentIndex === text.length && text.length > 0 && !hasCalledComplete.current) {
+      // Typewriter finished and stream is complete
+      hasCalledComplete.current = true;
+      onTypingComplete?.();
     }
-  }, [currentIndex, text, onTextUpdate]);
+  }, [currentIndex, text, onTextUpdate, isComplete, onTypingComplete]);
 
   // Format the displayed text into paragraphs with clickable link
   const formatDisplayedText = (txt: string) => {
@@ -53,10 +58,12 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate }: { text: string;
     });
   };
 
+  const isTypingDone = isComplete && currentIndex >= text.length;
+
   return (
     <div className="text-[15px] text-foreground/80 leading-relaxed space-y-3">
       {formatDisplayedText(displayedText)}
-      {!isComplete && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5" />}
+      {!isTypingDone && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5" />}
     </div>
   );
 };
@@ -68,8 +75,13 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const [hasAsked, setHasAsked] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
   const [streamComplete, setStreamComplete] = useState(false);
+  const [typingComplete, setTypingComplete] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const responseEndRef = useRef<HTMLDivElement>(null);
+
+  const handleTypingComplete = useCallback(() => {
+    setTypingComplete(true);
+  }, []);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -210,14 +222,14 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
                 <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
               </div>
             ) : (
-              <StreamingTypewriter text={aiResponse} isComplete={streamComplete} onTextUpdate={scrollToBottom} />
+              <StreamingTypewriter text={aiResponse} isComplete={streamComplete} onTextUpdate={scrollToBottom} onTypingComplete={handleTypingComplete} />
             )}
           </div>
         </div>
       )}
 
       {/* Continue button after response - only show if not completed */}
-      {hasAsked && aiResponse && !isLoading && !hasCompleted && !isCompleted && (
+      {hasAsked && aiResponse && typingComplete && !hasCompleted && !isCompleted && (
         <div className="pt-2 animate-fade-in flex justify-end">
           <button
             onClick={() => {
