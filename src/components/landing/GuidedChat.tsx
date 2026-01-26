@@ -361,25 +361,26 @@ const GuidedChat = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
-      <header className="pt-8 md:pt-12 pb-4">
+      <header className="pt-6 md:pt-8 pb-4">
         <div className="max-w-[700px] mx-auto px-6">
           <a 
             href="/" 
-            className="inline-block transition-transform hover:scale-105 active:scale-100"
+            className="inline-flex items-center gap-2 transition-opacity hover:opacity-80"
             title="Go to homepage"
           >
-            <img 
-              src="/images/dgtl-logo.png" 
-              alt="DGTL Dental" 
-              className="h-16 md:h-24 w-auto"
-            />
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+              <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+            </div>
+            <span className="text-xl font-semibold text-gray-900">DGTL Dental</span>
           </a>
         </div>
       </header>
 
       {/* Chat Area */}
       <main className="flex-1">
-        <div className="max-w-[700px] mx-auto px-6 py-8">
+        <div className="max-w-[700px] mx-auto px-6 py-6">
           <div className="space-y-6">
             {messages.map(renderMessage)}
             
@@ -394,6 +395,25 @@ const GuidedChat = () => {
           <div ref={messagesEndRef} className="h-8" />
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="py-6 border-t border-gray-100">
+        <div className="max-w-[700px] mx-auto px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-4">
+              <a 
+                href="mailto:hello@dgtldental.com" 
+                className="hover:text-gray-700 transition-colors"
+              >
+                hello@dgtldental.com
+              </a>
+              <span className="hidden sm:inline text-gray-300">|</span>
+              <span className="text-gray-400">$99/mo · Cancel anytime</span>
+            </div>
+            <p className="text-gray-400">© 2024 DGTL Dental</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
