@@ -40,7 +40,7 @@ type ConversationState =
 
 interface Message {
   id: string;
-  type: 'greeting' | 'question' | 'proof' | 'explanation' | 'process' | 'user' | 'success';
+  type: 'greeting' | 'question' | 'proof' | 'explanation' | 'process' | 'user' | 'success' | 'demo';
   content: React.ReactNode;
 }
 
@@ -56,7 +56,6 @@ const GuidedChat = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [formData, setFormData] = useState<FormData>({ practice: '', website: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
   const [demoCompleted, setDemoCompleted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
@@ -149,7 +148,10 @@ const GuidedChat = () => {
           break;
 
         case 'show_demo':
-          setShowDemo(true);
+          await addMessage({
+            type: 'demo',
+            content: <DemoChat onComplete={handleDemoComplete} isCompleted={demoCompleted} />
+          });
           break;
 
         case 'show_value':
@@ -423,6 +425,8 @@ const GuidedChat = () => {
         return <UserMessage key={message.id}>{message.content}</UserMessage>;
       case 'success':
         return <SuccessMessage key={message.id}>{message.content}</SuccessMessage>;
+      case 'demo':
+        return <div key={message.id} className="animate-fade-in">{message.content}</div>;
       default:
         return null;
     }
@@ -462,13 +466,6 @@ const GuidedChat = () => {
             {messages.map(renderMessage)}
             
             {isTyping && <TypingIndicator />}
-            
-            {/* Demo chat - persists after completion */}
-            {showDemo && (
-              <div className="pt-1">
-                <DemoChat onComplete={handleDemoComplete} isCompleted={demoCompleted} />
-              </div>
-            )}
             
             {/* Interactive elements */}
             <div className="pt-1">
