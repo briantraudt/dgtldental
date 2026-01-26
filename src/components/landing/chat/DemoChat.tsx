@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowUp, Sparkles } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 interface DemoChatProps {
   onComplete: () => void;
@@ -93,8 +93,7 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
   return (
     <div className="space-y-4 animate-fade-in">
       {/* Prompt */}
-      <div className="flex items-center gap-2 text-gray-700">
-        <Sparkles className="w-4 h-4 text-blue-500" />
+      <div className="text-foreground/70">
         <span className="text-[15px]">Try it — ask any dental question:</span>
       </div>
 
@@ -107,15 +106,15 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}
             placeholder="Type a question..."
-            className="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all"
+            className="flex-1 px-4 py-3 bg-card border border-border rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all"
           />
           <Button
             type="submit"
             disabled={!userMessage.trim() || isLoading}
             size="icon"
-            className="w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200"
+            className="w-11 h-11 rounded-xl bg-primary hover:bg-primary/90 disabled:bg-secondary"
           >
-            <ArrowUp className="w-5 h-5 text-white" />
+            <ArrowUp className="w-5 h-5 text-primary-foreground" />
           </Button>
         </form>
       )}
@@ -123,7 +122,7 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
       {/* User message bubble */}
       {hasAsked && userMessage && (
         <div className="flex justify-end animate-fade-in">
-          <div className="bg-gray-900 text-white px-4 py-3 rounded-2xl rounded-br-sm max-w-[85%]">
+          <div className="bg-foreground text-background px-4 py-3 rounded-2xl rounded-br-sm max-w-[85%]">
             <p className="text-[15px]">{userMessage}</p>
           </div>
         </div>
@@ -132,15 +131,15 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
       {/* AI Response */}
       {hasAsked && (
         <div className="animate-fade-in">
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4">
+          <div className="bg-primary/5 border border-primary/10 rounded-2xl p-4">
             {isLoading && !aiResponse ? (
               <div className="flex gap-1.5 py-1">
-                <span className="w-2 h-2 bg-blue-300 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" />
-                <span className="w-2 h-2 bg-blue-300 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '200ms' }} />
-                <span className="w-2 h-2 bg-blue-300 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" />
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '200ms' }} />
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
               </div>
             ) : (
-              <p className="text-[15px] text-gray-700 leading-relaxed">{aiResponse}</p>
+              <p className="text-[15px] text-foreground/80 leading-relaxed">{aiResponse}</p>
             )}
           </div>
         </div>
@@ -151,7 +150,7 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
         <div className="pt-2 animate-fade-in">
           <button
             onClick={onComplete}
-            className="px-5 py-3 rounded-xl text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+            className="px-5 py-3 rounded-xl text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
           >
             Continue →
           </button>
