@@ -29,6 +29,7 @@ type ConversationState =
   | 'show_demo'
   | 'show_value'
   | 'show_process'
+  | 'show_install'
   | 'show_price'
   | 'ask_setup'
   | 'show_contact'
@@ -172,7 +173,19 @@ const GuidedChat = () => {
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="We can connect to your scheduling system for instant online booking, provide maps and directions to your office, answer insurance questions — really anything you'd like to tell new or existing patients."
+                text="It connects to your scheduling system, provides directions to your office, answers insurance questions — really anything you want to tell patients."
+                onComplete={() => setState('show_install')}
+              />
+            )
+          });
+          break;
+
+        case 'show_install':
+          await addMessage({ 
+            type: 'explanation', 
+            content: (
+              <TypewriterText 
+                text="Installation takes minutes. We give you a tiny snippet of code your web person can add, or we can do it for you."
                 onComplete={() => setState('show_price')}
               />
             )
