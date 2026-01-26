@@ -362,10 +362,10 @@ const GuidedChat = () => {
           <div className="flex justify-center pt-4 animate-fade-in">
             <button
               onClick={() => window.location.reload()}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              className="p-2 text-muted-foreground hover:text-primary transition-colors"
+              title="Start over"
             >
-              <RotateCcw className="w-4 h-4" />
-              Start over
+              <RotateCcw className="w-5 h-5" />
             </button>
           </div>
         );
