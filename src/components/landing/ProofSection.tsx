@@ -1,44 +1,34 @@
-import { MessageSquare, Stethoscope, Shield, Globe } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 const ProofSection = () => {
-  const proofPoints = [
-    {
-      icon: MessageSquare,
-      text: "50,000+ dental Q&A interactions"
-    },
-    {
-      icon: Stethoscope,
-      text: "Dental-only knowledge (not general AI)"
-    },
-    {
-      icon: Shield,
-      text: "Patient-safe, non-diagnostic language"
-    },
-    {
-      icon: Globe,
-      text: "Designed specifically for dental practice websites"
-    }
+  const capabilities = [
+    "Answers patient questions 24/7",
+    "Dental-only knowledge (not general AI)",
+    "Patient-safe, non-diagnostic language",
+    "Designed specifically for dental websites"
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-20 md:py-28 bg-white">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 text-center mb-12">
-            Proven in Real Dental Conversations
+        <div className="max-w-3xl mx-auto">
+          {/* Headline */}
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 text-center mb-16">
+            Proven in Real Dental Practices
           </h2>
           
-          <div className="grid md:grid-cols-2 gap-6">
-            {proofPoints.map((point, index) => (
+          {/* Single column, large text bullets */}
+          <div className="space-y-8">
+            {capabilities.map((item, index) => (
               <div 
                 key={index}
-                className="flex items-start gap-4 p-6 bg-gray-50 rounded-xl"
+                className="flex items-center gap-5"
               >
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <point.icon className="w-6 h-6 text-blue-600" />
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
                 </div>
-                <p className="text-lg text-gray-700 font-medium pt-2">
-                  {point.text}
+                <p className="text-xl md:text-2xl text-gray-800 leading-relaxed">
+                  {item}
                 </p>
               </div>
             ))}
