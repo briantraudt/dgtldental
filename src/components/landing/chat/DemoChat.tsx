@@ -75,9 +75,11 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
     inputRef.current?.focus();
   }, []);
 
-  // Auto-scroll to keep response visible
+  // Auto-scroll to keep response visible - scroll the parent container
   const scrollToBottom = () => {
-    responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    setTimeout(() => {
+      responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
   };
 
   const sendMessage = async (message: string) => {
@@ -210,7 +212,6 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
             ) : (
               <StreamingTypewriter text={aiResponse} isComplete={streamComplete} onTextUpdate={scrollToBottom} />
             )}
-            <div ref={responseEndRef} />
           </div>
         </div>
       )}
@@ -229,6 +230,9 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
           </button>
         </div>
       )}
+      
+      {/* Extra scroll anchor at the very end */}
+      <div ref={responseEndRef} className="h-4" />
     </div>
   );
 };
