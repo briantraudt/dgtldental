@@ -36,7 +36,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "DGTL Dental <onboarding@resend.dev>",
-      to: ["briantraudt@gmail.com"],
+      to: ["brian@goodbusinsshq.com"],
       subject: `New Contact Form: ${email}`,
       reply_to: email,
       html: `
