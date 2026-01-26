@@ -409,7 +409,7 @@ const GuidedChat = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
+      <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-[600px] mx-auto flex items-center justify-between px-5 md:px-8 py-4">
           <button 
             onClick={() => window.location.reload()} 
