@@ -177,7 +177,7 @@ const GuidedChat = () => {
             content: (
               <>
                 No problem! Reach out anytime at{' '}
-                <a href="mailto:hello@dgtldental.com" className="text-blue-600 hover:text-blue-700 underline underline-offset-2">
+                <a href="mailto:hello@dgtldental.com" className="text-primary hover:text-primary/80 underline underline-offset-2">
                   hello@dgtldental.com
                 </a>
               </>
@@ -360,20 +360,20 @@ const GuidedChat = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-slate-50 to-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary/5 via-secondary to-background">
       {/* Header */}
-      <header className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+      <header className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 text-blue-600" fill="currentColor">
+          <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary" fill="currentColor">
               <path d="M12 2C9.5 2 7.5 4 7.5 6.5c0 1-.5 2-1.5 3-.5.5-1 1.5-1 2.5 0 2.5 2 5 3 7 .5 1 1 2 1.5 3 .5.5 1 .5 1.5 0 .5-1 1-2 2-2s1.5 1 2 2c.5.5 1 .5 1.5 0 .5-1 1-2 1.5-3 1-2 3-4.5 3-7 0-1-.5-2-1-2.5-1-1-1.5-2-1.5-3C16.5 4 14.5 2 12 2z"/>
             </svg>
           </div>
-          <span className="text-lg font-semibold text-gray-900">DGTL Dental</span>
+          <span className="text-lg font-semibold text-foreground">DGTL Dental</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span className="hidden sm:inline">AI Assistant</span>
-          <span className="hidden sm:inline text-gray-300">•</span>
+          <span className="hidden sm:inline text-border">•</span>
           <span>~2 min</span>
         </div>
       </header>
@@ -397,12 +397,12 @@ const GuidedChat = () => {
       </main>
 
       {/* Footer */}
-      <footer className="px-5 md:px-8 py-4 border-t border-gray-100 bg-white/80 backdrop-blur-sm">
-        <div className="max-w-[600px] mx-auto flex items-center justify-between text-sm text-gray-500">
+      <footer className="px-5 md:px-8 py-4 border-t border-border bg-background/80 backdrop-blur-sm">
+        <div className="max-w-[600px] mx-auto flex items-center justify-between text-sm text-muted-foreground">
           <span>$99/mo · No setup fee · Cancel anytime</span>
           <a 
             href="mailto:hello@dgtldental.com" 
-            className="text-blue-600 hover:text-blue-700 transition-colors"
+            className="text-primary hover:text-primary/80 transition-colors"
           >
             hello@dgtldental.com
           </a>
