@@ -41,18 +41,18 @@ const ChatInput = ({ placeholder, onSubmit, isSubmitting = false, type = 'text' 
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         disabled={isSubmitting}
-        className="flex-1 px-5 py-3.5 bg-white border border-gray-200 rounded-2xl text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-300 focus:ring-4 focus:ring-gray-100 transition-all disabled:opacity-50"
+        className="flex-1 px-5 py-3.5 bg-card border border-border rounded-2xl text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/30 focus:ring-4 focus:ring-primary/10 transition-all disabled:opacity-50"
       />
       <Button
         type="submit"
         disabled={!value.trim() || isSubmitting}
         size="icon"
-        className="w-12 h-12 rounded-2xl bg-gray-900 hover:bg-gray-800 disabled:bg-gray-200 disabled:opacity-100 transition-all shadow-sm"
+        className="w-12 h-12 rounded-2xl bg-primary hover:bg-primary/90 disabled:bg-secondary disabled:opacity-100 transition-all shadow-sm"
       >
         {isSubmitting ? (
-          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
         ) : (
-          <ArrowUp className="w-5 h-5 text-white" />
+          <ArrowUp className="w-5 h-5 text-primary-foreground" />
         )}
       </Button>
     </form>
