@@ -32,6 +32,7 @@ type ConversationState =
   | 'show_price'
   | 'ask_setup'
   | 'show_contact'
+  | 'show_excited'
   | 'ask_practice_name'
   | 'ask_website'
   | 'ask_email'
@@ -195,7 +196,7 @@ const GuidedChat = () => {
             type: 'question', 
             content: (
               <TypewriterText 
-                text="Want us to set this up for you?"
+                text="Would you like something like this for your office?"
               />
             )
           });
@@ -213,6 +214,18 @@ const GuidedChat = () => {
                   hello@dgtldental.com
                 </a>
               </>
+            )
+          });
+          break;
+
+        case 'show_excited':
+          await addMessage({ 
+            type: 'explanation', 
+            content: (
+              <TypewriterText 
+                text="Super — we're excited to work with you! Let's get your contact info so someone from our team can reach out right away."
+                onComplete={() => setState('ask_practice_name')}
+              />
             )
           });
           break;
@@ -255,7 +268,7 @@ const GuidedChat = () => {
             type: 'success', 
             content: (
               <TypewriterText 
-                text="Thanks! We'll review your site and follow up within 24 hours."
+                text="Thanks so much! Someone from our team will contact you right away. Have a great day!"
               />
             )
           });
@@ -284,7 +297,7 @@ const GuidedChat = () => {
 
   const handleSetupYes = () => {
     addUserMessage("Yes, let's do it");
-    setState('ask_practice_name');
+    setState('show_excited');
   };
 
   const handleSetupNo = () => {
