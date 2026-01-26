@@ -12,6 +12,7 @@ import {
   TypingIndicator,
   QuickReplyButtons,
 } from './chat/MessageTypes';
+import TypewriterText from './chat/TypewriterText';
 import ChatInput from './chat/ChatInput';
 
 type ConversationState = 
@@ -89,7 +90,11 @@ const GuidedChat = () => {
           hasInitialized.current = true;
           await addMessage({ 
             type: 'greeting', 
-            content: "Hi, thanks for stopping by! We create AI-powered chatbots for dental practices to help you save time and money while providing a better patient experience." 
+            content: (
+              <TypewriterText 
+                text="Hi, thanks for stopping by! We create AI-powered chatbots for dental practices to help you save time and money while providing a better patient experience."
+              />
+            )
           });
           setState('ask_dental');
           break;

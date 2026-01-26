@@ -130,16 +130,12 @@ interface QuickReplyProps {
 }
 
 export const QuickReplyButtons = ({ options }: QuickReplyProps) => (
-  <div className="flex flex-wrap gap-3 animate-fade-in mt-1">
+  <div className="flex flex-wrap gap-3 animate-fade-in mt-2">
     {options.map((option, index) => (
       <button
         key={index}
         onClick={option.onClick}
-        className={`px-5 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] ${
-          option.primary
-            ? 'bg-gray-900 text-white hover:bg-gray-800 shadow-sm'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-        }`}
+        className="px-6 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm"
       >
         {option.label}
       </button>
