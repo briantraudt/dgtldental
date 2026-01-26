@@ -300,6 +300,11 @@ const GuidedChat = () => {
     setState('ask_practice_name');
   };
 
+  const handleOopsImADentist = () => {
+    addUserMessage("Oops, I am a dentist!");
+    setState('show_demo_intro');
+  };
+
   const handlePracticeSubmit = (value: string) => {
     setFormData(prev => ({ ...prev, practice: value }));
     addUserMessage(value);
@@ -361,7 +366,7 @@ const GuidedChat = () => {
         return (
           <div className="flex justify-center pt-4 animate-fade-in">
             <button
-              onClick={() => window.location.reload()}
+              onClick={handleOopsImADentist}
               className="text-sm text-muted-foreground hover:text-primary transition-colors underline underline-offset-2"
             >
               Oops, I am a dentist
