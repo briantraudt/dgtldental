@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { playMessageFeedback } from './chat/audioFeedback';
 import {
   GreetingMessage,
   QuestionMessage,
@@ -73,6 +74,7 @@ const GuidedChat = () => {
         setIsTyping(false);
         const id = `msg-${Date.now()}-${Math.random()}`;
         setMessages(prev => [...prev, { ...message, id }]);
+        playMessageFeedback(); // Subtle sound + haptic
         setTimeout(resolve, 150);
       }, delay);
     });
