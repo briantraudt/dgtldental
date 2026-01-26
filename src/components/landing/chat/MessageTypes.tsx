@@ -5,43 +5,40 @@ interface BaseMessageProps {
   animate?: boolean;
 }
 
-// Greeting - warm, welcoming
-export const GreetingMessage = ({ children, animate = true }: BaseMessageProps) => (
+// Bot message bubble - consistent styling for all bot messages
+const BotBubble = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="text-[17px] md:text-lg text-gray-800 leading-relaxed">
-      {children}
+    <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[90%]">
+      <div className="text-[15px] text-gray-700 leading-relaxed">
+        {children}
+      </div>
     </div>
   </div>
 );
 
-// Question - clear, actionable
+// Greeting - uses bot bubble
+export const GreetingMessage = ({ children, animate = true }: BaseMessageProps) => (
+  <BotBubble animate={animate}>{children}</BotBubble>
+);
+
+// Question - uses bot bubble
 export const QuestionMessage = ({ children, animate = true }: BaseMessageProps) => (
-  <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="text-[15px] md:text-base text-gray-700 leading-relaxed">
-      {children}
-    </div>
-  </div>
+  <BotBubble animate={animate}>{children}</BotBubble>
 );
 
 // Proof - subtle emphasis, credibility
 export const ProofMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="text-[15px] md:text-base text-gray-600 leading-relaxed">
-      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
-        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-        {children}
-      </span>
-    </div>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
+      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+      {children}
+    </span>
   </div>
 );
 
-// Explanation - informative, supportive
+// Explanation - uses bot bubble
 export const ExplanationMessage = ({ children, animate = true }: BaseMessageProps) => (
-  <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="text-[15px] md:text-base text-gray-700 leading-relaxed">
-      {children}
-    </div>
-  </div>
+  <BotBubble animate={animate}>{children}</BotBubble>
 );
 
 // Process card - structured, visual
