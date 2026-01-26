@@ -51,11 +51,15 @@ RULES:
 
 RESPONSE FORMAT (MUST FOLLOW EXACTLY):
 1. Answer their question in 2-4 sentences
-2. ALWAYS end with this EXACT paragraph on its own line (as a new paragraph):
+2. ALWAYS end with a personalized call-to-action paragraph that relates to their specific question. Make it feel natural and relevant to what they asked about.
 
-"If you would like to schedule an appointment, you can call us at (555) 555-5555 or online at dentaloffice.com."
+EXAMPLES OF PERSONALIZED CLOSINGS:
+- If they ask about cavities: "If you think you might have a cavity or would like to get it checked out, give us a call at (555) 555-5555 or book online at dentaloffice.com."
+- If they ask about pain: "If you're experiencing dental pain, we'd love to help you feel better. Call us at (555) 555-5555 or schedule online at dentaloffice.com."
+- If they ask about cleanings: "Ready to schedule your next cleaning? Call us at (555) 555-5555 or book online at dentaloffice.com."
+- If they ask about whitening: "If you'd like to explore teeth whitening options, we'd be happy to discuss them with you. Call (555) 555-5555 or visit dentaloffice.com."
 
-This closing paragraph must ALWAYS be included as a separate paragraph at the end of every single response. Never skip it.`
+Always include the phone number and website in the closing. Make the closing a separate paragraph.`
           },
           { role: "user", content: message }
         ],
