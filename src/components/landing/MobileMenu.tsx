@@ -87,33 +87,34 @@ const MobileMenu = () => {
 
       {/* Pricing Modal */}
       <Dialog open={activeModal === 'pricing'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Simple Pricing</DialogTitle>
+            <DialogTitle className="text-center font-normal text-lg text-muted-foreground">Simple Pricing</DialogTitle>
           </DialogHeader>
-          <div className="space-y-6">
-            <div className="text-center py-6 bg-secondary/50 rounded-xl">
-              <div className="text-4xl font-bold text-foreground">$99</div>
-              <div className="text-muted-foreground">/month</div>
+          <div className="space-y-6 pt-2">
+            <div className="text-center">
+              <div className="inline-flex items-baseline gap-1">
+                <span className="text-5xl font-light tracking-tight text-foreground">$99</span>
+                <span className="text-muted-foreground text-lg">/mo</span>
+              </div>
             </div>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-foreground/80">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                No setup fee
-              </li>
-              <li className="flex items-center gap-2 text-foreground/80">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Cancel anytime
-              </li>
-              <li className="flex items-center gap-2 text-foreground/80">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Live within 24 hours
-              </li>
-              <li className="flex items-center gap-2 text-foreground/80">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Unlimited patient conversations
-              </li>
-            </ul>
+            <div className="border-t border-border pt-6">
+              <ul className="space-y-4">
+                {[
+                  'No setup fee',
+                  'Cancel anytime', 
+                  'Live within 24 hours',
+                  'Unlimited conversations'
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-[15px] text-foreground/80">
+                    <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
