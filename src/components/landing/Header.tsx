@@ -15,12 +15,13 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <img 
-                src="/lovable-uploads/e61c9ac3-9f9b-422b-84b1-43301d0a0096.png" 
+                src="/lovable-uploads/86e29185-fd00-4d84-965c-1c4760689215.png" 
                 alt="DGTL Dental" 
-                className="h-10 w-auto"
+                className="h-9 w-auto"
               />
+              <span className="text-xl font-bold text-gray-900">DGTL Dental</span>
             </div>
             
             {/* CTA Button - Hidden on mobile, shown on tablet+ */}
