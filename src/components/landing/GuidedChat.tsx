@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Stethoscope } from 'lucide-react';
 import { toast } from 'sonner';
 import { playMessageFeedback } from './chat/audioFeedback';
+import toothIcon from '@/assets/tooth-icon.png';
 import {
   GreetingMessage,
   QuestionMessage,
@@ -364,10 +364,8 @@ const GuidedChat = () => {
       {/* Header */}
       <header className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary" fill="currentColor">
-              <path d="M12 2C9.5 2 7.5 4 7.5 6.5c0 1-.5 2-1.5 3-.5.5-1 1.5-1 2.5 0 2.5 2 5 3 7 .5 1 1 2 1.5 3 .5.5 1 .5 1.5 0 .5-1 1-2 2-2s1.5 1 2 2c.5.5 1 .5 1.5 0 .5-1 1-2 1.5-3 1-2 3-4.5 3-7 0-1-.5-2-1-2.5-1-1-1.5-2-1.5-3C16.5 4 14.5 2 12 2z"/>
-            </svg>
+          <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center p-1.5">
+            <img src={toothIcon} alt="DGTL Dental" className="w-full h-full object-contain" />
           </div>
           <span className="text-lg font-semibold text-foreground">DGTL Dental</span>
         </div>

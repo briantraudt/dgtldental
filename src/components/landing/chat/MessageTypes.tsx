@@ -1,14 +1,23 @@
 import { CheckCircle } from 'lucide-react';
+import toothIcon from '@/assets/tooth-icon.png';
 
 interface BaseMessageProps {
   children: React.ReactNode;
   animate?: boolean;
 }
 
+// Bot avatar component
+const BotAvatar = () => (
+  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center p-1 flex-shrink-0">
+    <img src={toothIcon} alt="Bot" className="w-full h-full object-contain" />
+  </div>
+);
+
 // Bot message bubble - consistent styling for all bot messages
 const BotBubble = ({ children, animate = true }: BaseMessageProps) => (
-  <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[90%]">
+  <div className={`flex items-start gap-3 ${animate ? 'animate-fade-in' : ''}`}>
+    <BotAvatar />
+    <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[85%]">
       <div className="text-[15px] text-foreground/80 leading-relaxed">
         {children}
       </div>
