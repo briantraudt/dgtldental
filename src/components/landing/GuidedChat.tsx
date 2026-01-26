@@ -168,19 +168,14 @@ const GuidedChat = () => {
 
         case 'show_process':
           await addMessage({ 
-            type: 'process', 
+            type: 'explanation', 
             content: (
-              <ProcessCard 
-                steps={[
-                  { number: 1, text: "Tell us about your practice" },
-                  { number: 2, text: "We build your custom assistant" },
-                  { number: 3, text: "Add one line of code to your site" },
-                ]}
-                footer="Live within 24 hours"
+              <TypewriterText 
+                text="We can connect to your scheduling system for instant online booking, provide maps and directions to your office, answer insurance questions — really anything you'd like to tell new or existing patients."
+                onComplete={() => setState('show_price')}
               />
             )
           });
-          setState('show_price');
           break;
 
         case 'show_price':
