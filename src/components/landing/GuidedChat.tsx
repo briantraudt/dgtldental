@@ -457,7 +457,7 @@ const GuidedChat = () => {
       </header>
 
       {/* Chat Area - scrollable content */}
-      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 flex flex-col justify-end" style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
+      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 flex flex-col justify-end relative" style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
         <div className="max-w-[600px] mx-auto w-full">
           <div className="space-y-5">
             {messages.map(renderMessage)}
@@ -472,6 +472,9 @@ const GuidedChat = () => {
           
           <div ref={messagesEndRef} className="h-8" />
         </div>
+        
+        {/* Bottom fade gradient to indicate scrollable content */}
+        <div className="pointer-events-none fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background via-background/80 to-transparent" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
       </main>
 
     </div>
