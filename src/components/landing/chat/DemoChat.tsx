@@ -10,32 +10,55 @@ interface DemoChatProps {
 
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
-// Format AI response into paragraphs and make dentaloffice.com a clickable link
-const formatResponse = (text: string) => {
-  // Split on double newlines or the specific closing paragraph
-  const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
+// Typewriter component for streaming text
+const StreamingTypewriter = ({ text, isComplete }: { text: string; isComplete: boolean }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
   
-  return paragraphs.map((paragraph, index) => {
-    // Check if this paragraph contains dentaloffice.com and make it clickable
-    if (paragraph.includes('dentaloffice.com')) {
-      const parts = paragraph.split('dentaloffice.com');
-      return (
-        <p key={index}>
-          {parts[0]}
-          <a 
-            href="https://dgtldental.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-primary hover:text-primary/80 underline underline-offset-2"
-          >
-            dentaloffice.com
-          </a>
-          {parts[1]}
-        </p>
-      );
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        // Type multiple characters at once for faster display when catching up
+        const charsToAdd = Math.min(3, text.length - currentIndex);
+        setDisplayedText(text.slice(0, currentIndex + charsToAdd));
+        setCurrentIndex(prev => prev + charsToAdd);
+      }, 15); // Fast typing speed
+      return () => clearTimeout(timeout);
     }
-    return <p key={index}>{paragraph.trim()}</p>;
-  });
+  }, [currentIndex, text]);
+
+  // Format the displayed text into paragraphs with clickable link
+  const formatDisplayedText = (txt: string) => {
+    const paragraphs = txt.split(/\n\n+/).filter(p => p.trim());
+    
+    return paragraphs.map((paragraph, index) => {
+      if (paragraph.includes('dentaloffice.com')) {
+        const parts = paragraph.split('dentaloffice.com');
+        return (
+          <p key={index}>
+            {parts[0]}
+            <a 
+              href="https://dgtldental.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 underline underline-offset-2"
+            >
+              dentaloffice.com
+            </a>
+            {parts[1]}
+          </p>
+        );
+      }
+      return <p key={index}>{paragraph.trim()}</p>;
+    });
+  };
+
+  return (
+    <div className="text-[15px] text-foreground/80 leading-relaxed space-y-3">
+      {formatDisplayedText(displayedText)}
+      {!isComplete && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5" />}
+    </div>
+  );
 };
 
 const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
@@ -44,6 +67,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasAsked, setHasAsked] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
+  const [streamComplete, setStreamComplete] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -113,6 +137,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
       setAiResponse("I'm having trouble connecting right now. But imagine a helpful response here! 😊");
     } finally {
       setIsLoading(false);
+      setStreamComplete(true);
     }
   };
 
@@ -177,9 +202,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
                 <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
               </div>
             ) : (
-              <div className="text-[15px] text-foreground/80 leading-relaxed space-y-3">
-                {formatResponse(aiResponse)}
-              </div>
+              <StreamingTypewriter text={aiResponse} isComplete={streamComplete} />
             )}
           </div>
         </div>
