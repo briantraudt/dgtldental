@@ -367,7 +367,7 @@ const GuidedChat = () => {
           onClick={() => window.location.reload()} 
           className="flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
-          <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center p-1.5">
+          <div className="w-8 h-8">
             <img src={toothIcon} alt="DGTL Dental" className="w-full h-full object-contain" />
           </div>
           <span className="text-lg font-semibold text-foreground">DGTL Dental</span>
