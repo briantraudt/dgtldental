@@ -183,7 +183,7 @@ const GuidedChat = () => {
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="$99/month. No setup fee. Cancel anytime."
+                text="Our pricing is really simple. It costs $99/month. No setup fee and it's completely customized for your office. Cancel anytime."
                 onComplete={() => setState('ask_setup')}
               />
             )
