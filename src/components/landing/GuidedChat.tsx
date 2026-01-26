@@ -363,12 +363,15 @@ const GuidedChat = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary/5 via-secondary to-background">
       {/* Header */}
       <header className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="flex items-center gap-3">
+        <button 
+          onClick={() => window.location.reload()} 
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+        >
           <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center p-1.5">
             <img src={toothIcon} alt="DGTL Dental" className="w-full h-full object-contain" />
           </div>
           <span className="text-lg font-semibold text-foreground">DGTL Dental</span>
-        </div>
+        </button>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span className="hidden sm:inline">AI Assistant</span>
           <span className="hidden sm:inline text-border">•</span>
