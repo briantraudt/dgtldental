@@ -126,16 +126,20 @@ export const TypingIndicator = () => (
 
 // Quick reply buttons
 interface QuickReplyProps {
-  options: { label: string; onClick: () => void }[];
+  options: { label: string; onClick: () => void; primary?: boolean }[];
 }
 
 export const QuickReplyButtons = ({ options }: QuickReplyProps) => (
-  <div className="flex flex-wrap gap-2.5 animate-fade-in">
+  <div className="flex flex-wrap gap-3 animate-fade-in mt-1">
     {options.map((option, index) => (
       <button
         key={index}
         onClick={option.onClick}
-        className="px-5 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-sm transition-all active:scale-[0.98]"
+        className={`px-5 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] ${
+          option.primary
+            ? 'bg-gray-900 text-white hover:bg-gray-800 shadow-sm'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+        }`}
       >
         {option.label}
       </button>

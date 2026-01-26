@@ -16,12 +16,17 @@ import ChatInput from './chat/ChatInput';
 
 type ConversationState = 
   | 'initial'
+  | 'show_intro'
   | 'ask_dental'
   | 'not_dental_end'
-  | 'show_proof'
-  | 'show_explanation'
+  | 'show_authority'
+  | 'show_value'
+  | 'show_benefit'
+  | 'show_ease_1'
+  | 'show_ease_2'
   | 'show_process'
-  | 'show_safe_language'
+  | 'show_safety'
+  | 'show_price'
   | 'ask_setup'
   | 'show_email_info'
   | 'ask_practice_name'
@@ -88,30 +93,65 @@ const GuidedChat = () => {
       switch (state) {
         case 'initial':
           hasInitialized.current = true;
-          await addMessage({ type: 'greeting', content: "Hi — I'll walk you through this quickly." });
+          await addMessage({ type: 'greeting', content: "Hi — quick heads up before we start." });
+          setState('show_intro');
+          break;
+
+        case 'show_intro':
+          await addMessage({ 
+            type: 'explanation', 
+            content: "This is a short walkthrough of a service we install for dental practices. No sales call. No setup on your end." 
+          });
           setState('ask_dental');
           break;
 
         case 'ask_dental':
-          await addMessage({ type: 'question', content: "Do you work in the dental industry?" });
+          await addMessage({ type: 'question', content: "Are you involved in a dental practice?" });
           break;
 
         case 'not_dental_end':
-          await addMessage({ type: 'explanation', content: "This service is built specifically for dental practices. Thanks for stopping by!" });
-          break;
-
-        case 'show_proof':
-          await addMessage({ 
-            type: 'proof', 
-            content: "50,000+ patient questions answered with AI" 
-          });
-          setState('show_explanation');
-          break;
-
-        case 'show_explanation':
           await addMessage({ 
             type: 'explanation', 
-            content: "We install a custom assistant on your website that answers patient questions 24/7 — using safe, non-diagnostic language." 
+            content: "Got it. This service is built specifically for dental practices. Thanks for taking a look." 
+          });
+          break;
+
+        case 'show_authority':
+          await addMessage({ 
+            type: 'proof', 
+            content: "We've helped dental practices answer 50,000+ real patient questions using AI." 
+          });
+          setState('show_value');
+          break;
+
+        case 'show_value':
+          await addMessage({ 
+            type: 'explanation', 
+            content: "We install a custom assistant on your website that answers common patient questions — 24/7 — using safe, non-diagnostic language." 
+          });
+          setState('show_benefit');
+          break;
+
+        case 'show_benefit':
+          await addMessage({ 
+            type: 'explanation', 
+            content: "That means fewer interruptions for your front desk and fewer missed inquiries after hours." 
+          });
+          setState('show_ease_1');
+          break;
+
+        case 'show_ease_1':
+          await addMessage({ 
+            type: 'explanation', 
+            content: "There's nothing for you or your team to learn." 
+          });
+          setState('show_ease_2');
+          break;
+
+        case 'show_ease_2':
+          await addMessage({ 
+            type: 'explanation', 
+            content: "We build it. Your site adds one line of code. That's it." 
           });
           setState('show_process');
           break;
@@ -122,27 +162,35 @@ const GuidedChat = () => {
             content: (
               <ProcessCard 
                 steps={[
-                  { number: 1, text: "Tell us about your practice" },
-                  { number: 2, text: "We build your custom assistant" },
-                  { number: 3, text: "Add one line of code to your site" },
+                  { number: 1, text: "You tell us about your practice" },
+                  { number: 2, text: "We build your assistant" },
+                  { number: 3, text: "Your site adds one line of code" },
                 ]}
                 footer="Live within 24 hours"
               />
             )
           });
-          setState('show_safe_language');
+          setState('show_safety');
           break;
 
-        case 'show_safe_language':
+        case 'show_safety':
           await addMessage({ 
             type: 'explanation', 
-            content: "It never diagnoses or recommends treatment — just answers questions and directs patients to call." 
+            content: "It never diagnoses, never recommends treatment, and always directs patients to contact your office." 
+          });
+          setState('show_price');
+          break;
+
+        case 'show_price':
+          await addMessage({ 
+            type: 'explanation', 
+            content: "It's $99 per month. No setup fee. Cancel anytime." 
           });
           setState('ask_setup');
           break;
 
         case 'ask_setup':
-          await addMessage({ type: 'question', content: "Want us to set this up for you?" });
+          await addMessage({ type: 'question', content: "Want us to set this up for your website?" });
           break;
 
         case 'show_email_info':
@@ -161,21 +209,21 @@ const GuidedChat = () => {
           break;
 
         case 'ask_practice_name':
-          await addMessage({ type: 'question', content: "Great — just a few quick questions. What's the name of your practice?" });
+          await addMessage({ type: 'question', content: "Great — what's the name of your practice?" });
           break;
 
         case 'ask_website':
-          await addMessage({ type: 'question', content: "And your website URL?" });
+          await addMessage({ type: 'question', content: "What's your website?" });
           break;
 
         case 'ask_email':
-          await addMessage({ type: 'question', content: "Last one — best email to reach you?" });
+          await addMessage({ type: 'question', content: "Best email to reach you?" });
           break;
 
         case 'complete':
           await addMessage({ 
             type: 'success', 
-            content: "Perfect — we'll review your site and follow up within 24 hours." 
+            content: "Thanks. We'll review your site and follow up shortly." 
           });
           break;
       }
@@ -187,7 +235,7 @@ const GuidedChat = () => {
   // Handlers
   const handleDentalYes = (response: string) => {
     addUserMessage(response);
-    setState('show_proof');
+    setState('show_authority');
   };
 
   const handleDentalNo = () => {
@@ -258,8 +306,8 @@ const GuidedChat = () => {
         return (
           <QuickReplyButtons
             options={[
-              { label: "Yes, I'm a dentist", onClick: () => handleDentalYes("Yes, I'm a dentist") },
-              { label: "I work in dental", onClick: () => handleDentalYes("I work in dental") },
+              { label: "Yes — dentist / owner", onClick: () => handleDentalYes("Yes — dentist / owner"), primary: true },
+              { label: "Yes — I work in dental", onClick: () => handleDentalYes("Yes — I work in dental") },
               { label: "No", onClick: handleDentalNo },
             ]}
           />
@@ -269,7 +317,7 @@ const GuidedChat = () => {
         return (
           <QuickReplyButtons
             options={[
-              { label: "Yes, let's do it", onClick: handleSetupYes },
+              { label: "Yes — set it up", onClick: handleSetupYes, primary: true },
               { label: "I have a question", onClick: handleQuestion },
             ]}
           />
@@ -347,7 +395,7 @@ const GuidedChat = () => {
       {/* Chat Area */}
       <main className="flex-1 relative z-10">
         <div className="max-w-[700px] mx-auto px-6 py-8">
-          <div className="space-y-6">
+          <div className="space-y-5">
             {messages.map(renderMessage)}
             
             {isTyping && <TypingIndicator />}
@@ -362,19 +410,6 @@ const GuidedChat = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 py-8">
-        <div className="max-w-[700px] mx-auto px-6 text-center">
-          <p className="text-sm text-gray-400">
-            $99/mo · No setup fee · Cancel anytime
-          </p>
-          <p className="text-xs text-gray-300 mt-2">
-            <a href="mailto:hello@dgtldental.com" className="hover:text-gray-500 transition-colors">
-              hello@dgtldental.com
-            </a>
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };
