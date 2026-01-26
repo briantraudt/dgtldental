@@ -359,28 +359,27 @@ const GuidedChat = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-slate-50 to-white p-4 md:p-8">
-      {/* Chat Card Container */}
-      <div className="w-full max-w-[700px] bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col min-h-[600px] max-h-[85vh]">
-        {/* Card Header */}
-        <header className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-slate-50 to-white">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-5 h-5 text-blue-600" fill="currentColor">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
-              </svg>
-            </div>
-            <span className="text-lg font-semibold text-gray-900">DGTL Dental</span>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-slate-50 to-white">
+      {/* Header */}
+      <header className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 text-blue-600" fill="currentColor">
+              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+            </svg>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span>AI Assistant</span>
-            <span className="text-gray-300">•</span>
-            <span>~2 min</span>
-          </div>
-        </header>
+          <span className="text-lg font-semibold text-gray-900">DGTL Dental</span>
+        </div>
+        <div className="flex items-center gap-2 text-sm text-gray-500">
+          <span className="hidden sm:inline">AI Assistant</span>
+          <span className="hidden sm:inline text-gray-300">•</span>
+          <span>~2 min</span>
+        </div>
+      </header>
 
-        {/* Chat Area */}
-        <main className="flex-1 overflow-y-auto px-5 py-6">
+      {/* Chat Area */}
+      <main className="flex-1 overflow-y-auto px-5 md:px-8 py-6">
+        <div className="max-w-[600px] mx-auto">
           <div className="space-y-5">
             {messages.map(renderMessage)}
             
@@ -393,24 +392,21 @@ const GuidedChat = () => {
           </div>
           
           <div ref={messagesEndRef} className="h-4" />
-        </main>
+        </div>
+      </main>
 
-        {/* Card Footer */}
-        <footer className="px-5 py-4 border-t border-gray-100 bg-gradient-to-r from-slate-50 to-white">
-          <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>$99/mo · No setup fee · Cancel anytime</span>
-            <a 
-              href="mailto:hello@dgtldental.com" 
-              className="text-blue-600 hover:text-blue-700 transition-colors"
-            >
-              hello@dgtldental.com
-            </a>
-          </div>
-        </footer>
-      </div>
-
-      {/* Copyright below card */}
-      <p className="mt-6 text-sm text-gray-400">© 2024 DGTL Dental</p>
+      {/* Footer */}
+      <footer className="px-5 md:px-8 py-4 border-t border-gray-100 bg-white/80 backdrop-blur-sm">
+        <div className="max-w-[600px] mx-auto flex items-center justify-between text-sm text-gray-500">
+          <span>$99/mo · No setup fee · Cancel anytime</span>
+          <a 
+            href="mailto:hello@dgtldental.com" 
+            className="text-blue-600 hover:text-blue-700 transition-colors"
+          >
+            hello@dgtldental.com
+          </a>
+        </div>
+      </footer>
     </div>
   );
 };
