@@ -8,12 +8,6 @@ interface DemoChatProps {
 
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
-const suggestedQuestions = [
-  "How often should I get a cleaning?",
-  "Do you accept Delta Dental?",
-  "What should I do for a toothache?",
-];
-
 const DemoChat = ({ onComplete }: DemoChatProps) => {
   const [userMessage, setUserMessage] = useState('');
   const [aiResponse, setAiResponse] = useState('');
@@ -101,23 +95,8 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
       {/* Prompt */}
       <div className="flex items-center gap-2 text-gray-700">
         <Sparkles className="w-4 h-4 text-blue-500" />
-        <span className="text-[15px]">Try it — ask a dental question:</span>
+        <span className="text-[15px]">Try it — ask any dental question:</span>
       </div>
-
-      {/* Suggested questions */}
-      {!hasAsked && (
-        <div className="flex flex-wrap gap-2">
-          {suggestedQuestions.map((q, i) => (
-            <button
-              key={i}
-              onClick={() => sendMessage(q)}
-              className="px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
-            >
-              {q}
-            </button>
-          ))}
-        </div>
-      )}
 
       {/* Input */}
       {!hasAsked && (
@@ -127,7 +106,7 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
             type="text"
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}
-            placeholder="Or type your own question..."
+            placeholder="Type a question..."
             className="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all"
           />
           <Button
