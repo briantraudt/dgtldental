@@ -210,7 +210,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
 
       {/* Continue button after response - only show if not completed */}
       {hasAsked && aiResponse && !isLoading && !hasCompleted && !isCompleted && (
-        <div className="pt-2 animate-fade-in">
+        <div className="pt-2 animate-fade-in flex justify-end">
           <button
             onClick={() => {
               setHasCompleted(true);
