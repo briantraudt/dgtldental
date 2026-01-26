@@ -58,20 +58,20 @@ interface ProcessCardProps {
 
 export const ProcessCard = ({ steps, footer, animate = true }: ProcessCardProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6">
-      <div className="space-y-4">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+      <div className="space-y-2.5">
         {steps.map((step) => (
-          <div key={step.number} className="flex items-start gap-4">
-            <span className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-xl flex items-center justify-center text-sm font-semibold flex-shrink-0 shadow-sm">
+          <div key={step.number} className="flex items-center gap-3">
+            <span className="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-lg flex items-center justify-center text-xs font-semibold flex-shrink-0">
               {step.number}
             </span>
-            <span className="text-[15px] text-gray-700 pt-1">{step.text}</span>
+            <span className="text-[14px] text-gray-700">{step.text}</span>
           </div>
         ))}
       </div>
       {footer && (
-        <div className="mt-5 pt-4 border-t border-gray-100">
-          <p className="text-sm font-medium text-gray-900">{footer}</p>
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <p className="text-[13px] font-medium text-gray-900">{footer}</p>
         </div>
       )}
     </div>
