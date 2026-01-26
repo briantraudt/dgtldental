@@ -109,23 +109,35 @@ const GuidedChat = () => {
         case 'ask_dental':
           await addMessage({ 
             type: 'question', 
-            content: "Are you a dentist or do you work in a dental office?" 
+            content: (
+              <TypewriterText 
+                text="Are you a dentist or do you work in a dental office?"
+              />
+            )
           });
           break;
 
         case 'not_dental_end':
           await addMessage({ 
             type: 'explanation', 
-            content: "Thanks for stopping by! This service is designed specifically for dental practices. Feel free to share with anyone you know in the dental field." 
+            content: (
+              <TypewriterText 
+                text="Thanks for stopping by! This service is designed specifically for dental practices. Feel free to share with anyone you know in the dental field."
+              />
+            )
           });
           break;
 
         case 'show_demo_intro':
           await addMessage({ 
             type: 'explanation', 
-            content: "Let me show you how it works. Here's a quick demo of what your patients would experience:" 
+            content: (
+              <TypewriterText 
+                text="Let me show you how it works. Here's a quick demo of what your patients would experience:"
+                onComplete={() => setState('show_demo')}
+              />
+            )
           });
-          setState('show_demo');
           break;
 
         case 'show_demo':
@@ -135,9 +147,13 @@ const GuidedChat = () => {
         case 'show_value':
           await addMessage({ 
             type: 'explanation', 
-            content: "Pretty cool, right? That's what your patients get — instant, helpful answers 24/7 while your front desk focuses on patients in the office." 
+            content: (
+              <TypewriterText 
+                text="Pretty cool, right? That's what your patients get — instant, helpful answers 24/7 while your front desk focuses on patients in the office."
+                onComplete={() => setState('show_process')}
+              />
+            )
           });
-          setState('show_process');
           break;
 
         case 'show_process':
@@ -160,15 +176,23 @@ const GuidedChat = () => {
         case 'show_price':
           await addMessage({ 
             type: 'explanation', 
-            content: "$99/month. No setup fee. Cancel anytime." 
+            content: (
+              <TypewriterText 
+                text="$99/month. No setup fee. Cancel anytime."
+                onComplete={() => setState('ask_setup')}
+              />
+            )
           });
-          setState('ask_setup');
           break;
 
         case 'ask_setup':
           await addMessage({ 
             type: 'question', 
-            content: "Want us to set this up for you?" 
+            content: (
+              <TypewriterText 
+                text="Want us to set this up for you?"
+              />
+            )
           });
           break;
 
@@ -177,7 +201,9 @@ const GuidedChat = () => {
             type: 'explanation', 
             content: (
               <>
-                No problem! Reach out anytime at{' '}
+                <TypewriterText 
+                  text="No problem! Reach out anytime at "
+                />
                 <a href="mailto:hello@dgtldental.com" className="text-primary hover:text-primary/80 underline underline-offset-2">
                   hello@dgtldental.com
                 </a>
@@ -189,28 +215,44 @@ const GuidedChat = () => {
         case 'ask_practice_name':
           await addMessage({ 
             type: 'question', 
-            content: "What's the name of your practice?" 
+            content: (
+              <TypewriterText 
+                text="What's the name of your practice?"
+              />
+            )
           });
           break;
 
         case 'ask_website':
           await addMessage({ 
             type: 'question', 
-            content: "What's your website URL?" 
+            content: (
+              <TypewriterText 
+                text="What's your website URL?"
+              />
+            )
           });
           break;
 
         case 'ask_email':
           await addMessage({ 
             type: 'question', 
-            content: "What's the best email to reach you?" 
+            content: (
+              <TypewriterText 
+                text="What's the best email to reach you?"
+              />
+            )
           });
           break;
 
         case 'complete':
           await addMessage({ 
             type: 'success', 
-            content: "Thanks! We'll review your site and follow up within 24 hours." 
+            content: (
+              <TypewriterText 
+                text="Thanks! We'll review your site and follow up within 24 hours."
+              />
+            )
           });
           break;
       }

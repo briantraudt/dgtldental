@@ -6,7 +6,7 @@ interface TypewriterTextProps {
   onComplete?: () => void;
 }
 
-const TypewriterText = ({ text, speed = 25, onComplete }: TypewriterTextProps) => {
+const TypewriterText = ({ text, speed = 35, onComplete }: TypewriterTextProps) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -27,7 +27,7 @@ const TypewriterText = ({ text, speed = 25, onComplete }: TypewriterTextProps) =
     <span>
       {displayedText}
       {currentIndex < text.length && (
-        <span className="inline-block w-0.5 h-5 bg-gray-400 ml-0.5 animate-pulse" />
+        <span className="inline-block w-0.5 h-5 bg-muted-foreground/50 ml-0.5 animate-pulse" />
       )}
     </span>
   );
