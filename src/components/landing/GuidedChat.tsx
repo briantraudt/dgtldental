@@ -430,7 +430,7 @@ const GuidedChat = () => {
   return (
     <div className="h-full flex flex-col bg-background overflow-hidden">
       {/* Header - fixed to top with safe area support */}
-      <header className="bg-background/95 backdrop-blur-md border-b border-border/30 flex-shrink-0" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+      <header className="bg-background/95 backdrop-blur-md flex-shrink-0" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         {/* Mobile: centered icon with hamburger */}
         <div className="md:hidden flex items-center justify-between px-4 py-3 min-h-[56px]">
           <div className="w-10 flex-shrink-0" /> {/* Spacer for balance */}
