@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { playMessageFeedback } from './chat/audioFeedback';
 import toothIcon from '@/assets/tooth-icon.png';
+import dgtlLogo from '@/assets/dgtl-logo.png';
 import {
   GreetingMessage,
   QuestionMessage,
@@ -365,18 +366,11 @@ const GuidedChat = () => {
       <header className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <button 
           onClick={() => window.location.reload()} 
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          className="hover:opacity-80 transition-opacity"
         >
-          <div className="w-8 h-8">
-            <img src={toothIcon} alt="DGTL Dental" className="w-full h-full object-contain" />
-          </div>
-          <span className="text-lg font-semibold text-foreground">DGTL Dental</span>
+          <img src={dgtlLogo} alt="DGTL" className="h-8 object-contain" />
         </button>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span className="hidden sm:inline">AI Assistant</span>
-          <span className="hidden sm:inline text-border">•</span>
-          <span>~2 min</span>
-        </div>
+        <span className="text-sm text-muted-foreground">AI Assistant</span>
       </header>
 
       {/* Chat Area */}
