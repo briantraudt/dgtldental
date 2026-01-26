@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle, ArrowUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -13,8 +12,8 @@ interface Message {
 }
 
 const TypingIndicator = () => (
-  <div className="flex justify-start">
-    <div className="flex gap-1.5 px-5 py-4">
+  <div className="flex justify-start px-4 md:px-0">
+    <div className="flex gap-1.5 py-4">
       <span className="w-2 h-2 bg-gray-300 rounded-full animate-[pulse_1.5s_ease-in-out_infinite]" />
       <span className="w-2 h-2 bg-gray-300 rounded-full animate-[pulse_1.5s_ease-in-out_infinite]" style={{ animationDelay: '150ms' }} />
       <span className="w-2 h-2 bg-gray-300 rounded-full animate-[pulse_1.5s_ease-in-out_infinite]" style={{ animationDelay: '300ms' }} />
@@ -29,9 +28,10 @@ const GuidedChat = () => {
   const [conversationEnded, setConversationEnded] = useState(false);
   const [formStep, setFormStep] = useState<FormStep | null>(null);
   const [formData, setFormData] = useState({ practice: '', website: '', email: '' });
+  const [inputValue, setInputValue] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -127,29 +127,35 @@ const GuidedChat = () => {
   const handleYesSetup = async () => {
     setCurrentButtons([]);
     addUserMessage("Yes, let's do it");
-    await addBotMessage("Great — just a few quick questions.");
-    await addBotMessage("What's the name of your practice?");
+    await addBotMessage("Great — just a few quick questions. What's the name of your practice?");
     setFormStep('practice');
     setTimeout(() => inputRef.current?.focus(), 100);
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleFormSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (!inputValue.trim()) return;
     
-    if (formStep === 'practice' && formData.practice) {
-      addUserMessage(formData.practice);
+    const value = inputValue.trim();
+    setInputValue('');
+    
+    if (formStep === 'practice') {
+      setFormData(prev => ({ ...prev, practice: value }));
+      addUserMessage(value);
       setFormStep(null);
       await addBotMessage("And your website URL?");
       setFormStep('website');
       setTimeout(() => inputRef.current?.focus(), 100);
-    } else if (formStep === 'website' && formData.website) {
-      addUserMessage(formData.website);
+    } else if (formStep === 'website') {
+      setFormData(prev => ({ ...prev, website: value }));
+      addUserMessage(value);
       setFormStep(null);
       await addBotMessage("Last one — best email to reach you?");
       setFormStep('email');
       setTimeout(() => inputRef.current?.focus(), 100);
-    } else if (formStep === 'email' && formData.email) {
-      addUserMessage(formData.email);
+    } else if (formStep === 'email') {
+      const finalFormData = { ...formData, email: value };
+      addUserMessage(value);
       setFormStep(null);
       setIsSubmitting(true);
       
@@ -157,17 +163,17 @@ const GuidedChat = () => {
         const { error } = await supabase
           .from('setup_requests' as any)
           .insert({
-            practice_name: formData.practice,
-            website_url: formData.website,
-            contact_name: formData.practice,
-            email: formData.email
+            practice_name: finalFormData.practice,
+            website_url: finalFormData.website,
+            contact_name: finalFormData.practice,
+            email: finalFormData.email
           });
         
         if (error) throw error;
         
         await addBotMessage(
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
               <CheckCircle className="w-5 h-5 text-green-600" />
             </div>
             <span>Perfect — we'll review your site and follow up within 24 hours.</span>
@@ -187,79 +193,50 @@ const GuidedChat = () => {
 
   const getInputPlaceholder = () => {
     switch (formStep) {
-      case 'practice': return 'Bright Smile Dental';
-      case 'website': return 'https://yourpractice.com';
-      case 'email': return 'dr.smith@practice.com';
-      default: return '';
+      case 'practice': return 'Enter your practice name...';
+      case 'website': return 'Enter your website URL...';
+      case 'email': return 'Enter your email...';
+      default: return 'Message DGTL...';
     }
   };
 
-  const getInputValue = () => {
-    switch (formStep) {
-      case 'practice': return formData.practice;
-      case 'website': return formData.website;
-      case 'email': return formData.email;
-      default: return '';
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleFormSubmit();
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFormData(prev => ({
-      ...prev,
-      [formStep as string]: value
-    }));
-  };
+  const isInputEnabled = formStep && formStep !== 'done' && !isTyping && !isSubmitting;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="h-screen flex flex-col bg-white">
       {/* Header */}
-      <header className="border-b border-gray-100 sticky top-0 z-10 bg-white/95 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <header className="border-b border-gray-100 bg-white flex-shrink-0">
+        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-center">
           <img 
             src="/images/dgtl-logo.png" 
             alt="DGTL Dental" 
-            className="h-8 md:h-9 w-auto"
+            className="h-8 w-auto"
           />
-          <Button 
-            onClick={() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })}
-            className="bg-gray-900 hover:bg-gray-800 text-white px-5 h-10 rounded-full text-sm font-medium transition-all hover:shadow-lg"
-          >
-            Get Started
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </Button>
         </div>
       </header>
 
-      {/* Chat Container */}
+      {/* Chat Messages - Scrollable Area */}
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-          {/* Welcome Badge */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-              AI Assistant
-            </div>
-            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-3 tracking-tight">
-              Let's get you set up
-            </h1>
-            <p className="text-gray-500 text-lg">
-              A quick conversation to understand your practice
-            </p>
-          </div>
-
+        <div className="max-w-2xl mx-auto px-4 py-8">
           {/* Messages */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             {messages.map((msg, index) => (
               <div 
                 key={index}
                 className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
               >
                 <div 
-                  className={`max-w-[90%] md:max-w-[80%] ${
+                  className={`max-w-[85%] ${
                     msg.type === 'user' 
-                      ? 'bg-gray-900 text-white px-5 py-3 rounded-2xl rounded-br-lg' 
-                      : 'bg-gray-50 text-gray-700 px-5 py-4 rounded-2xl rounded-bl-lg border border-gray-100'
+                      ? 'bg-gray-100 text-gray-900 px-4 py-3 rounded-2xl rounded-br-md' 
+                      : 'text-gray-700'
                   }`}
                 >
                   <div className="text-[15px] leading-relaxed">{msg.content}</div>
@@ -271,94 +248,63 @@ const GuidedChat = () => {
             
             {/* Quick Reply Buttons */}
             {currentButtons.length > 0 && !isTyping && (
-              <div className="flex flex-wrap gap-2 pt-2 animate-fade-in">
+              <div className="flex flex-wrap gap-2 animate-fade-in">
                 {currentButtons.map((btn, index) => (
                   <button
                     key={index}
                     onClick={btn.action}
-                    className="px-5 py-2.5 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all hover:shadow-sm"
+                    className="px-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
                   >
                     {btn.label}
                   </button>
                 ))}
               </div>
             )}
-            
-            {/* Form Input */}
-            {formStep && formStep !== 'done' && !isTyping && (
-              <form onSubmit={handleFormSubmit} className="pt-2 animate-fade-in">
-                <div className="flex gap-3">
-                  <Input
-                    ref={inputRef}
-                    type={formStep === 'email' ? 'email' : formStep === 'website' ? 'url' : 'text'}
-                    value={getInputValue()}
-                    onChange={handleInputChange}
-                    placeholder={getInputPlaceholder()}
-                    required
-                    className="flex-1 h-12 rounded-xl border-gray-200 px-4 text-[15px] focus:border-gray-400 focus:ring-0 placeholder:text-gray-400"
-                    disabled={isSubmitting}
-                  />
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting || !getInputValue()}
-                    className="h-12 px-6 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-medium transition-all disabled:opacity-40"
-                  >
-                    {isSubmitting ? (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <ArrowRight className="w-5 h-5" />
-                    )}
-                  </Button>
-                </div>
-              </form>
-            )}
           </div>
           
-          <div ref={messagesEndRef} className="h-12" />
+          <div ref={messagesEndRef} className="h-4" />
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100 bg-gray-50/50">
-        <div className="max-w-6xl mx-auto px-6 py-10">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div>
-              <img 
-                src="/images/dgtl-logo.png" 
-                alt="DGTL Dental" 
-                className="h-7 w-auto mb-3 opacity-80"
+      {/* Sticky Bottom Input Area */}
+      <div className="flex-shrink-0 border-t border-gray-100 bg-gradient-to-t from-gray-50 to-white">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="relative">
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden focus-within:border-gray-300 focus-within:shadow-md transition-all">
+              <textarea
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={getInputPlaceholder()}
+                disabled={!isInputEnabled}
+                rows={1}
+                className="w-full px-4 pt-4 pb-12 text-[15px] text-gray-900 placeholder:text-gray-400 resize-none focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
+                style={{ minHeight: '60px', maxHeight: '200px' }}
               />
-              <p className="text-sm text-gray-500">
-                AI-powered patient communication for dental practices.
-              </p>
-            </div>
-            <div className="flex flex-col md:items-end gap-2">
-              <div className="flex items-center gap-4 text-sm text-gray-500">
-                <span className="font-medium text-gray-900">$99/mo</span>
-                <span>·</span>
-                <span>No setup fee</span>
-                <span>·</span>
-                <span>Cancel anytime</span>
+              <div className="absolute bottom-3 right-3">
+                <Button
+                  onClick={() => handleFormSubmit()}
+                  disabled={!isInputEnabled || !inputValue.trim()}
+                  size="icon"
+                  className="w-8 h-8 rounded-lg bg-gray-900 hover:bg-gray-800 disabled:bg-gray-200 disabled:opacity-100 transition-colors"
+                >
+                  {isSubmitting ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <ArrowUp className="w-4 h-4 text-white" />
+                  )}
+                </Button>
               </div>
-              <a 
-                href="mailto:hello@dgtldental.com" 
-                className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-              >
-                hello@dgtldental.com
-              </a>
             </div>
           </div>
-          <div className="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <p className="text-xs text-gray-400">
-              © 2024 DGTL Dental. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6 text-xs text-gray-400">
-              <a href="#" className="hover:text-gray-600 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-gray-600 transition-colors">Terms of Service</a>
-            </div>
-          </div>
+          
+          {/* Footer Text */}
+          <p className="text-center text-xs text-gray-400 mt-3">
+            $99/mo · No setup fee · Cancel anytime · <a href="mailto:hello@dgtldental.com" className="hover:text-gray-600 transition-colors">hello@dgtldental.com</a>
+          </p>
         </div>
-      </footer>
+      </div>
     </div>
   );
 };
