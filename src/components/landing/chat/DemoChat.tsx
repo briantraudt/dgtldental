@@ -10,6 +10,31 @@ interface DemoChatProps {
 
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
+// Format AI response into paragraphs
+const formatResponse = (text: string) => {
+  // Split on common paragraph indicators
+  const paragraphs = text
+    .split(/(?:Please note that|If you are experiencing|If you have|Would you like|You can reach us|You can give us a call|To schedule|To book)/gi)
+    .filter(p => p.trim());
+  
+  if (paragraphs.length <= 1) {
+    // If no splits found, just return the text
+    return <p>{text}</p>;
+  }
+  
+  // Reconstruct with the split phrases
+  const matches = text.match(/(?:Please note that|If you are experiencing|If you have|Would you like|You can reach us|You can give us a call|To schedule|To book)/gi) || [];
+  
+  return paragraphs.map((paragraph, index) => {
+    const prefix = index > 0 ? matches[index - 1] || '' : '';
+    return (
+      <p key={index}>
+        {prefix}{paragraph.trim()}
+      </p>
+    );
+  });
+};
+
 const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const [userMessage, setUserMessage] = useState('');
   const [aiResponse, setAiResponse] = useState('');
@@ -149,7 +174,9 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
                 <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
               </div>
             ) : (
-              <p className="text-[15px] text-foreground/80 leading-relaxed">{aiResponse}</p>
+              <div className="text-[15px] text-foreground/80 leading-relaxed space-y-3">
+                {formatResponse(aiResponse)}
+              </div>
             )}
           </div>
         </div>
