@@ -204,6 +204,39 @@ export type Database = {
         }
         Relationships: []
       }
+      setup_requests: {
+        Row: {
+          contact_name: string
+          created_at: string
+          email: string
+          id: string
+          notes: string | null
+          practice_name: string
+          status: string
+          website_url: string
+        }
+        Insert: {
+          contact_name: string
+          created_at?: string
+          email: string
+          id?: string
+          notes?: string | null
+          practice_name: string
+          status?: string
+          website_url: string
+        }
+        Update: {
+          contact_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          notes?: string | null
+          practice_name?: string
+          status?: string
+          website_url?: string
+        }
+        Relationships: []
+      }
       subscribers: {
         Row: {
           created_at: string

@@ -52,7 +52,7 @@ const GuidedChat = () => {
     
     try {
       const { error } = await supabase
-        .from('setup_requests')
+        .from('setup_requests' as any)
         .insert({
           practice_name: formData.practiceName,
           website_url: formData.websiteUrl,
