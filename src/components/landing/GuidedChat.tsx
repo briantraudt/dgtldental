@@ -409,14 +409,16 @@ const GuidedChat = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
-      <header className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <button 
-          onClick={() => window.location.reload()} 
-          className="hover:opacity-80 transition-opacity"
-        >
-          <img src={dgtlLogo} alt="DGTL" className="h-8 object-contain" />
-        </button>
-        <span className="text-sm text-muted-foreground">AI Assistant</span>
+      <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="max-w-[600px] mx-auto flex items-center justify-between px-5 md:px-8 py-4">
+          <button 
+            onClick={() => window.location.reload()} 
+            className="hover:opacity-80 transition-opacity"
+          >
+            <img src={dgtlLogo} alt="DGTL" className="h-8 object-contain" />
+          </button>
+          <span className="text-sm text-muted-foreground">AI Assistant</span>
+        </div>
       </header>
 
       {/* Chat Area */}
