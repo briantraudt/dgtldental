@@ -109,7 +109,7 @@ const GuidedChat = () => {
             type: 'greeting', 
             content: (
               <TypewriterText 
-                text="Hi, thanks for stopping by! We create AI-powered chatbots for dental practices to help you save time and money while providing a better patient experience."
+                text="Hi, thanks for stopping by! We create AI-powered Virtual Front Desks for dental practices to help you save time and money while providing a better patient experience."
                 onComplete={() => setState('ask_dental')}
               />
             )
