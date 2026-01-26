@@ -33,10 +33,16 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
   }, [currentIndex, text, onTextUpdate, isComplete, onTypingComplete]);
 
   // Format the displayed text into paragraphs with clickable link
-  const formatDisplayedText = (txt: string) => {
+  const formatDisplayedText = (txt: string, showCursor: boolean) => {
+    if (!txt) {
+      return showCursor ? <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse" /> : null;
+    }
+    
     const paragraphs = txt.split(/\n\n+/).filter(p => p.trim());
     
     return paragraphs.map((paragraph, index) => {
+      const isLastParagraph = index === paragraphs.length - 1;
+      
       if (paragraph.includes('dentaloffice.com')) {
         const parts = paragraph.split('dentaloffice.com');
         return (
@@ -51,10 +57,16 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
               dentaloffice.com
             </a>
             {parts[1]}
+            {isLastParagraph && showCursor && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5 align-middle" />}
           </p>
         );
       }
-      return <p key={index}>{paragraph.trim()}</p>;
+      return (
+        <p key={index}>
+          {paragraph.trim()}
+          {isLastParagraph && showCursor && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5 align-middle" />}
+        </p>
+      );
     });
   };
 
@@ -62,8 +74,7 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
 
   return (
     <div className="text-[15px] text-foreground/80 leading-relaxed space-y-3">
-      {formatDisplayedText(displayedText)}
-      {!isTypingDone && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5" />}
+      {formatDisplayedText(displayedText, !isTypingDone)}
     </div>
   );
 };
