@@ -471,8 +471,8 @@ const GuidedChat = () => {
             <MobileMenu />
           </div>
         </div>
-        {/* Desktop: logo left, AI Assistant right */}
-        <div className="hidden md:flex max-w-[1024px] mx-auto items-center justify-between px-8 py-4">
+        {/* Desktop: logo left, nav right - aligned with chat width */}
+        <div className="hidden md:flex max-w-[700px] mx-auto items-center justify-between px-8 py-4">
           <button 
             onClick={() => window.location.reload()} 
             className="hover:opacity-80 transition-opacity"
