@@ -100,10 +100,10 @@ const GuidedChat = () => {
             content: (
               <TypewriterText 
                 text="Hi, thanks for stopping by! We create AI-powered chatbots for dental practices to help you save time and money while providing a better patient experience."
+                onComplete={() => setState('ask_dental')}
               />
             )
           });
-          setState('ask_dental');
           break;
 
         case 'ask_dental':
