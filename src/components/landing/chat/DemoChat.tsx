@@ -10,28 +10,31 @@ interface DemoChatProps {
 
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
-// Format AI response into paragraphs
+// Format AI response into paragraphs and make dentaloffice.com a clickable link
 const formatResponse = (text: string) => {
-  // Split on common paragraph indicators
-  const paragraphs = text
-    .split(/(?:Please note that|If you are experiencing|If you have|Would you like|You can reach us|You can give us a call|To schedule|To book)/gi)
-    .filter(p => p.trim());
-  
-  if (paragraphs.length <= 1) {
-    // If no splits found, just return the text
-    return <p>{text}</p>;
-  }
-  
-  // Reconstruct with the split phrases
-  const matches = text.match(/(?:Please note that|If you are experiencing|If you have|Would you like|You can reach us|You can give us a call|To schedule|To book)/gi) || [];
+  // Split on double newlines or the specific closing paragraph
+  const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
   
   return paragraphs.map((paragraph, index) => {
-    const prefix = index > 0 ? matches[index - 1] || '' : '';
-    return (
-      <p key={index}>
-        {prefix}{paragraph.trim()}
-      </p>
-    );
+    // Check if this paragraph contains dentaloffice.com and make it clickable
+    if (paragraph.includes('dentaloffice.com')) {
+      const parts = paragraph.split('dentaloffice.com');
+      return (
+        <p key={index}>
+          {parts[0]}
+          <a 
+            href="https://dgtldental.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 underline underline-offset-2"
+          >
+            dentaloffice.com
+          </a>
+          {parts[1]}
+        </p>
+      );
+    }
+    return <p key={index}>{paragraph.trim()}</p>;
   });
 };
 
