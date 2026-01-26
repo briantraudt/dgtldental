@@ -365,11 +365,11 @@ const GuidedChat = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto px-4 py-3">
+        <div className="max-w-3xl mx-auto px-4 py-4">
           <img 
             src="/images/dgtl-logo.png" 
             alt="DGTL Dental" 
-            className="h-8 w-auto"
+            className="h-12 md:h-14 w-auto"
           />
         </div>
       </header>
