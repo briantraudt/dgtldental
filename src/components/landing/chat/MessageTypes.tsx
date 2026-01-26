@@ -17,7 +17,7 @@ const BotAvatar = () => (
 const BotBubble = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`flex items-start gap-3 ${animate ? 'animate-fade-in' : ''}`}>
     <BotAvatar />
-    <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[85%]">
+    <div className="bg-background border border-primary/30 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[85%]">
       <div className="text-[15px] text-foreground/80 leading-relaxed">
         {children}
       </div>
@@ -64,7 +64,7 @@ interface ProcessCardProps {
 
 export const ProcessCard = ({ steps, footer, animate = true }: ProcessCardProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-card rounded-xl border border-border shadow-sm p-4">
+    <div className="bg-background rounded-xl border border-primary/30 shadow-sm p-4">
       <div className="space-y-2.5">
         {steps.map((step) => (
           <div key={step.number} className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export const CTAMessage = ({ text, animate = true }: CTAMessageProps) => (
 // User message - distinct bubble
 export const UserMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`flex justify-end ${animate ? 'animate-fade-in' : ''}`}>
-    <div className="bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-br-sm max-w-[80%] shadow-sm">
+    <div className="bg-primary text-primary-foreground border border-primary px-5 py-3 rounded-2xl rounded-br-sm max-w-[80%] shadow-sm">
       <div className="text-[15px] leading-relaxed">{children}</div>
     </div>
   </div>
@@ -144,7 +144,7 @@ export const QuickReplyButtons = ({ options }: QuickReplyProps) => (
         className={`px-6 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] border shadow-sm ${
           option.primary 
             ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90' 
-            : 'bg-card text-foreground border-border hover:bg-secondary'
+            : 'bg-background text-foreground border-primary/30 hover:bg-secondary'
         }`}
       >
         {option.label}
