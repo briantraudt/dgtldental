@@ -56,6 +56,7 @@ const GuidedChat = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
+  const processedStates = useRef<Set<ConversationState>>(new Set());
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
@@ -90,6 +91,9 @@ const GuidedChat = () => {
   // State machine progression
   useEffect(() => {
     if (hasInitialized.current && state === 'initial') return;
+    // Prevent duplicate processing of the same state
+    if (processedStates.current.has(state)) return;
+    processedStates.current.add(state);
     
     const progressConversation = async () => {
       switch (state) {
