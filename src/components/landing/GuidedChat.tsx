@@ -429,18 +429,20 @@ const GuidedChat = () => {
 
   return (
     <div className="h-full flex flex-col bg-background overflow-hidden">
-      {/* Header */}
-      <header className="bg-background/95 backdrop-blur-md border-b border-border/30 flex-shrink-0 safe-area-top">
+      {/* Header - fixed to top with safe area support */}
+      <header className="bg-background/95 backdrop-blur-md border-b border-border/30 flex-shrink-0" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         {/* Mobile: centered icon with hamburger */}
-        <div className="md:hidden flex items-center justify-between px-4 py-3">
-          <div className="w-10" /> {/* Spacer for balance */}
+        <div className="md:hidden flex items-center justify-between px-4 py-3 min-h-[56px]">
+          <div className="w-10 flex-shrink-0" /> {/* Spacer for balance */}
           <button 
             onClick={() => window.location.reload()} 
-            className="hover:opacity-80 transition-opacity active:scale-95"
+            className="hover:opacity-80 transition-opacity active:scale-95 flex-shrink-0"
           >
             <img src={toothIcon} alt="DGTL" className="h-8 w-8 object-contain" />
           </button>
-          <MobileMenu />
+          <div className="w-10 flex-shrink-0 flex justify-end">
+            <MobileMenu />
+          </div>
         </div>
         {/* Desktop: logo left, AI Assistant right */}
         <div className="hidden md:flex max-w-[1024px] mx-auto items-center justify-between px-8 py-4">
