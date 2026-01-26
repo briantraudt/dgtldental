@@ -115,9 +115,13 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
             type="submit"
             disabled={!userMessage.trim() || isLoading}
             size="icon"
-            className="w-11 h-11 rounded-xl bg-primary hover:bg-primary/90 disabled:bg-secondary"
+            className={`w-11 h-11 rounded-xl transition-all ${
+              userMessage.trim() 
+                ? 'bg-primary hover:bg-primary/90 text-primary-foreground' 
+                : 'bg-transparent border-2 border-primary/30 text-primary/50 hover:border-primary/50'
+            }`}
           >
-            <ArrowUp className="w-5 h-5 text-primary-foreground" />
+            <ArrowUp className="w-5 h-5" />
           </Button>
         </form>
       )}
