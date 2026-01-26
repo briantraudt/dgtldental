@@ -359,61 +359,58 @@ const GuidedChat = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-white">
-      {/* Header */}
-      <header className="pt-6 md:pt-8 pb-4">
-        <div className="max-w-[700px] mx-auto px-6">
-          <a 
-            href="/" 
-            className="inline-flex items-center gap-2 transition-opacity hover:opacity-80"
-            title="Go to homepage"
-          >
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-slate-50 to-white p-4 md:p-8">
+      {/* Chat Card Container */}
+      <div className="w-full max-w-[700px] bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col min-h-[600px] max-h-[85vh]">
+        {/* Card Header */}
+        <header className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-slate-50 to-white">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg viewBox="0 0 24 24" className="w-5 h-5 text-blue-600" fill="currentColor">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
               </svg>
             </div>
-            <span className="text-xl font-semibold text-gray-900">DGTL Dental</span>
-          </a>
-        </div>
-      </header>
+            <span className="text-lg font-semibold text-gray-900">DGTL Dental</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <span>AI Assistant</span>
+            <span className="text-gray-300">•</span>
+            <span>~2 min</span>
+          </div>
+        </header>
 
-      {/* Chat Area */}
-      <main className="flex-1">
-        <div className="max-w-[700px] mx-auto px-6 py-6">
-          <div className="space-y-6">
+        {/* Chat Area */}
+        <main className="flex-1 overflow-y-auto px-5 py-6">
+          <div className="space-y-5">
             {messages.map(renderMessage)}
             
             {isTyping && <TypingIndicator />}
             
             {/* Interactive elements */}
-            <div className="pt-2">
+            <div className="pt-1">
               {renderInteraction()}
             </div>
           </div>
           
-          <div ref={messagesEndRef} className="h-8" />
-        </div>
-      </main>
+          <div ref={messagesEndRef} className="h-4" />
+        </main>
 
-      {/* Footer */}
-      <footer className="py-6 border-t border-gray-100">
-        <div className="max-w-[700px] mx-auto px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-4">
-              <a 
-                href="mailto:hello@dgtldental.com" 
-                className="hover:text-gray-700 transition-colors"
-              >
-                hello@dgtldental.com
-              </a>
-              <span className="hidden sm:inline text-gray-300">|</span>
-              <span className="text-gray-400">$99/mo · Cancel anytime</span>
-            </div>
-            <p className="text-gray-400">© 2024 DGTL Dental</p>
+        {/* Card Footer */}
+        <footer className="px-5 py-4 border-t border-gray-100 bg-gradient-to-r from-slate-50 to-white">
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <span>$99/mo · No setup fee · Cancel anytime</span>
+            <a 
+              href="mailto:hello@dgtldental.com" 
+              className="text-blue-600 hover:text-blue-700 transition-colors"
+            >
+              hello@dgtldental.com
+            </a>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
+
+      {/* Copyright below card */}
+      <p className="mt-6 text-sm text-gray-400">© 2024 DGTL Dental</p>
     </div>
   );
 };
