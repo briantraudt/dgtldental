@@ -18,12 +18,11 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate }: { text: string;
   useEffect(() => {
     if (currentIndex < text.length) {
       const timeout = setTimeout(() => {
-        // Type multiple characters at once for faster display when catching up
-        const charsToAdd = Math.min(3, text.length - currentIndex);
-        setDisplayedText(text.slice(0, currentIndex + charsToAdd));
-        setCurrentIndex(prev => prev + charsToAdd);
+        // Type one character at a time to match the main typewriter speed
+        setDisplayedText(text.slice(0, currentIndex + 1));
+        setCurrentIndex(prev => prev + 1);
         onTextUpdate?.();
-      }, 15); // Fast typing speed
+      }, 35); // Match TypewriterText speed (35ms per character)
       return () => clearTimeout(timeout);
     }
   }, [currentIndex, text, onTextUpdate]);
