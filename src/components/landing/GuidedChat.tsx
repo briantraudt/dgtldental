@@ -31,7 +31,7 @@ const GuidedChat = () => {
   const [inputValue, setInputValue] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -218,22 +218,28 @@ const GuidedChat = () => {
       }} />
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100/20 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-100/20 rounded-full blur-3xl" />
-      {/* Header */}
-      <header className="border-b border-gray-100/80 bg-white/80 backdrop-blur-sm flex-shrink-0 relative z-10">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-center">
-          <img 
-            src="/images/dgtl-logo.png" 
-            alt="DGTL Dental" 
-            className="h-8 w-auto"
-          />
+      {/* Header with Large Logo */}
+      <header className="pt-8 pb-4 flex-shrink-0 relative z-10">
+        <div className="max-w-3xl mx-auto px-4 flex justify-center">
+          <a 
+            href="/" 
+            className="inline-block transition-transform hover:scale-105"
+            title="Go to homepage"
+          >
+            <img 
+              src="/images/dgtl-logo.png" 
+              alt="DGTL Dental" 
+              className="h-16 md:h-20 w-auto"
+            />
+          </a>
         </div>
       </header>
 
       {/* Chat Messages - Scrollable Area */}
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto px-4 py-6">
           {/* Messages */}
-          <div className="space-y-6">
+          <div className="space-y-5">
             {messages.map((msg, index) => (
               <div 
                 key={index}
@@ -242,7 +248,7 @@ const GuidedChat = () => {
                 <div 
                   className={`max-w-[85%] ${
                     msg.type === 'user' 
-                      ? 'bg-gray-100 text-gray-900 px-4 py-3 rounded-2xl rounded-br-md' 
+                      ? 'bg-gray-900 text-white px-5 py-3 rounded-2xl rounded-br-sm shadow-sm' 
                       : 'text-gray-700'
                   }`}
                 >
@@ -255,63 +261,65 @@ const GuidedChat = () => {
             
             {/* Quick Reply Buttons */}
             {currentButtons.length > 0 && !isTyping && (
-              <div className="flex flex-wrap gap-2 animate-fade-in">
+              <div className="flex flex-wrap gap-2.5 animate-fade-in pt-2">
                 {currentButtons.map((btn, index) => (
                   <button
                     key={index}
                     onClick={btn.action}
-                    className="px-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
+                    className="px-5 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-sm transition-all active:scale-[0.98]"
                   >
                     {btn.label}
                   </button>
                 ))}
               </div>
             )}
+            
+            {/* Inline Form Input */}
+            {isInputEnabled && (
+              <div className="animate-fade-in pt-2">
+                <form onSubmit={handleFormSubmit} className="flex gap-3">
+                  <input
+                    ref={inputRef}
+                    type={formStep === 'email' ? 'email' : 'text'}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder={getInputPlaceholder()}
+                    disabled={isSubmitting}
+                    className="flex-1 px-5 py-3 bg-white border border-gray-200 rounded-full text-[15px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-300 focus:shadow-sm transition-all disabled:opacity-50"
+                    autoFocus
+                  />
+                  <Button
+                    type="submit"
+                    disabled={!inputValue.trim() || isSubmitting}
+                    size="icon"
+                    className="w-12 h-12 rounded-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-200 disabled:opacity-100 transition-all shadow-sm"
+                  >
+                    {isSubmitting ? (
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <ArrowUp className="w-5 h-5 text-white" />
+                    )}
+                  </Button>
+                </form>
+              </div>
+            )}
           </div>
           
-          <div ref={messagesEndRef} className="h-4" />
+          <div ref={messagesEndRef} className="h-8" />
         </div>
       </main>
 
-      {/* Sticky Bottom Input Area */}
-      <div className="flex-shrink-0 border-t border-gray-100 bg-gradient-to-t from-gray-50 to-white">
-        <div className="max-w-2xl mx-auto px-4 py-4">
-          <div className="relative">
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden focus-within:border-gray-300 focus-within:shadow-md transition-all">
-              <textarea
-                ref={inputRef}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={getInputPlaceholder()}
-                disabled={!isInputEnabled}
-                rows={1}
-                className="w-full px-4 pt-4 pb-12 text-[15px] text-gray-900 placeholder:text-gray-400 resize-none focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
-                style={{ minHeight: '60px', maxHeight: '200px' }}
-              />
-              <div className="absolute bottom-3 right-3">
-                <Button
-                  onClick={() => handleFormSubmit()}
-                  disabled={!isInputEnabled || !inputValue.trim()}
-                  size="icon"
-                  className="w-8 h-8 rounded-lg bg-gray-900 hover:bg-gray-800 disabled:bg-gray-200 disabled:opacity-100 transition-colors"
-                >
-                  {isSubmitting ? (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <ArrowUp className="w-4 h-4 text-white" />
-                  )}
-                </Button>
-              </div>
-            </div>
-          </div>
-          
-          {/* Footer Text */}
-          <p className="text-center text-xs text-gray-400 mt-3">
-            $99/mo · No setup fee · Cancel anytime · <a href="mailto:hello@dgtldental.com" className="hover:text-gray-600 transition-colors">hello@dgtldental.com</a>
+      {/* Footer */}
+      <footer className="flex-shrink-0 py-6 relative z-10">
+        <div className="max-w-2xl mx-auto px-4">
+          <p className="text-center text-sm text-gray-400">
+            $99/mo · No setup fee · Cancel anytime
+          </p>
+          <p className="text-center text-xs text-gray-300 mt-2">
+            <a href="mailto:hello@dgtldental.com" className="hover:text-gray-500 transition-colors">hello@dgtldental.com</a>
           </p>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
