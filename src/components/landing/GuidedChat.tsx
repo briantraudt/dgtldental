@@ -54,6 +54,8 @@ const GuidedChat = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [formData, setFormData] = useState<FormData>({ practice: '', website: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDemo, setShowDemo] = useState(false);
+  const [demoCompleted, setDemoCompleted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
   const processedStates = useRef<Set<ConversationState>>(new Set());
@@ -145,7 +147,7 @@ const GuidedChat = () => {
           break;
 
         case 'show_demo':
-          // Demo component handles itself
+          setShowDemo(true);
           break;
 
         case 'show_value':
@@ -272,6 +274,7 @@ const GuidedChat = () => {
   };
 
   const handleDemoComplete = () => {
+    setDemoCompleted(true);
     setState('show_value');
   };
 
@@ -350,7 +353,7 @@ const GuidedChat = () => {
         );
 
       case 'show_demo':
-        return <DemoChat onComplete={handleDemoComplete} />;
+        return null; // Demo is rendered separately to persist
 
       case 'ask_setup':
         return (
@@ -428,6 +431,13 @@ const GuidedChat = () => {
             {messages.map(renderMessage)}
             
             {isTyping && <TypingIndicator />}
+            
+            {/* Demo chat - persists after completion */}
+            {showDemo && (
+              <div className="pt-1">
+                <DemoChat onComplete={handleDemoComplete} isCompleted={demoCompleted} />
+              </div>
+            )}
             
             {/* Interactive elements */}
             <div className="pt-1">

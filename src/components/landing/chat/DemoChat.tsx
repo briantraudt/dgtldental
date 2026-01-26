@@ -5,15 +5,17 @@ import toothIcon from '@/assets/tooth-icon.png';
 
 interface DemoChatProps {
   onComplete: () => void;
+  isCompleted?: boolean;
 }
 
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
-const DemoChat = ({ onComplete }: DemoChatProps) => {
+const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const [userMessage, setUserMessage] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasAsked, setHasAsked] = useState(false);
+  const [hasCompleted, setHasCompleted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -149,11 +151,14 @@ const DemoChat = ({ onComplete }: DemoChatProps) => {
         </div>
       )}
 
-      {/* Continue button after response */}
-      {hasAsked && aiResponse && !isLoading && (
+      {/* Continue button after response - only show if not completed */}
+      {hasAsked && aiResponse && !isLoading && !hasCompleted && !isCompleted && (
         <div className="pt-2 animate-fade-in">
           <button
-            onClick={onComplete}
+            onClick={() => {
+              setHasCompleted(true);
+              onComplete();
+            }}
             className="px-5 py-3 rounded-xl text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
           >
             Continue →
