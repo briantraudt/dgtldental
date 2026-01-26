@@ -362,10 +362,9 @@ const GuidedChat = () => {
           <div className="flex justify-center pt-4 animate-fade-in">
             <button
               onClick={() => window.location.reload()}
-              className="p-2 text-muted-foreground hover:text-primary transition-colors"
-              title="Start over"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors underline underline-offset-2"
             >
-              <RotateCcw className="w-5 h-5" />
+              Oops, I am a dentist
             </button>
           </div>
         );
