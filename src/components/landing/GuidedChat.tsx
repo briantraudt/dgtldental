@@ -174,7 +174,7 @@ const GuidedChat = () => {
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="It connects to your scheduling system, provides directions to your office, answers insurance questions — really anything you want to tell patients."
+                text="It can answer any dental question, connect to your scheduling system for online booking, provide directions to your office, answer insurance questions — really anything you want to tell patients."
                 onComplete={() => setState('show_install')}
               />
             )
