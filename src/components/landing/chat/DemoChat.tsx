@@ -168,11 +168,6 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
 
   return (
     <div className="space-y-4 animate-fade-in">
-      {/* Prompt */}
-      <div className="text-foreground/70">
-        <span className="text-[15px]">Try it — ask any dental question:</span>
-      </div>
-
       {/* Input */}
       {!hasAsked && (
         <form onSubmit={handleSubmit} className="flex gap-3">
@@ -181,7 +176,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
             type="text"
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}
-            placeholder="Type a question..."
+            placeholder="Ask us a dental question..."
             className="flex-1 px-4 py-3 bg-card border border-border rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all"
           />
           <Button
