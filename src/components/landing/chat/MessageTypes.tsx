@@ -8,7 +8,7 @@ interface BaseMessageProps {
 
 // Bot avatar component
 const BotAvatar = () => (
-  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center p-1 flex-shrink-0">
+  <div className="w-6 h-6 flex-shrink-0">
     <img src={toothIcon} alt="Bot" className="w-full h-full object-contain" />
   </div>
 );
