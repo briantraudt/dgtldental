@@ -29,7 +29,9 @@ type ConversationState =
   | 'returning_submitted_no_contact'
   | 'returning_submitted_confirm_contact'
   | 'returning_submitted_yes_contacted'
-  | 'returning_yes_confirm_before_question'
+  | 'returning_yes_show_question_form'
+  | 'returning_yes_confirm_after_question'
+  | 'returning_yes_new_contact_after_question'
   | 'returning_ask_more_questions'
   | 'returning_show_question_form'
   | 'returning_question_submitted'
@@ -265,16 +267,42 @@ const GuidedChat = () => {
           });
           break;
 
-        case 'returning_yes_confirm_before_question':
+        case 'returning_yes_show_question_form':
           setIsTypingComplete(false);
-          const confirmBeforeQuestionMsg = storedContactValue 
-            ? `Sure! We have ${storedContactValue} on file — is that still the best way to reach you?`
-            : `Sure! What's the best email or phone to reach you?`;
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
-                text={confirmBeforeQuestionMsg}
+                text="Sure! What's your question?"
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'returning_yes_confirm_after_question':
+          setIsTypingComplete(false);
+          const confirmAfterQuestionMsg = storedContactValue 
+            ? `Great question! We have ${storedContactValue} on file — is that still the best way to reach you?`
+            : `Great question! What's the best email or phone to reach you?`;
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text={confirmAfterQuestionMsg}
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'returning_yes_new_contact_after_question':
+          setIsTypingComplete(false);
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text="No problem! What's the best email or phone to reach you?"
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
@@ -642,24 +670,31 @@ Have a great day! 😊`}
     setState('returning_ask_new_contact');
   };
 
-  // Handler for "Yes, I have a question" after yes_contacted asks about questions
+  // Handler for "Yes, I have a question" after yes_contacted - show question input first
   const handleYesContactedHasQuestion = () => {
     triggerHaptic('light');
     addUserMessage("Yes, I have a question");
-    setState('returning_yes_confirm_before_question');
+    setState('returning_yes_show_question_form');
   };
 
-  // Handlers for contact confirmation before showing question form
+  // Handler for submitting question in the "yes contacted" flow - then confirm email
+  const handleYesContactedQuestionSubmit = (question: string) => {
+    triggerHaptic('medium');
+    addUserMessage(question);
+    setState('returning_yes_confirm_after_question');
+  };
+
+  // Handlers for contact confirmation after question submitted
   const handleYesContactedConfirm = () => {
     triggerHaptic('medium');
     addUserMessage("Yes, that's still correct");
-    setState('returning_show_question_form');
+    setState('returning_question_submitted');
   };
 
   const handleYesContactedUpdate = () => {
     triggerHaptic('light');
     addUserMessage("I have a better contact");
-    setState('returning_yes_new_contact');
+    setState('returning_yes_new_contact_after_question');
   };
 
   const handleContinueToWorkflow = () => {
@@ -856,7 +891,16 @@ Have a great day! 😊`}
           />
         );
 
-      case 'returning_yes_confirm_before_question':
+      case 'returning_yes_show_question_form':
+        if (!isTypingComplete) return null;
+        return (
+          <ChatInput 
+            placeholder="Type your question..." 
+            onSubmit={handleYesContactedQuestionSubmit} 
+          />
+        );
+
+      case 'returning_yes_confirm_after_question':
         if (!isTypingComplete) return null;
         if (storedContactValue) {
           return (
@@ -878,12 +922,12 @@ Have a great day! 😊`}
                 localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
                 localStorage.setItem(VISITOR_CONTACT_PREF_KEY, isEmail ? 'email' : 'phone');
               }
-              setState('returning_show_question_form');
+              setState('returning_question_submitted');
             }} 
           />
         );
 
-      case 'returning_yes_new_contact':
+      case 'returning_yes_new_contact_after_question':
         if (!isTypingComplete) return null;
         return (
           <ChatInput 
@@ -895,7 +939,7 @@ Have a great day! 😊`}
                 localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
                 localStorage.setItem(VISITOR_CONTACT_PREF_KEY, isEmail ? 'email' : 'phone');
               }
-              setState('returning_show_question_form');
+              setState('returning_question_submitted');
             }} 
           />
         );
