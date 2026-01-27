@@ -50,7 +50,7 @@ OFFICE INFO:
 - Practice Name: Smile Dental Care
 - Phone: (555) 555-5555
 - Email: hello@smiledental.com
-- Address: 123 Main Street, Suite 100, Anytown, USA
+- Address: 1010 Main St., City, State, Zip (let patients know we're happy to provide directions if needed)
 - Website: dgtldental.com
 - Hours: Monday-Friday 8am-5pm, Saturday 9am-2pm
 - Insurance: Delta Dental, Cigna, Aetna, MetLife, Guardian, United Healthcare, BlueCross BlueShield, Humana, and most PPO plans
