@@ -57,6 +57,7 @@ const GuidedChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [state, setState] = useState<ConversationState>('initial');
   const [isTyping, setIsTyping] = useState(false);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [formData, setFormData] = useState<FormData>({ practice: '', website: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoCompleted, setDemoCompleted] = useState(false);
@@ -117,11 +118,13 @@ const GuidedChat = () => {
           break;
 
         case 'ask_dental':
+          setIsTypingComplete(false);
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
                 text="Are you a dentist or do you work in a dental office?"
+                onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
@@ -206,11 +209,13 @@ const GuidedChat = () => {
           break;
 
         case 'ask_setup':
+          setIsTypingComplete(false);
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
                 text="Would you like something like this for your office?"
+                onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
@@ -245,33 +250,39 @@ const GuidedChat = () => {
           break;
 
         case 'ask_practice_name':
+          setIsTypingComplete(false);
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
                 text="What's the name of your practice?"
+                onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
           break;
 
         case 'ask_website':
+          setIsTypingComplete(false);
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
                 text="What's your website URL?"
+                onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
           break;
 
         case 'ask_email':
+          setIsTypingComplete(false);
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
                 text="What's the best email to reach you?"
+                onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
@@ -374,6 +385,7 @@ const GuidedChat = () => {
 
     switch (state) {
       case 'ask_dental':
+        if (!isTypingComplete) return null;
         return (
           <QuickReplyButtons
             options={[
@@ -399,6 +411,7 @@ const GuidedChat = () => {
         );
 
       case 'ask_setup':
+        if (!isTypingComplete) return null;
         return (
           <QuickReplyButtons
             options={[
@@ -418,12 +431,15 @@ const GuidedChat = () => {
         );
 
       case 'ask_practice_name':
+        if (!isTypingComplete) return null;
         return <ChatInput placeholder="Practice name..." onSubmit={handlePracticeSubmit} />;
 
       case 'ask_website':
+        if (!isTypingComplete) return null;
         return <ChatInput placeholder="Website URL..." onSubmit={handleWebsiteSubmit} type="url" />;
 
       case 'ask_email':
+        if (!isTypingComplete) return null;
         return <ChatInput placeholder="Email address..." onSubmit={handleEmailSubmit} isSubmitting={isSubmitting} type="email" />;
 
       default:
