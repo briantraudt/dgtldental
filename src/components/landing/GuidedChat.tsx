@@ -583,7 +583,7 @@ Our pricing is really simple. It costs $99/month. No setup fee and it's complete
   return (
     <div className="flex flex-col bg-background overflow-hidden" style={{ height: '100dvh', paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
       {/* Header - sticky with safe area already applied to parent, hidden until showHeader is true */}
-      <header className={`bg-background/95 backdrop-blur-md flex-shrink-0 sticky top-0 z-50 transition-opacity duration-500 ${showHeader ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      <header className={`bg-background/95 backdrop-blur-md flex-shrink-0 sticky top-0 z-50 transition-opacity duration-[2000ms] ease-out ${showHeader ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         {/* Mobile: centered icon with hamburger */}
         <div className="md:hidden flex items-center justify-between px-5 py-3 min-h-[56px]">
           <div className="w-10 flex-shrink-0" /> {/* Spacer for balance */}
