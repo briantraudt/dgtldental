@@ -25,7 +25,12 @@ const TypewriterText = ({ text, speed = 52, onComplete }: TypewriterTextProps) =
 
   return (
     <span>
-      {displayedText}
+      {displayedText.split('\n').map((line, index, arr) => (
+        <span key={index}>
+          {line}
+          {index < arr.length - 1 && <><br /><br /></>}
+        </span>
+      ))}
       {currentIndex < text.length && (
         <span className="inline-block w-0.5 h-5 bg-muted-foreground/50 ml-0.5 animate-pulse" />
       )}
