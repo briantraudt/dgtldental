@@ -70,16 +70,25 @@ const GuidedChat = () => {
   const hasInitialized = useRef(false);
   const processedStates = useRef<Set<ConversationState>>(new Set());
 
-  const scrollToBottom = useCallback(() => {
-    setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+  const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
+    if (typeof window === 'undefined') return;
+    window.requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior, block: 'end' });
+    });
   }, []);
 
   // Scroll when messages change, typing state changes, or interaction state changes
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping, isTypingComplete, state, scrollToBottom]);
+
+  // Keep the latest typed character visible during TypewriterText streaming
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleUpdate = () => scrollToBottom('auto');
+    window.addEventListener('dgtl:typewriter:update', handleUpdate);
+    return () => window.removeEventListener('dgtl:typewriter:update', handleUpdate);
+  }, [scrollToBottom]);
 
   const addMessage = useCallback((message: Omit<Message, 'id'>): Promise<void> => {
     return new Promise((resolve) => {
@@ -628,7 +637,13 @@ Have a great day!`}
       </header>
 
       {/* Chat Area - scrollable content */}
-      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 relative flex flex-col" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      <main
+        className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 relative flex flex-col"
+        style={{
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+          scrollPaddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 140px)',
+        }}
+      >
         <div className="max-w-[600px] mx-auto w-full my-auto">
           <div className="space-y-5">
             {messages.map(renderMessage)}
@@ -642,7 +657,7 @@ Have a great day!`}
           </div>
           
           {/* Scroll anchor with generous padding for mobile */}
-          <div ref={messagesEndRef} className="h-32 md:h-16" />
+          <div ref={messagesEndRef} className="h-40 md:h-24" />
         </div>
       </main>
     </div>

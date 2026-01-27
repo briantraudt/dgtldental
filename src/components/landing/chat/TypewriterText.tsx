@@ -12,6 +12,11 @@ const TypewriterText = ({ text, speed = 60, onComplete, renderText }: Typewriter
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
+  const emitUpdate = () => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('dgtl:typewriter:update'));
+  };
+
   useEffect(() => {
     if (currentIndex < text.length) {
       // Add a longer pause after newlines
@@ -19,13 +24,19 @@ const TypewriterText = ({ text, speed = 60, onComplete, renderText }: Typewriter
       const delay = isAfterNewline ? 600 : speed;
       
       const timeout = setTimeout(() => {
-        setDisplayedText(prev => prev + text[currentIndex]);
+        const shouldEmit = isAfterNewline || currentIndex % 3 === 0;
+        setDisplayedText(prev => {
+          const next = prev + text[currentIndex];
+          if (shouldEmit) emitUpdate();
+          return next;
+        });
         setCurrentIndex(prev => prev + 1);
       }, delay);
 
       return () => clearTimeout(timeout);
     } else if (currentIndex === text.length && !isComplete) {
       setIsComplete(true);
+      emitUpdate();
       onComplete?.();
     }
   }, [currentIndex, text, speed, onComplete, isComplete]);
