@@ -394,6 +394,8 @@ Have a great day! 😊`}
   const handleContinueToWorkflow = () => {
     triggerHaptic('medium');
     addUserMessage("Yes, tell me more");
+    // Clear show_value from processed states so it can be triggered
+    processedStates.current.delete('show_value');
     setState('show_value');
   };
 
