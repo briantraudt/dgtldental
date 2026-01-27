@@ -110,11 +110,8 @@ export const UserMessage = ({ children, animate = true }: BaseMessageProps) => (
 // Success message
 export const SuccessMessage = ({ children, animate = true }: BaseMessageProps) => (
   <div className={`${animate ? 'animate-fade-in' : ''}`}>
-    <div className="flex items-start gap-4 bg-success/10 rounded-2xl p-5 border border-success/20">
-      <div className="w-10 h-10 bg-success/20 rounded-full flex items-center justify-center flex-shrink-0">
-        <CheckCircle className="w-5 h-5 text-success" />
-      </div>
-      <div className="text-[15px] text-success leading-relaxed pt-2">
+    <div className="bg-success/10 rounded-2xl p-5 border border-success/20">
+      <div className="text-[15px] text-success leading-relaxed">
         {children}
       </div>
     </div>
