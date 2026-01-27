@@ -43,8 +43,8 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
     return paragraphs.map((paragraph, index) => {
       const isLastParagraph = index === paragraphs.length - 1;
       
-      if (paragraph.includes('dentaloffice.com')) {
-        const parts = paragraph.split('dentaloffice.com');
+      if (paragraph.includes('dgtldental.com')) {
+        const parts = paragraph.split('dgtldental.com');
         return (
           <p key={index}>
             {parts[0]}
@@ -54,7 +54,7 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
               rel="noopener noreferrer"
               className="text-primary hover:text-primary/80 underline underline-offset-2"
             >
-              dentaloffice.com
+              dgtldental.com
             </a>
             {parts[1]}
             {isLastParagraph && showCursor && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5 align-middle" />}
