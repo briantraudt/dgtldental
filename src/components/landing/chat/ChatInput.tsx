@@ -6,7 +6,7 @@ interface ChatInputProps {
   placeholder: string;
   onSubmit: (value: string) => void;
   isSubmitting?: boolean;
-  type?: 'text' | 'email' | 'url';
+  type?: 'text' | 'email' | 'url' | 'tel';
 }
 
 const ChatInput = ({ placeholder, onSubmit, isSubmitting = false, type = 'text' }: ChatInputProps) => {
