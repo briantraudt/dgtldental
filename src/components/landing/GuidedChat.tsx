@@ -257,7 +257,7 @@ const GuidedChat = () => {
             type: 'question', 
             content: (
               <TypewriterText 
-                text={contactedName ? `That's great to hear, ${contactedName}! Do you have any questions we can help with?` : `That's great to hear! Do you have any questions we can help with?`}
+                text="Ok, good deal. Do you have any other questions right now?"
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
