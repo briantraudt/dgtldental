@@ -176,19 +176,8 @@ In the box below, ask any dental or office-related question and feel free to try
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="Pretty cool, right? That's what your patients get — instant, helpful answers 24/7 while your front desk focuses on patients in the office."
-                onComplete={() => setState('show_process')}
-              />
-            )
-          });
-          break;
-
-        case 'show_process':
-          await addMessage({ 
-            type: 'explanation', 
-            content: (
-              <TypewriterText 
-                text="It can answer any dental question, connect to your scheduling system for online booking, provide directions to your office, answer insurance questions — really anything you want to tell patients."
+                text={`Pretty cool, right? That's what your patients get — instant, helpful answers 24/7 while your front desk focuses on patients in the office.
+It can answer any dental question, connect to your scheduling system for online booking, provide directions to your office, answer insurance questions — really anything you want to tell patients.`}
                 onComplete={() => setState('show_install')}
               />
             )
