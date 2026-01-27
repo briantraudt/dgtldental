@@ -76,7 +76,7 @@ const DesktopNav = () => {
               <ul className="space-y-4">
                 {[
                   'No setup fee',
-                  'Completely customized for your office',
+                  'Customizations and Integrations Available',
                   'Cancel anytime'
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-[15px] text-foreground/80">
