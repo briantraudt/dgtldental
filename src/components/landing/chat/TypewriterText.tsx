@@ -4,11 +4,13 @@ interface TypewriterTextProps {
   text: string;
   speed?: number;
   onComplete?: () => void;
+  renderText?: (displayedText: string, isComplete: boolean) => React.ReactNode;
 }
 
-const TypewriterText = ({ text, speed = 60, onComplete }: TypewriterTextProps) => {
+const TypewriterText = ({ text, speed = 60, onComplete, renderText }: TypewriterTextProps) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
     if (currentIndex < text.length) {
@@ -22,10 +24,23 @@ const TypewriterText = ({ text, speed = 60, onComplete }: TypewriterTextProps) =
       }, delay);
 
       return () => clearTimeout(timeout);
-    } else if (currentIndex === text.length && onComplete) {
-      onComplete();
+    } else if (currentIndex === text.length && !isComplete) {
+      setIsComplete(true);
+      onComplete?.();
     }
-  }, [currentIndex, text, speed, onComplete]);
+  }, [currentIndex, text, speed, onComplete, isComplete]);
+
+  // If custom render function provided, use it
+  if (renderText) {
+    return (
+      <span>
+        {renderText(displayedText, isComplete)}
+        {currentIndex < text.length && (
+          <span className="inline-block w-0.5 h-5 bg-muted-foreground/50 ml-0.5 animate-pulse" />
+        )}
+      </span>
+    );
+  }
 
   return (
     <span>

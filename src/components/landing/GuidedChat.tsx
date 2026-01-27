@@ -214,14 +214,24 @@ Our pricing is really simple. It costs $99/month. No setup fee and it's complete
           await addMessage({ 
             type: 'explanation', 
             content: (
-              <>
-                <TypewriterText 
-                  text="No problem! Reach out anytime at "
-                />
-                <a href="mailto:hello@dgtldental.com" className="text-primary hover:text-primary/80 underline underline-offset-2">
-                  hello@dgtldental.com
-                </a>
-              </>
+              <TypewriterText 
+                text="No problem! Reach out anytime at hello@dgtldental.com"
+                renderText={(displayedText, isComplete) => {
+                  if (isComplete && displayedText.includes('hello@dgtldental.com')) {
+                    const parts = displayedText.split('hello@dgtldental.com');
+                    return (
+                      <>
+                        {parts[0]}
+                        <a href="mailto:hello@dgtldental.com" className="text-primary hover:text-primary/80 underline underline-offset-2">
+                          hello@dgtldental.com
+                        </a>
+                        {parts[1]}
+                      </>
+                    );
+                  }
+                  return displayedText;
+                }}
+              />
             )
           });
           break;
