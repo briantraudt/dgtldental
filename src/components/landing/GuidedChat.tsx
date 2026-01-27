@@ -264,11 +264,12 @@ Our pricing is really simple. It costs $99 for our basic service. No setup fee a
 
         case 'ask_practice_name':
           setIsTypingComplete(false);
+          const firstName = formData.name.split(' ')[0];
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
-                text="What's the name of your practice?"
+                text={`It's nice to meet you, ${firstName}! What's the name of your practice?`}
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
