@@ -613,15 +613,17 @@ Have a great day!`}
             <MobileMenu />
           </div>
         </div>
-        {/* Desktop: logo left, nav right - aligned with chat width */}
-        <div className="hidden md:flex max-w-[700px] mx-auto items-center justify-between px-8 py-4">
+        {/* Desktop: centered logo with nav below */}
+        <div className="hidden md:flex flex-col items-center px-8 py-4">
           <button 
             onClick={() => window.location.reload()} 
             className="hover:opacity-80 transition-opacity"
           >
             <img src={dgtlLogo} alt="DGTL" className="h-8 object-contain" />
           </button>
-          <DesktopNav />
+          <div className="mt-3">
+            <DesktopNav />
+          </div>
         </div>
       </header>
 
