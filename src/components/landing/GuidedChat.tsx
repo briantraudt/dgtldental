@@ -340,12 +340,11 @@ const GuidedChat = () => {
           break;
 
         case 'returning_question_submitted':
-          const questionName = storedVisitorName || '';
           await addMessage({ 
             type: 'success', 
             content: (
               <TypewriterText 
-                text="That's a great question — it would probably be best if someone from the team reached out to you directly to answer that. We want to make sure you're well taken care of! We'll be in touch soon. 😊"
+                text="Great, someone will be in touch ASAP. Thanks again! 😊"
               />
             )
           });
