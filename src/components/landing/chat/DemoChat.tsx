@@ -8,6 +8,13 @@ interface DemoChatProps {
   isCompleted?: boolean;
 }
 
+interface ChatMessage {
+  id: string;
+  type: 'user' | 'ai';
+  content: string;
+  isComplete?: boolean;
+}
+
 const DEMO_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/demo-chat`;
 
 // Typewriter component for streaming text
@@ -19,20 +26,17 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
   useEffect(() => {
     if (currentIndex < text.length) {
       const timeout = setTimeout(() => {
-        // Type one character at a time to match the main typewriter speed
         setDisplayedText(text.slice(0, currentIndex + 1));
         setCurrentIndex(prev => prev + 1);
         onTextUpdate?.();
-      }, 35); // Match TypewriterText speed (35ms per character)
+      }, 35);
       return () => clearTimeout(timeout);
     } else if (isComplete && currentIndex === text.length && text.length > 0 && !hasCalledComplete.current) {
-      // Typewriter finished and stream is complete
       hasCalledComplete.current = true;
       onTypingComplete?.();
     }
   }, [currentIndex, text, onTextUpdate, isComplete, onTypingComplete]);
 
-  // Format the displayed text into paragraphs with clickable link
   const formatDisplayedText = (txt: string, showCursor: boolean) => {
     if (!txt) {
       return showCursor ? <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse" /> : null;
@@ -80,13 +84,14 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
 };
 
 const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
-  const [userMessage, setUserMessage] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [currentAiResponse, setCurrentAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [hasAsked, setHasAsked] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
   const [streamComplete, setStreamComplete] = useState(false);
   const [typingComplete, setTypingComplete] = useState(false);
+  const [questionCount, setQuestionCount] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const responseEndRef = useRef<HTMLDivElement>(null);
 
@@ -98,7 +103,15 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
     inputRef.current?.focus();
   }, []);
 
-  // Auto-scroll to keep response visible - scroll the parent container
+  // Focus input after first question is answered
+  useEffect(() => {
+    if (typingComplete && questionCount === 1 && !isCompleted) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [typingComplete, questionCount, isCompleted]);
+
   const scrollToBottom = () => {
     setTimeout(() => {
       responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -108,10 +121,31 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const sendMessage = async (message: string) => {
     if (!message.trim() || isLoading) return;
     
-    setUserMessage(message);
-    setHasAsked(true);
+    // Add user message to history
+    const userMsg: ChatMessage = {
+      id: `user-${Date.now()}`,
+      type: 'user',
+      content: message,
+    };
+    
+    // If there's a current AI response, save it to history first
+    if (currentAiResponse && streamComplete) {
+      const aiMsg: ChatMessage = {
+        id: `ai-${Date.now() - 1}`,
+        type: 'ai',
+        content: currentAiResponse,
+        isComplete: true,
+      };
+      setMessages(prev => [...prev, aiMsg]);
+    }
+    
+    setMessages(prev => [...prev, userMsg]);
+    setInputValue('');
     setIsLoading(true);
-    setAiResponse('');
+    setCurrentAiResponse('');
+    setStreamComplete(false);
+    setTypingComplete(false);
+    setQuestionCount(prev => prev + 1);
 
     try {
       const resp = await fetch(DEMO_URL, {
@@ -155,7 +189,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               fullResponse += content;
-              setAiResponse(fullResponse);
+              setCurrentAiResponse(fullResponse);
             }
           } catch {
             textBuffer = line + "\n" + textBuffer;
@@ -165,7 +199,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
       }
     } catch (error) {
       console.error("Demo chat error:", error);
-      setAiResponse("I'm having trouble connecting right now. But imagine a helpful response here! 😊");
+      setCurrentAiResponse("I'm having trouble connecting right now. But imagine a helpful response here! 😊");
     } finally {
       setIsLoading(false);
       setStreamComplete(true);
@@ -174,28 +208,81 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
-    sendMessage(userMessage);
+    sendMessage(inputValue);
   };
+
+  const canAskAnother = questionCount === 1 && typingComplete && !hasCompleted && !isCompleted;
+  const showContinue = questionCount >= 2 && typingComplete && !hasCompleted && !isCompleted;
+  const showInput = questionCount === 0 || canAskAnother;
 
   return (
     <div className="space-y-4 animate-fade-in">
-      {/* Input */}
-      {!hasAsked && (
-        <form onSubmit={handleSubmit} className="flex gap-3">
+      {/* Message history */}
+      {messages.map((msg) => (
+        msg.type === 'user' ? (
+          <div key={msg.id} className="flex justify-end animate-fade-in">
+            <div className="bg-primary text-primary-foreground border border-primary px-4 py-3 rounded-2xl rounded-br-sm max-w-[85%]">
+              <p className="text-[15px]">{msg.content}</p>
+            </div>
+          </div>
+        ) : (
+          <div key={msg.id} className="flex items-start gap-3 animate-fade-in">
+            <div className="w-6 h-6 flex-shrink-0">
+              <img src={toothIcon} alt="Bot" className="w-full h-full object-contain" />
+            </div>
+            <div className="bg-background border border-primary/30 rounded-2xl rounded-tl-sm p-4 max-w-[85%]">
+              <div className="text-[15px] text-foreground/80 leading-relaxed space-y-3">
+                {msg.content.split(/\n\n+/).filter(p => p.trim()).map((paragraph, idx) => (
+                  <p key={idx}>{paragraph.trim()}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      ))}
+
+      {/* Current AI Response (streaming) */}
+      {(isLoading || currentAiResponse) && (
+        <div className="flex items-start gap-3 animate-fade-in">
+          <div className="w-6 h-6 flex-shrink-0">
+            <img src={toothIcon} alt="Bot" className="w-full h-full object-contain" />
+          </div>
+          <div className="bg-background border border-primary/30 rounded-2xl rounded-tl-sm p-4 max-w-[85%]">
+            {isLoading && !currentAiResponse ? (
+              <div className="flex gap-1.5 py-1">
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" />
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '200ms' }} />
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
+              </div>
+            ) : (
+              <StreamingTypewriter 
+                text={currentAiResponse} 
+                isComplete={streamComplete} 
+                onTextUpdate={scrollToBottom} 
+                onTypingComplete={handleTypingComplete} 
+              />
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Input field - show initially and after first answer */}
+      {showInput && (
+        <form onSubmit={handleSubmit} className="flex gap-3 animate-fade-in">
           <input
             ref={inputRef}
             type="text"
-            value={userMessage}
-            onChange={(e) => setUserMessage(e.target.value)}
-            placeholder="Ask us a dental question..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder={questionCount === 0 ? "Ask us a dental question..." : "Ask another question..."}
             className="flex-1 px-4 py-3 bg-card border border-border rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all"
           />
           <Button
             type="submit"
-            disabled={!userMessage.trim() || isLoading}
+            disabled={!inputValue.trim() || isLoading}
             size="icon"
             className={`w-11 h-11 rounded-xl transition-all ${
-              userMessage.trim() 
+              inputValue.trim() 
                 ? 'bg-primary hover:bg-primary/90 text-primary-foreground' 
                 : 'bg-transparent border-2 border-primary/30 text-primary/50 hover:border-primary/50'
             }`}
@@ -205,37 +292,8 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
         </form>
       )}
 
-      {/* User message bubble */}
-      {hasAsked && userMessage && (
-        <div className="flex justify-end animate-fade-in">
-          <div className="bg-primary text-primary-foreground border border-primary px-4 py-3 rounded-2xl rounded-br-sm max-w-[85%]">
-            <p className="text-[15px]">{userMessage}</p>
-          </div>
-        </div>
-      )}
-
-      {/* AI Response */}
-      {hasAsked && (
-        <div className="flex items-start gap-3 animate-fade-in">
-          <div className="w-6 h-6 flex-shrink-0">
-            <img src={toothIcon} alt="Bot" className="w-full h-full object-contain" />
-          </div>
-          <div className="bg-background border border-primary/30 rounded-2xl rounded-tl-sm p-4 max-w-[85%]">
-            {isLoading && !aiResponse ? (
-              <div className="flex gap-1.5 py-1">
-                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" />
-                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '200ms' }} />
-                <span className="w-2 h-2 bg-primary/40 rounded-full animate-[pulse_1.4s_ease-in-out_infinite]" style={{ animationDelay: '400ms' }} />
-              </div>
-            ) : (
-              <StreamingTypewriter text={aiResponse} isComplete={streamComplete} onTextUpdate={scrollToBottom} onTypingComplete={handleTypingComplete} />
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Continue button after response - only show if not completed */}
-      {hasAsked && aiResponse && typingComplete && !hasCompleted && !isCompleted && (
+      {/* Continue button - only show after second question */}
+      {showContinue && (
         <div className="pt-2 animate-fade-in flex justify-end">
           <button
             onClick={() => {
@@ -249,7 +307,6 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
         </div>
       )}
       
-      {/* Extra scroll anchor at the very end */}
       <div ref={responseEndRef} className="h-4" />
     </div>
   );
