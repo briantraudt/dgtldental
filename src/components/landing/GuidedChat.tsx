@@ -140,7 +140,8 @@ const GuidedChat = () => {
             type: 'greeting', 
             content: (
               <TypewriterText 
-                text="Welcome back! Try out the Virtual Front Desk — ask any dental or office-related question below."
+                text={`Good to see you again! Still thinking about a Virtual Front Desk for your practice?
+Go ahead — ask any dental or office question below and see how it works.`}
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
