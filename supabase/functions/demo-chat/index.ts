@@ -51,11 +51,11 @@ OFFICE INFO:
 - Phone: (555) 555-5555
 - Email: hello@smiledental.com
 - Address: 1010 Main St., City, State, Zip (let patients know we're happy to provide directions if needed)
-- Website: dgtldental.com
+- Website: dentaloffice.com
 - Hours: Monday-Friday 8am-5pm, Saturday 9am-2pm
 - Insurance: Delta Dental, Cigna, Aetna, MetLife, Guardian, United Healthcare, BlueCross BlueShield, Humana, and most PPO plans
 - Parking: Free parking in building lot
-- New Patients: Forms available at dgtldental.com/new-patients
+- New Patients: Forms available at dentaloffice.com/new-patients
 
 Medical guidance rules:
 - You may mention common possibilities or general causes.
