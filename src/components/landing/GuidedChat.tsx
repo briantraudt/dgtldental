@@ -144,7 +144,7 @@ We create AI-powered Virtual Front Desks for dental practices to help you save t
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="Thanks for stopping by! This service is designed specifically for dental practices. Feel free to share with anyone you know in the dental field."
+                text="No worries! This service is designed specifically for dental practices. Feel free to share with anyone you know in the dental field."
               />
             )
           });
