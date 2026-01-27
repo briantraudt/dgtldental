@@ -125,14 +125,6 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
     inputRef.current?.focus();
   }, []);
 
-  // Focus input after first question is answered
-  useEffect(() => {
-    if (typingComplete && questionCount === 1 && !isCompleted) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
-    }
-  }, [typingComplete, questionCount, isCompleted]);
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -233,9 +225,8 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
     sendMessage(inputValue);
   };
 
-  const canAskAnother = questionCount === 1 && typingComplete && !hasCompleted && !isCompleted;
-  const showContinue = questionCount >= 2 && typingComplete && !hasCompleted && !isCompleted;
-  const showInput = questionCount === 0 || canAskAnother;
+  const showContinue = questionCount >= 1 && typingComplete && !hasCompleted && !isCompleted;
+  const showInput = questionCount === 0;
 
   return (
     <div className="space-y-4 animate-fade-in">
@@ -296,7 +287,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder={questionCount === 0 ? "Ask us a dental question..." : "Ask another question..."}
+            placeholder="Ask a dental question..."
             className="flex-1 px-4 py-3 bg-card border border-border rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all"
           />
           <Button
