@@ -494,7 +494,7 @@ Our pricing is really simple. It costs $99/month. No setup fee and it's complete
         return (
           <QuickReplyButtons
             options={[
-              { label: "Actually, let's set it up", onClick: handleBackToSetup, primary: true },
+              { label: "I've changed my mind — let's set it up", onClick: handleBackToSetup },
             ]}
           />
         );
