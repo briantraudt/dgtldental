@@ -612,7 +612,7 @@ Have a great day!`}
       </header>
 
       {/* Chat Area - scrollable content */}
-      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 relative flex flex-col">
+      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 relative flex flex-col" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         <div className="max-w-[600px] mx-auto w-full my-auto">
           <div className="space-y-5">
             {messages.map(renderMessage)}
@@ -625,12 +625,10 @@ Have a great day!`}
             </div>
           </div>
           
-          <div ref={messagesEndRef} className="h-8" />
+          {/* Scroll anchor with generous padding for mobile */}
+          <div ref={messagesEndRef} className="h-32 md:h-16" />
         </div>
       </main>
-
-      {/* Invisible fixed footer spacer to prevent content being cut off */}
-      <footer className="flex-shrink-0 h-24 pointer-events-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
     </div>
   );
 };
