@@ -33,32 +33,38 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResponse = await resend.emails.send({
       from: "DGTL Dental <noreply@goodbusinesshq.com>",
       to: ["brian@goodbusinesshq.com"],
-      subject: `🦷 New Prospect: ${practice}`,
+      subject: `New Prospect: ${practice}`,
       html: `
-        <h2>New DGTL Dental Prospect!</h2>
-        <table style="border-collapse: collapse; width: 100%; max-width: 500px;">
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Name:</td>
-            <td style="padding: 10px; border-bottom: 1px solid #eee;">${name}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Practice:</td>
-            <td style="padding: 10px; border-bottom: 1px solid #eee;">${practice}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Prefers:</td>
-            <td style="padding: 10px; border-bottom: 1px solid #eee;">${contactPreference === 'phone' ? 'Phone' : 'Email'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">${contactPreference === 'phone' ? 'Phone' : 'Email'}:</td>
-            <td style="padding: 10px; border-bottom: 1px solid #eee;">
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px 24px;">
+          <h2 style="color: #323c5a; font-size: 20px; font-weight: 600; margin: 0 0 24px 0; border-bottom: 2px solid #323c5a; padding-bottom: 12px;">
+            New Prospect
+          </h2>
+          
+          <div style="color: #323c5a;">
+            <div style="margin-bottom: 16px;">
+              <span style="font-weight: 600; display: inline-block; width: 80px;">Name</span>
+              <span>${name}</span>
+            </div>
+            <div style="margin-bottom: 16px;">
+              <span style="font-weight: 600; display: inline-block; width: 80px;">Practice</span>
+              <span>${practice}</span>
+            </div>
+            <div style="margin-bottom: 16px;">
+              <span style="font-weight: 600; display: inline-block; width: 80px;">Prefers</span>
+              <span>${contactPreference === 'phone' ? 'Phone' : 'Email'}</span>
+            </div>
+            <div style="margin-bottom: 16px;">
+              <span style="font-weight: 600; display: inline-block; width: 80px;">Contact</span>
               ${contactPreference === 'phone' 
-                ? `<a href="tel:${contactValue}">${contactValue}</a>` 
-                : `<a href="mailto:${contactValue}">${contactValue}</a>`}
-            </td>
-          </tr>
-        </table>
-        <p style="margin-top: 20px; color: #666;">This prospect came through the DGTL Dental landing page guided chat.</p>
+                ? `<a href="tel:${contactValue}" style="color: #323c5a;">${contactValue}</a>` 
+                : `<a href="mailto:${contactValue}" style="color: #323c5a;">${contactValue}</a>`}
+            </div>
+          </div>
+          
+          <p style="color: #6b7280; font-size: 13px; margin-top: 32px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
+            Via DGTL Dental landing page
+          </p>
+        </div>
       `,
     });
 
