@@ -25,6 +25,10 @@ import DesktopNav from './DesktopNav';
 type ConversationState = 
   | 'returning_visitor_demo'
   | 'returning_visitor_declined'
+  | 'returning_submitted_visitor'
+  | 'returning_submitted_no_contact'
+  | 'returning_submitted_confirm_contact'
+  | 'returning_submitted_yes_contacted'
   | 'initial'
   | 'ask_dental'
   | 'not_dental_end'
@@ -61,21 +65,34 @@ interface FormData {
 
 const VISITED_KEY = 'dgtl_has_visited';
 const VISITOR_NAME_KEY = 'dgtl_visitor_name';
+const SUBMITTED_CONTACT_KEY = 'dgtl_has_submitted_contact';
+const VISITOR_CONTACT_PREF_KEY = 'dgtl_visitor_contact_pref';
+const VISITOR_CONTACT_VALUE_KEY = 'dgtl_visitor_contact_value';
 
 const GuidedChat = () => {
-  // Check if returning visitor and get their stored name
+  // Check if returning visitor and get their stored data
   const isReturningVisitor = typeof window !== 'undefined' && localStorage.getItem(VISITED_KEY) === 'true';
+  const hasSubmittedContact = typeof window !== 'undefined' && localStorage.getItem(SUBMITTED_CONTACT_KEY) === 'true';
   const storedVisitorName = typeof window !== 'undefined' ? localStorage.getItem(VISITOR_NAME_KEY) : null;
+  const storedContactPref = typeof window !== 'undefined' ? localStorage.getItem(VISITOR_CONTACT_PREF_KEY) : null;
+  const storedContactValue = typeof window !== 'undefined' ? localStorage.getItem(VISITOR_CONTACT_VALUE_KEY) : null;
+  
+  // Determine initial state based on visitor history
+  const getInitialState = (): ConversationState => {
+    if (hasSubmittedContact) return 'returning_submitted_visitor';
+    if (isReturningVisitor) return 'returning_visitor_demo';
+    return 'initial';
+  };
   
   const [messages, setMessages] = useState<Message[]>([]);
-  const [state, setState] = useState<ConversationState>(isReturningVisitor ? 'returning_visitor_demo' : 'initial');
+  const [state, setState] = useState<ConversationState>(getInitialState());
   const [isTyping, setIsTyping] = useState(false);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [formData, setFormData] = useState<FormData>({ name: '', practice: '', contactPreference: '', phone: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoCompleted, setDemoCompleted] = useState(false);
   const [returningDemoCompleted, setReturningDemoCompleted] = useState(false);
-  const [showHeader, setShowHeader] = useState(isReturningVisitor);
+  const [showHeader, setShowHeader] = useState(isReturningVisitor || hasSubmittedContact);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
   const processedStates = useRef<Set<ConversationState>>(new Set());
@@ -131,6 +148,10 @@ const GuidedChat = () => {
   useEffect(() => {
     if (hasInitialized.current && state === 'initial') return;
     if (hasInitialized.current && state === 'returning_visitor_demo') return;
+    if (hasInitialized.current && state === 'returning_submitted_visitor') return;
+    // Prevent duplicate processing of the same state
+    if (processedStates.current.has(state)) return;
+    processedStates.current.add(state);
     // Prevent duplicate processing of the same state
     if (processedStates.current.has(state)) return;
     processedStates.current.add(state);
@@ -174,6 +195,63 @@ const GuidedChat = () => {
                   }
                   return displayedText;
                 }}
+              />
+            )
+          });
+          break;
+
+        case 'returning_submitted_visitor':
+          hasInitialized.current = true;
+          const submittedGreeting = storedVisitorName 
+            ? `Hi ${storedVisitorName} — great to see you again! Has anyone from our team reached out to you yet?`
+            : `Hi — great to see you again! Has anyone from our team reached out to you yet?`;
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text={submittedGreeting}
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'returning_submitted_no_contact':
+          setIsTypingComplete(false);
+          const contactType = storedContactPref === 'phone' ? 'phone number' : 'email';
+          const confirmMsg = storedContactValue 
+            ? `We'll get back to you right away! Just to confirm, is ${storedContactValue} still the best ${contactType} to reach you?`
+            : `We'll get back to you right away! What's the best ${contactType} to reach you?`;
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text={confirmMsg}
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'returning_submitted_confirm_contact':
+          const thankFirstName = storedVisitorName || '';
+          await addMessage({ 
+            type: 'success', 
+            content: (
+              <TypewriterText 
+                text={thankFirstName ? `Perfect, thanks ${thankFirstName}! We'll be in touch very soon. 😊` : `Perfect, thanks! We'll be in touch very soon. 😊`}
+              />
+            )
+          });
+          break;
+
+        case 'returning_submitted_yes_contacted':
+          const contactedName = storedVisitorName || '';
+          await addMessage({ 
+            type: 'success', 
+            content: (
+              <TypewriterText 
+                text={contactedName ? `That's great to hear, ${contactedName}! Thanks again for your interest — we're excited to work with you. 😊` : `That's great to hear! Thanks again for your interest — we're excited to work with you. 😊`}
               />
             )
           });
@@ -434,6 +512,37 @@ Have a great day! 😊`}
     setState('returning_visitor_declined');
   };
 
+  // Handlers for submitted visitors
+  const handleSubmittedYesContacted = () => {
+    triggerHaptic('light');
+    addUserMessage("Yes");
+    setState('returning_submitted_yes_contacted');
+  };
+
+  const handleSubmittedNoContact = () => {
+    triggerHaptic('light');
+    addUserMessage("No");
+    setState('returning_submitted_no_contact');
+  };
+
+  const handleConfirmContactYes = () => {
+    triggerHaptic('medium');
+    addUserMessage("Yes, that's correct");
+    setState('returning_submitted_confirm_contact');
+  };
+
+  const handleConfirmContactUpdate = () => {
+    triggerHaptic('light');
+    addUserMessage("I have a new contact");
+    // Go to the appropriate contact input based on stored preference
+    processedStates.current.clear();
+    if (storedContactPref === 'phone') {
+      setState('ask_phone');
+    } else {
+      setState('ask_email');
+    }
+  };
+
   const handleContinueToWorkflow = () => {
     triggerHaptic('medium');
     addUserMessage("Yes, tell me more");
@@ -524,15 +633,12 @@ Have a great day! 😊`}
 
       if (error) throw error;
 
-      // Send email notification
-      await supabase.functions.invoke('send-prospect', {
-        body: {
-          name: finalData.name,
-          practice: finalData.practice,
-          contactPreference: 'phone',
-          contactValue: value
-        }
-      });
+      // Store contact info for returning visitor experience
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(SUBMITTED_CONTACT_KEY, 'true');
+        localStorage.setItem(VISITOR_CONTACT_PREF_KEY, 'phone');
+        localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
+      }
 
       setState('complete');
     } catch (error) {
@@ -565,15 +671,12 @@ Have a great day! 😊`}
 
       if (error) throw error;
 
-      // Send email notification
-      await supabase.functions.invoke('send-prospect', {
-        body: {
-          name: finalData.name,
-          practice: finalData.practice,
-          contactPreference: 'email',
-          contactValue: value
-        }
-      });
+      // Store contact info for returning visitor experience
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(SUBMITTED_CONTACT_KEY, 'true');
+        localStorage.setItem(VISITOR_CONTACT_PREF_KEY, 'email');
+        localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
+      }
 
       setState('complete');
     } catch (error) {
@@ -609,6 +712,47 @@ Have a great day! 😊`}
             <DemoChat onComplete={handleReturningDemoComplete} isCompleted={returningDemoCompleted} />
           </div>
         );
+
+      case 'returning_submitted_visitor':
+        if (!isTypingComplete) return null;
+        return (
+          <QuickReplyButtons
+            options={[
+              { label: "Yes", onClick: handleSubmittedYesContacted },
+              { label: "No", onClick: handleSubmittedNoContact },
+            ]}
+          />
+        );
+
+      case 'returning_submitted_no_contact':
+        if (!isTypingComplete) return null;
+        // Show confirmation buttons if we have stored contact info
+        if (storedContactValue) {
+          return (
+            <QuickReplyButtons
+              options={[
+                { label: "Yes, that's correct", onClick: handleConfirmContactYes, primary: true },
+                { label: "I have a new contact", onClick: handleConfirmContactUpdate },
+              ]}
+            />
+          );
+        }
+        // Otherwise ask for contact via input
+        return storedContactPref === 'phone' 
+          ? <ChatInput placeholder="Phone number..." onSubmit={(value) => {
+              addUserMessage(value);
+              if (typeof window !== 'undefined') {
+                localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
+              }
+              setState('returning_submitted_confirm_contact');
+            }} type="tel" />
+          : <ChatInput placeholder="Email address..." onSubmit={(value) => {
+              addUserMessage(value);
+              if (typeof window !== 'undefined') {
+                localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
+              }
+              setState('returning_submitted_confirm_contact');
+            }} type="email" />;
 
       case 'ask_dental':
         if (!isTypingComplete) return null;
