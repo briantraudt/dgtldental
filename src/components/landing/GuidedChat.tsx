@@ -331,7 +331,7 @@ Our pricing is really simple. It costs $99 for our basic service. No setup fee a
             content: (
               <TypewriterText 
                 text={`Thanks so much, ${successFirstName}! Someone from our team will contact you right away.
-Have a great day!`}
+Have a great day! 😊`}
               />
             )
           });
