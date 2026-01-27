@@ -23,6 +23,7 @@ import MobileMenu from './MobileMenu';
 import DesktopNav from './DesktopNav';
 
 type ConversationState = 
+  | 'returning_visitor_demo'
   | 'initial'
   | 'ask_dental'
   | 'not_dental_end'
@@ -57,18 +58,31 @@ interface FormData {
   email: string;
 }
 
+const VISITED_KEY = 'dgtl_has_visited';
+
 const GuidedChat = () => {
+  // Check if returning visitor
+  const isReturningVisitor = typeof window !== 'undefined' && localStorage.getItem(VISITED_KEY) === 'true';
+  
   const [messages, setMessages] = useState<Message[]>([]);
-  const [state, setState] = useState<ConversationState>('initial');
+  const [state, setState] = useState<ConversationState>(isReturningVisitor ? 'returning_visitor_demo' : 'initial');
   const [isTyping, setIsTyping] = useState(false);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [formData, setFormData] = useState<FormData>({ name: '', practice: '', contactPreference: '', phone: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoCompleted, setDemoCompleted] = useState(false);
-  const [showHeader, setShowHeader] = useState(false);
+  const [returningDemoCompleted, setReturningDemoCompleted] = useState(false);
+  const [showHeader, setShowHeader] = useState(isReturningVisitor);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
   const processedStates = useRef<Set<ConversationState>>(new Set());
+  
+  // Mark visitor on first visit
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(VISITED_KEY, 'true');
+    }
+  }, []);
 
   const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
     if (typeof window === 'undefined') return;
@@ -113,12 +127,30 @@ const GuidedChat = () => {
   // State machine progression
   useEffect(() => {
     if (hasInitialized.current && state === 'initial') return;
+    if (hasInitialized.current && state === 'returning_visitor_demo') return;
     // Prevent duplicate processing of the same state
     if (processedStates.current.has(state)) return;
     processedStates.current.add(state);
     
     const progressConversation = async () => {
       switch (state) {
+        case 'returning_visitor_demo':
+          hasInitialized.current = true;
+          await addMessage({ 
+            type: 'greeting', 
+            content: (
+              <TypewriterText 
+                text="Welcome back! Try out the Virtual Front Desk — ask any dental or office-related question below."
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          await addMessage({
+            type: 'demo',
+            content: <DemoChat onComplete={handleReturningDemoComplete} isCompleted={returningDemoCompleted} />
+          });
+          break;
+
         case 'initial':
           hasInitialized.current = true;
           await addMessage({ 
@@ -354,6 +386,19 @@ Have a great day! 😊`}
     setState('show_value');
   };
 
+  const handleReturningDemoComplete = () => {
+    setReturningDemoCompleted(true);
+  };
+
+  const handleContinueToWorkflow = () => {
+    triggerHaptic('medium');
+    // Reset state tracking so it can process the new states
+    processedStates.current.clear();
+    hasInitialized.current = false;
+    setMessages([]);
+    setState('initial');
+  };
+
   const handleDentalNo = () => {
     triggerHaptic('light');
     addUserMessage("No");
@@ -499,6 +544,16 @@ Have a great day! 😊`}
     if (isTyping) return null;
 
     switch (state) {
+      case 'returning_visitor_demo':
+        if (!isTypingComplete || !returningDemoCompleted) return null;
+        return (
+          <QuickReplyButtons
+            options={[
+              { label: "Want this for your office?", onClick: handleContinueToWorkflow, primary: true },
+            ]}
+          />
+        );
+
       case 'ask_dental':
         if (!isTypingComplete) return null;
         return (
