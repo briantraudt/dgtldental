@@ -79,10 +79,7 @@ const MobileMenu = () => {
               <img src={toothIcon} alt="DGTL" className="h-12 w-12 mx-auto mb-4" />
             </div>
             <p className="text-[15px] text-foreground/80 leading-relaxed text-center">
-              We create AI assistants for dental practices that answer patient questions 24/7 — with over <span className="text-foreground font-medium">50,000+ questions answered</span> for practices nationwide.
-            </p>
-            <p className="text-[15px] text-foreground/80 leading-relaxed text-center">
-              Less phone interruptions for your front desk. Better experience for your patients.
+              We build AI-powered Virtual Front Desks that answer patient questions around the clock. With <span className="text-foreground font-medium">over 50,000 questions answered</span> for practices nationwide, we help reduce phone interruptions while giving your patients instant, helpful responses.
             </p>
           </div>
         </DialogContent>
