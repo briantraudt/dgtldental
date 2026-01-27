@@ -455,11 +455,11 @@ const GuidedChat = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-background overflow-hidden">
-      {/* Header - fixed to top with safe area support */}
-      <header className="bg-background/95 backdrop-blur-md flex-shrink-0" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+    <div className="flex flex-col bg-background overflow-hidden" style={{ height: '100dvh', paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      {/* Header - sticky with safe area already applied to parent */}
+      <header className="bg-background/95 backdrop-blur-md flex-shrink-0 sticky top-0 z-50">
         {/* Mobile: centered icon with hamburger */}
-        <div className="md:hidden flex items-center justify-between px-4 py-3 min-h-[56px]">
+        <div className="md:hidden flex items-center justify-between px-5 py-3 min-h-[56px]">
           <div className="w-10 flex-shrink-0" /> {/* Spacer for balance */}
           <button 
             onClick={() => window.location.reload()} 
@@ -484,7 +484,7 @@ const GuidedChat = () => {
       </header>
 
       {/* Chat Area - scrollable content */}
-      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 flex flex-col justify-end relative" style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
+      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 flex flex-col justify-end relative">
         <div className="max-w-[600px] mx-auto w-full">
           <div className="space-y-5">
             {messages.map(renderMessage)}
@@ -501,7 +501,7 @@ const GuidedChat = () => {
         </div>
         
         {/* Bottom fade gradient to indicate scrollable content */}
-        <div className="pointer-events-none fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background via-background/80 to-transparent" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background via-background/80 to-transparent" />
       </main>
 
     </div>
