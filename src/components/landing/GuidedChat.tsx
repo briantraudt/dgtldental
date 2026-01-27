@@ -189,19 +189,8 @@ It can answer any dental question, connect to your scheduling system for online 
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="Installation takes minutes. We give you a tiny snippet of code your web person can add, or we can do it for you."
-                onComplete={() => setState('show_price')}
-              />
-            )
-          });
-          break;
-
-        case 'show_price':
-          await addMessage({ 
-            type: 'explanation', 
-            content: (
-              <TypewriterText 
-                text="Our pricing is really simple. It costs $99/month. No setup fee and it's completely customized for your office. Cancel anytime."
+                text={`Installation takes minutes. We give you a tiny snippet of code your web person can add, or we can do it for you.
+Our pricing is really simple. It costs $99/month. No setup fee and it's completely customized for your office. Cancel anytime.`}
                 onComplete={() => setState('ask_setup')}
               />
             )
