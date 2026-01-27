@@ -117,20 +117,21 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const responseEndRef = useRef<HTMLDivElement>(null);
 
+  const scrollToBottom = useCallback(() => {
+    setTimeout(() => {
+      responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 50);
+  }, []);
+
   const handleTypingComplete = useCallback(() => {
     setTypingComplete(true);
-  }, []);
+    // Ensure Continue button is visible after typing completes
+    scrollToBottom();
+  }, [scrollToBottom]);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-
-  const scrollToBottom = () => {
-    setTimeout(() => {
-      responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 50);
-  };
 
   const sendMessage = async (message: string) => {
     if (!message.trim() || isLoading) return;
@@ -320,7 +321,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
         </div>
       )}
       
-      <div ref={responseEndRef} className="h-4" />
+      <div ref={responseEndRef} className="h-16" />
     </div>
   );
 };
