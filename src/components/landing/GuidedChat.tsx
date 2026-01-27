@@ -65,6 +65,7 @@ const GuidedChat = () => {
   const [formData, setFormData] = useState<FormData>({ name: '', practice: '', contactPreference: '', phone: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoCompleted, setDemoCompleted] = useState(false);
+  const [showHeader, setShowHeader] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
   const processedStates = useRef<Set<ConversationState>>(new Set());
@@ -128,7 +129,10 @@ const GuidedChat = () => {
             content: (
               <TypewriterText 
                 text="Are you a dentist or do you work in a dental office?"
-                onComplete={() => setIsTypingComplete(true)}
+                onComplete={() => {
+                  setIsTypingComplete(true);
+                  setShowHeader(true);
+                }}
               />
             )
           });
@@ -556,8 +560,8 @@ const GuidedChat = () => {
 
   return (
     <div className="flex flex-col bg-background overflow-hidden" style={{ height: '100dvh', paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-      {/* Header - sticky with safe area already applied to parent */}
-      <header className="bg-background/95 backdrop-blur-md flex-shrink-0 sticky top-0 z-50">
+      {/* Header - sticky with safe area already applied to parent, hidden until showHeader is true */}
+      <header className={`bg-background/95 backdrop-blur-md flex-shrink-0 sticky top-0 z-50 transition-opacity duration-500 ${showHeader ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         {/* Mobile: centered icon with hamburger */}
         <div className="md:hidden flex items-center justify-between px-5 py-3 min-h-[56px]">
           <div className="w-10 flex-shrink-0" /> {/* Spacer for balance */}
