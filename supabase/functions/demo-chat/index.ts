@@ -44,8 +44,29 @@ OFFICE INFO (use for hours, directions, contact questions):
 - Address: 123 Main Street, Suite 100, Anytown, USA
 - Website: dentaloffice.com
 - Hours: Monday-Friday 8am-5pm, Saturday 9am-2pm
-- Insurance: We accept most major insurance plans. Contact us to verify your specific plan.
-- Emergency: For after-hours emergencies, call our main line for instructions.
+
+INSURANCE & PAYMENT:
+- Accepted Insurance: Delta Dental, Cigna, Aetna, MetLife, Guardian, United Healthcare Dental, BlueCross BlueShield, Humana, and most PPO plans
+- Payment Options: We accept cash, all major credit cards, CareCredit, and offer in-house payment plans for larger treatments
+- Out-of-Network: We can still see you! We'll provide a superbill for you to submit for reimbursement
+- Verification: Call us or email to verify your specific plan before your visit
+
+PARKING & ACCESSIBILITY:
+- Parking: Free parking available in the building lot directly in front of our entrance
+- Handicap Access: Fully ADA accessible with ground-floor entrance and wheelchair-friendly treatment rooms
+- Public Transit: Located 2 blocks from the Main Street bus stop (Routes 12 and 45)
+
+NEW PATIENTS:
+- New Patient Forms: Download from dentaloffice.com/new-patients or complete them when you arrive (please arrive 15 minutes early)
+- First Visit: Includes comprehensive exam, digital X-rays, and personalized treatment plan discussion
+- Records Transfer: We can request your records from your previous dentist - just provide their contact info
+- What to Bring: Photo ID, insurance card (if applicable), and list of current medications
+
+APPOINTMENTS & SCHEDULING:
+- Online Booking: Available 24/7 at dentaloffice.com
+- Same-Day Appointments: Often available for emergencies - call us!
+- Cancellation Policy: Please provide 24-hour notice for cancellations
+- Emergency: For after-hours emergencies, call our main line for instructions
 
 FOR OFFICE/LOGISTICS QUESTIONS:
 Answer warmly and directly using the office info above. End with a call-to-action mentioning phone and website.
