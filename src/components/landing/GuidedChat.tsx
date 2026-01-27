@@ -229,8 +229,8 @@ const GuidedChat = () => {
         case 'returning_submitted_no_contact':
           setIsTypingComplete(false);
           const confirmMsg = storedContactValue 
-            ? `We'll get back to you right away! We have ${storedContactValue} on file — is that still the best way to reach you, or is there a better contact?`
-            : `We'll get back to you right away! What's the best way to reach you?`;
+            ? `I'm so sorry about that! Let me get someone to reach out to you right away.\n\nWe have ${storedContactValue} on file — is that still the best way to reach you?`
+            : `I'm so sorry about that! Let me get someone to reach out to you right away.\n\nWhat's the best way to reach you?`;
           await addMessage({ 
             type: 'question', 
             content: (
