@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { playMessageFeedback } from './chat/audioFeedback';
+import { playMessageFeedback, triggerHaptic } from './chat/audioFeedback';
 import toothIcon from '@/assets/tooth-icon.png';
 import dgtlLogo from '@/assets/dgtl-logo.png';
 import {
@@ -334,6 +334,7 @@ Have a great day!`}
 
   // Handlers
   const handleDentalYes = () => {
+    triggerHaptic('light');
     addUserMessage("Yes");
     setState('show_demo_intro');
   };
@@ -344,55 +345,65 @@ Have a great day!`}
   };
 
   const handleDentalNo = () => {
+    triggerHaptic('light');
     addUserMessage("No");
     setState('not_dental_end');
   };
 
   const handleSetupYes = () => {
+    triggerHaptic('medium');
     addUserMessage("Yes, let's do it");
     setState('show_excited');
   };
 
   const handleSetupNo = () => {
+    triggerHaptic('light');
     addUserMessage("Not right now");
     setState('show_contact');
   };
 
   const handleBackToSetup = () => {
+    triggerHaptic('medium');
     addUserMessage("Actually, let's set it up");
     setState('ask_name');
   };
 
   const handleOopsImADentist = () => {
+    triggerHaptic('light');
     addUserMessage("Oops, I am a dentist!");
     setState('show_demo_intro');
   };
 
   const handleNameSubmit = (value: string) => {
+    triggerHaptic('medium');
     setFormData(prev => ({ ...prev, name: value }));
     addUserMessage(value);
     setState('ask_practice_name');
   };
 
   const handlePracticeSubmit = (value: string) => {
+    triggerHaptic('medium');
     setFormData(prev => ({ ...prev, practice: value }));
     addUserMessage(value);
     setState('ask_contact_preference');
   };
 
   const handleContactPreferencePhone = () => {
+    triggerHaptic('light');
     setFormData(prev => ({ ...prev, contactPreference: 'phone' }));
     addUserMessage("Phone");
     setState('ask_phone');
   };
 
   const handleContactPreferenceEmail = () => {
+    triggerHaptic('light');
     setFormData(prev => ({ ...prev, contactPreference: 'email' }));
     addUserMessage("Email");
     setState('ask_email');
   };
 
   const handlePhoneSubmit = async (value: string) => {
+    triggerHaptic('medium');
     const finalData = { ...formData, phone: value };
     addUserMessage(value);
     setState('submitting');
@@ -433,6 +444,7 @@ Have a great day!`}
   };
 
   const handleEmailSubmit = async (value: string) => {
+    triggerHaptic('medium');
     const finalData = { ...formData, email: value };
     addUserMessage(value);
     setState('submitting');
