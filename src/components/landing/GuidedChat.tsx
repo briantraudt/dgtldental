@@ -76,9 +76,10 @@ const GuidedChat = () => {
     }, 100);
   }, []);
 
+  // Scroll when messages change, typing state changes, or interaction state changes
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isTyping, scrollToBottom]);
+  }, [messages, isTyping, isTypingComplete, state, scrollToBottom]);
 
   const addMessage = useCallback((message: Omit<Message, 'id'>): Promise<void> => {
     return new Promise((resolve) => {
@@ -623,12 +624,12 @@ Our pricing is really simple. It costs $99 for our basic service. No setup fee a
             </div>
           </div>
           
-          <div ref={messagesEndRef} className="h-4" />
+          <div ref={messagesEndRef} className="h-8" />
         </div>
       </main>
 
       {/* Invisible fixed footer spacer to prevent content being cut off */}
-      <footer className="flex-shrink-0 h-20 pointer-events-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+      <footer className="flex-shrink-0 h-24 pointer-events-none" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
     </div>
   );
 };
