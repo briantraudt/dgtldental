@@ -232,7 +232,7 @@ It can answer any dental question, connect to your scheduling system for online 
             content: (
               <TypewriterText 
                 text={`Standard installation takes minutes. We give you a tiny snippet of code your web person can add, or we can do it for you.
-Our pricing is really simple. It costs $99 for our basic service. No setup fee and it's completely customized for your office. Cancel anytime.`}
+Our pricing is really simple. It costs $99/month for our basic service with no setup fee. Cancel anytime.`}
                 onComplete={() => setState('ask_setup')}
               />
             )
