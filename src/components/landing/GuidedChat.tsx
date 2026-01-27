@@ -155,7 +155,7 @@ We create AI-powered Virtual Front Desks for dental practices to help you save t
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="Let me show you how it works. Here's a quick demo of what your patients would experience:"
+                text="Let me show you how it works. Here's a quick demo of what your patients would experience. In the box below ask us any dental or dental office related question you can think of and feel free to try to stump us!"
                 onComplete={() => setState('show_demo')}
               />
             )
