@@ -1,4 +1,3 @@
-
 project_id = "qqshsywezmoxyzyytvnp"
 
 [api]
@@ -15,4 +14,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.send-contact]
+verify_jwt = false
+
+[functions.send-prospect]
 verify_jwt = false
