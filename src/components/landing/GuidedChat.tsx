@@ -393,7 +393,12 @@ Have a great day! 😊`}
   };
 
   const handleReturningDemoComplete = () => {
+    // Returning visitors should follow the exact same workflow as first-time visitors
+    // after the demo is completed.
     setReturningDemoCompleted(true);
+    // Reset the state-machine de-dupe so the next steps always run.
+    processedStates.current.clear();
+    setState('show_value');
   };
 
   const handleContinueToWorkflow = () => {
