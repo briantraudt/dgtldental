@@ -1,103 +1,175 @@
 
-# Plan: Add Recovery Options for Declined Returning Visitors
+
+# Plan: Reorder "Yes, Contacted" Flow - Ask Questions First, Then Confirm Email
 
 ## Overview
-When a returning visitor clicks "Not right now", they currently see a dead-end farewell message. This plan adds two recovery paths: a demo test drive option and an email contact link, giving users another chance to engage.
+Currently, when a returning visitor says "Yes" (someone has reached out), the flow immediately asks to confirm their email. The user wants to flip this order: first ask if they have any questions, and only if they say "Yes, I have a question" should we then confirm their email before collecting the question.
 
-## Current Behavior
-When "Not right now" is clicked:
-1. User message "Not right now" appears
-2. Bot says: "No problem at all — thanks for stopping by! If you ever change your mind, just reach out at hello@dgtldental.com"
-3. **No further interaction available** (dead end)
+## Current Flow (Incorrect)
+```text
+User: "Yes" (someone reached out)
+        │
+        ▼
+Bot: "Ok, good deal. We have [email] on file. Is that still the best way?"
+        │
+        ├── "Yes, that's still correct"
+        │           │
+        │           ▼
+        │   Bot: "Do you have any other questions right now?"
+        │
+        └── "I have a better contact"
+                    │
+                    ▼
+            [Update contact, then ask about questions]
+```
 
-## Proposed Behavior
-When "Not right now" is clicked:
-1. User message "Not right now" appears
-2. Bot says: "No problem at all! If you change your mind, you're always welcome to take our platform for a test drive below, or reach out at hello@dgtldental.com"
-3. **Below the message, show:**
-   - The `DemoChat` component so they can still try the demo
-   - If they interact with the demo and hit Continue, route them into the standard sales workflow
+## New Flow (Requested)
+```text
+User: "Yes" (someone reached out)
+        │
+        ▼
+Bot: "Ok, good deal. Do you have any other questions right now?"
+        │
+        ├── "No, I'm all set" ──────────► Bot: "Great! Thanks again..."
+        │
+        └── "Yes, I have a question"
+                    │
+                    ▼
+        Bot: "We have [email] on file. Is that the best way to reach you?"
+                    │
+                    ├── "Yes, that's still correct"
+                    │           │
+                    │           ▼
+                    │   [Show question input box]
+                    │
+                    └── "I have a better contact"
+                                │
+                                ▼
+                        [Collect new contact, then show question input]
+```
 
 ## Changes Required
 
-### File: `src/components/landing/GuidedChat.tsx`
+### 1. Update `returning_submitted_yes_contacted` State
+Change from asking about contact to asking about questions:
+- Message: "Ok, good deal. Do you have any other questions right now?"
+- Interaction: Yes/No buttons for questions (not contact confirmation)
 
-1. **Update the farewell message** in the `returning_visitor_declined` case (lines 177-201):
-   - Change the text to invite them to try the demo or email
-   - Keep the mailto link formatting
+### 2. Add New State: `returning_yes_confirm_before_question`
+This state confirms their email/phone AFTER they say they have a question:
+- Message: "Sure! We have [email] on file — is that still the best way to reach you?"
+- Interaction: "Yes, that's still correct" / "I have a better contact" buttons
 
-2. **Add interaction handler for declined state** in `renderInteraction()`:
-   - Add a new case for `returning_visitor_declined`
-   - Show the `DemoChat` component
-   - Create a handler (`handleDeclinedDemoComplete`) that routes to `show_value` if they complete the demo
+### 3. Update Handler Functions
+- `handleSubmittedYesContacted` - now shows question prompt
+- Create new handler for when user says "Yes, I have a question" in the contacted flow - this triggers contact confirmation
+- After contact is confirmed/updated, show the question input
 
-3. **Add state tracking** for the declined demo:
-   - Add a new state variable `declinedDemoCompleted` (similar to `returningDemoCompleted`)
-
-## Visual Flow
-
-```text
-User clicks "Not right now"
-           │
-           ▼
-┌──────────────────────────────────────────────────┐
-│ Bot: "No problem at all! If you change your      │
-│ mind, you're always welcome to take our          │
-│ platform for a test drive below, or reach out    │
-│ at hello@dgtldental.com"                         │
-└──────────────────────────────────────────────────┘
-           │
-           ▼
-┌──────────────────────────────────────────────────┐
-│ [DemoChat component - "Ask a dental question..."]│
-└──────────────────────────────────────────────────┘
-           │
-           ├── User asks question → Demo responds
-           │                │
-           │                ▼
-           │   [Continue button appears]
-           │                │
-           │                ▼
-           └──────► "show_value" state (sales pitch)
-```
+### 4. Update Existing State Flow
+- `returning_yes_confirm_contact` - after confirming contact, go to question form
+- `returning_yes_new_contact` - after updating contact, go to question form
 
 ## Technical Details
 
-### New State Variable
+### New State to Add
 ```tsx
-const [declinedDemoCompleted, setDeclinedDemoCompleted] = useState(false);
+| 'returning_yes_confirm_before_question'
+```
+
+### Updated State Handler: `returning_submitted_yes_contacted`
+```tsx
+case 'returning_submitted_yes_contacted':
+  setIsTypingComplete(false);
+  await addMessage({ 
+    type: 'question', 
+    content: (
+      <TypewriterText 
+        text="Ok, good deal. Do you have any other questions right now?"
+        onComplete={() => setIsTypingComplete(true)}
+      />
+    )
+  });
+  break;
+```
+
+### New State Handler: `returning_yes_confirm_before_question`
+```tsx
+case 'returning_yes_confirm_before_question':
+  setIsTypingComplete(false);
+  const confirmBeforeQuestionMsg = storedContactValue 
+    ? `Sure! We have ${storedContactValue} on file — is that still the best way to reach you?`
+    : `Sure! What's the best email or phone to reach you?`;
+  await addMessage({ 
+    type: 'question', 
+    content: (
+      <TypewriterText 
+        text={confirmBeforeQuestionMsg}
+        onComplete={() => setIsTypingComplete(true)}
+      />
+    )
+  });
+  break;
 ```
 
 ### New Handler Function
 ```tsx
-const handleDeclinedDemoComplete = () => {
-  setDeclinedDemoCompleted(true);
-  processedStates.current.clear();
-  setState('show_value');
+const handleYesContactedHasQuestion = () => {
+  triggerHaptic('light');
+  addUserMessage("Yes, I have a question");
+  setState('returning_yes_confirm_before_question');
 };
 ```
 
-### Updated Message Text (line 182)
-```tsx
-text="No problem at all! If you change your mind, you're always welcome to take our platform for a test drive below, or reach out at hello@dgtldental.com"
-```
+### Updated Interactions
 
-### New Interaction Case
+**For `returning_submitted_yes_contacted`:**
 ```tsx
-case 'returning_visitor_declined':
+case 'returning_submitted_yes_contacted':
+  if (!isTypingComplete) return null;
   return (
-    <div className="space-y-4 animate-fade-in">
-      <DemoChat 
-        onComplete={handleDeclinedDemoComplete} 
-        isCompleted={declinedDemoCompleted} 
-      />
-    </div>
+    <QuickReplyButtons
+      options={[
+        { label: "Yes, I have a question", onClick: handleYesContactedHasQuestion },
+        { label: "No, I'm all set", onClick: handleNoMoreQuestions },
+      ]}
+    />
   );
 ```
 
-## User Experience Benefits
-- **No dead ends**: Users who initially decline still have a path forward
-- **Low pressure**: They can explore the demo at their own pace without feeling pushed
-- **Email fallback**: Those who want human contact can still reach out directly
-- **Full conversion path**: If the demo impresses them, they can complete the full sales flow
+**For `returning_yes_confirm_before_question`:**
+```tsx
+case 'returning_yes_confirm_before_question':
+  if (!isTypingComplete) return null;
+  if (storedContactValue) {
+    return (
+      <QuickReplyButtons
+        options={[
+          { label: "Yes, that's still correct", onClick: handleYesContactedConfirm, primary: true },
+          { label: "I have a better contact", onClick: handleYesContactedUpdate },
+        ]}
+      />
+    );
+  }
+  return (
+    <ChatInput 
+      placeholder="Email or phone number..." 
+      onSubmit={(value) => {
+        addUserMessage(value);
+        if (typeof window !== 'undefined') {
+          const isEmail = value.includes('@');
+          localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
+          localStorage.setItem(VISITOR_CONTACT_PREF_KEY, isEmail ? 'email' : 'phone');
+        }
+        setState('returning_show_question_form');
+      }} 
+    />
+  );
+```
+
+### Update Existing Handlers
+- `handleYesContactedConfirm` → should go to `returning_show_question_form` (not `returning_yes_confirm_contact`)
+- `handleYesContactedUpdate` → should go to `returning_yes_new_contact`, which then goes to `returning_show_question_form`
+
+## Files to Modify
+- `src/components/landing/GuidedChat.tsx`
 
