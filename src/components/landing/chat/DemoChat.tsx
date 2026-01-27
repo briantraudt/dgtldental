@@ -22,17 +22,23 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const hasCalledComplete = useRef(false);
+  const scrollCounter = useRef(0);
   
   useEffect(() => {
     if (currentIndex < text.length) {
       const timeout = setTimeout(() => {
         setDisplayedText(text.slice(0, currentIndex + 1));
         setCurrentIndex(prev => prev + 1);
-        onTextUpdate?.();
+        // Scroll every 3 characters for smoother continuous scrolling
+        scrollCounter.current++;
+        if (scrollCounter.current % 3 === 0) {
+          onTextUpdate?.();
+        }
       }, 35);
       return () => clearTimeout(timeout);
     } else if (isComplete && currentIndex === text.length && text.length > 0 && !hasCalledComplete.current) {
       hasCalledComplete.current = true;
+      onTextUpdate?.(); // Final scroll when complete
       onTypingComplete?.();
     }
   }, [currentIndex, text, onTextUpdate, isComplete, onTypingComplete]);
@@ -118,9 +124,8 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const responseEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    setTimeout(() => {
-      responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }, 50);
+    // Immediate scroll without delay for continuous visibility during streaming
+    responseEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, []);
 
   const handleTypingComplete = useCallback(() => {
@@ -205,6 +210,8 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
             if (content) {
               fullResponse += content;
               setCurrentAiResponse(fullResponse);
+              // Scroll as new content streams in
+              scrollToBottom();
             }
           } catch {
             textBuffer = line + "\n" + textBuffer;
