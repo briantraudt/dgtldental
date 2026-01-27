@@ -283,8 +283,8 @@ const GuidedChat = () => {
         case 'returning_yes_confirm_after_question':
           setIsTypingComplete(false);
           const confirmAfterQuestionMsg = storedContactValue 
-            ? `Great question! We have ${storedContactValue} on file — is that still the best way to reach you?`
-            : `Great question! What's the best email or phone to reach you?`;
+            ? `Great question — I'd feel more comfortable if a team member reached out to you directly on that one.\n\nWe have ${storedContactValue} on file — is that still the best way to reach you?`
+            : `Great question — I'd feel more comfortable if a team member reached out to you directly on that one.\n\nWhat's the best email or phone to reach you?`;
           await addMessage({ 
             type: 'question', 
             content: (
