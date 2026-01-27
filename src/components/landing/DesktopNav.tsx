@@ -63,7 +63,7 @@ const DesktopNav = () => {
       <Dialog open={activeModal === 'pricing'} onOpenChange={() => setActiveModal(null)}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-center font-normal text-lg text-muted-foreground">Really Simple Pricing</DialogTitle>
+            <DialogTitle className="text-center font-normal text-lg text-muted-foreground">Standard Pricing</DialogTitle>
           </DialogHeader>
           <div className="space-y-6 pt-2">
             <div className="text-center">
