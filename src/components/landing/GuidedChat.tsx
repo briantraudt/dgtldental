@@ -513,7 +513,7 @@ const GuidedChat = () => {
             </div>
           </div>
           
-          <div ref={messagesEndRef} className="h-8" />
+          <div ref={messagesEndRef} className="h-24" />
         </div>
         
         {/* Bottom fade gradient to indicate scrollable content */}
