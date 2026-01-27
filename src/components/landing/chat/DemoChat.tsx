@@ -37,7 +37,7 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
     }
   }, [currentIndex, text, onTextUpdate, isComplete, onTypingComplete]);
 
-  const formatDisplayedText = (txt: string, showCursor: boolean) => {
+  const formatDisplayedText = (txt: string, showCursor: boolean, isFullyTyped: boolean) => {
     if (!txt) {
       return showCursor ? <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse" /> : null;
     }
@@ -47,24 +47,46 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
     return paragraphs.map((paragraph, index) => {
       const isLastParagraph = index === paragraphs.length - 1;
       
-      if (paragraph.includes('dentaloffice.com')) {
-        const parts = paragraph.split('dentaloffice.com');
-        return (
-          <p key={index}>
-            {parts[0]}
-            <a 
-              href="https://dgtldental.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:text-primary/80 underline underline-offset-2"
-            >
-              dentaloffice.com
-            </a>
-            {parts[1]}
-            {isLastParagraph && showCursor && <span className="inline-block w-0.5 h-4 bg-primary/60 animate-pulse ml-0.5 align-middle" />}
-          </p>
-        );
+      // Only linkify after typing is complete to avoid links appearing before surrounding text
+      if (isFullyTyped) {
+        // Handle website links
+        if (paragraph.includes('dentaloffice.com')) {
+          const parts = paragraph.split('dentaloffice.com');
+          return (
+            <p key={index}>
+              {parts[0]}
+              <a 
+                href="https://dgtldental.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 underline underline-offset-2"
+              >
+                dentaloffice.com
+              </a>
+              {parts[1]}
+            </p>
+          );
+        }
+        // Handle email links
+        const emailMatch = paragraph.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+        if (emailMatch) {
+          const email = emailMatch[1];
+          const parts = paragraph.split(email);
+          return (
+            <p key={index}>
+              {parts[0]}
+              <a 
+                href={`mailto:${email}`}
+                className="text-primary hover:text-primary/80 underline underline-offset-2"
+              >
+                {email}
+              </a>
+              {parts[1]}
+            </p>
+          );
+        }
       }
+      
       return (
         <p key={index}>
           {paragraph.trim()}
@@ -78,7 +100,7 @@ const StreamingTypewriter = ({ text, isComplete, onTextUpdate, onTypingComplete 
 
   return (
     <div className="text-[15px] text-foreground/80 leading-relaxed space-y-3">
-      {formatDisplayedText(displayedText, !isTypingDone)}
+      {formatDisplayedText(displayedText, !isTypingDone, isTypingDone)}
     </div>
   );
 };
