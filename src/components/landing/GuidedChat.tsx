@@ -29,6 +29,10 @@ type ConversationState =
   | 'returning_submitted_no_contact'
   | 'returning_submitted_confirm_contact'
   | 'returning_submitted_yes_contacted'
+  | 'returning_ask_more_questions'
+  | 'returning_show_question_form'
+  | 'returning_question_submitted'
+  | 'returning_no_more_questions'
   | 'initial'
   | 'ask_dental'
   | 'not_dental_end'
@@ -78,8 +82,9 @@ const GuidedChat = () => {
   const storedContactValue = typeof window !== 'undefined' ? localStorage.getItem(VISITOR_CONTACT_VALUE_KEY) : null;
   
   // Determine initial state based on visitor history
+  // If we have their name stored, they've given us contact info - treat as submitted
   const getInitialState = (): ConversationState => {
-    if (hasSubmittedContact) return 'returning_submitted_visitor';
+    if (hasSubmittedContact || storedVisitorName) return 'returning_submitted_visitor';
     if (isReturningVisitor) return 'returning_visitor_demo';
     return 'initial';
   };
@@ -246,12 +251,51 @@ const GuidedChat = () => {
           break;
 
         case 'returning_submitted_yes_contacted':
+          setIsTypingComplete(false);
           const contactedName = storedVisitorName || '';
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text={contactedName ? `That's great to hear, ${contactedName}! Do you have any questions we can help with?` : `That's great to hear! Do you have any questions we can help with?`}
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'returning_no_more_questions':
+          const noQuestionsName = storedVisitorName || '';
           await addMessage({ 
             type: 'success', 
             content: (
               <TypewriterText 
-                text={contactedName ? `That's great to hear, ${contactedName}! Thanks again for your interest — we're excited to work with you. 😊` : `That's great to hear! Thanks again for your interest — we're excited to work with you. 😊`}
+                text={noQuestionsName ? `Great, ${noQuestionsName}! Thanks again for your interest — we're excited to work with you. 😊` : `Great! Thanks again for your interest — we're excited to work with you. 😊`}
+              />
+            )
+          });
+          break;
+
+        case 'returning_show_question_form':
+          setIsTypingComplete(false);
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text="What can we help you with?"
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'returning_question_submitted':
+          const questionName = storedVisitorName || '';
+          await addMessage({ 
+            type: 'success', 
+            content: (
+              <TypewriterText 
+                text={questionName ? `Thanks ${questionName}! Someone from our team will get back to you soon. Have a great day! 😊` : `Thanks! Someone from our team will get back to you soon. Have a great day! 😊`}
               />
             )
           });
@@ -532,6 +576,26 @@ Have a great day! 😊`}
     setState('returning_submitted_no_contact');
   };
 
+  // Handlers for questions after being contacted
+  const handleHasMoreQuestions = () => {
+    triggerHaptic('light');
+    addUserMessage("Yes, I have a question");
+    setState('returning_show_question_form');
+  };
+
+  const handleNoMoreQuestions = () => {
+    triggerHaptic('light');
+    addUserMessage("No, I'm all set");
+    setState('returning_no_more_questions');
+  };
+
+  const handleQuestionSubmit = (question: string) => {
+    triggerHaptic('medium');
+    addUserMessage(question);
+    // Here you could also save the question to the database if needed
+    setState('returning_question_submitted');
+  };
+
   const handleConfirmContactYes = () => {
     triggerHaptic('medium');
     addUserMessage("Yes, that's correct");
@@ -730,6 +794,26 @@ Have a great day! 😊`}
               { label: "Yes", onClick: handleSubmittedYesContacted },
               { label: "No", onClick: handleSubmittedNoContact },
             ]}
+          />
+        );
+
+      case 'returning_submitted_yes_contacted':
+        if (!isTypingComplete) return null;
+        return (
+          <QuickReplyButtons
+            options={[
+              { label: "Yes, I have a question", onClick: handleHasMoreQuestions },
+              { label: "No, I'm all set", onClick: handleNoMoreQuestions },
+            ]}
+          />
+        );
+
+      case 'returning_show_question_form':
+        if (!isTypingComplete) return null;
+        return (
+          <ChatInput 
+            placeholder="Type your question..." 
+            onSubmit={handleQuestionSubmit} 
           />
         );
 
