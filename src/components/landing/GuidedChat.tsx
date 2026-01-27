@@ -538,7 +538,7 @@ Our pricing is really simple. It costs $99/month. No setup fee and it's complete
         return (
           <QuickReplyButtons
             options={[
-              { label: "Phone", onClick: handleContactPreferencePhone, primary: true },
+              { label: "Phone", onClick: handleContactPreferencePhone },
               { label: "Email", onClick: handleContactPreferenceEmail },
             ]}
           />
