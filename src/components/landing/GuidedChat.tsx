@@ -24,6 +24,7 @@ import DesktopNav from './DesktopNav';
 
 type ConversationState = 
   | 'returning_visitor_demo'
+  | 'returning_visitor_declined'
   | 'initial'
   | 'ask_dental'
   | 'not_dental_end'
@@ -139,21 +140,42 @@ const GuidedChat = () => {
         case 'returning_visitor_demo':
           hasInitialized.current = true;
           const personalGreeting = storedVisitorName 
-            ? `Good to see you again, ${storedVisitorName}! Still thinking about a Virtual Front Desk for your practice?`
-            : `Good to see you again! Still thinking about a Virtual Front Desk for your practice?`;
+            ? `Good to see you again, ${storedVisitorName}! Ready to get a Virtual Front Desk for your practice?`
+            : `Good to see you again! Ready to get a Virtual Front Desk for your practice?`;
           await addMessage({ 
-            type: 'greeting', 
+            type: 'question', 
             content: (
               <TypewriterText 
-                text={`${personalGreeting}
-Go ahead — ask any dental or office question below and see how it works.`}
+                text={personalGreeting}
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
-          await addMessage({
-            type: 'demo',
-            content: <DemoChat onComplete={handleReturningDemoComplete} isCompleted={returningDemoCompleted} />
+          break;
+
+        case 'returning_visitor_declined':
+          await addMessage({ 
+            type: 'explanation', 
+            content: (
+              <TypewriterText 
+                text="No problem at all — thanks for stopping by! If you ever change your mind, just reach out at hello@dgtldental.com"
+                renderText={(displayedText, isComplete) => {
+                  if (isComplete && displayedText.includes('hello@dgtldental.com')) {
+                    const parts = displayedText.split('hello@dgtldental.com');
+                    return (
+                      <>
+                        {parts[0]}
+                        <a href="mailto:hello@dgtldental.com" className="text-primary hover:text-primary/80 underline underline-offset-2">
+                          hello@dgtldental.com
+                        </a>
+                        {parts[1]}
+                      </>
+                    );
+                  }
+                  return displayedText;
+                }}
+              />
+            )
           });
           break;
 
@@ -393,18 +415,28 @@ Have a great day! 😊`}
   };
 
   const handleReturningDemoComplete = () => {
-    // Returning visitors should follow the exact same workflow as first-time visitors
-    // after the demo is completed.
+    // Returning visitors who try the demo should follow the standard workflow
     setReturningDemoCompleted(true);
-    // Reset the state-machine de-dupe so the next steps always run.
     processedStates.current.clear();
     setState('show_value');
+  };
+
+  const handleReturningYes = () => {
+    triggerHaptic('medium');
+    addUserMessage("Yes, let's do it!");
+    processedStates.current.clear();
+    setState('show_excited');
+  };
+
+  const handleReturningNo = () => {
+    triggerHaptic('light');
+    addUserMessage("Not right now");
+    setState('returning_visitor_declined');
   };
 
   const handleContinueToWorkflow = () => {
     triggerHaptic('medium');
     addUserMessage("Yes, tell me more");
-    // Clear show_value from processed states so it can be triggered
     processedStates.current.delete('show_value');
     setState('show_value');
   };
@@ -559,13 +591,20 @@ Have a great day! 😊`}
 
     switch (state) {
       case 'returning_visitor_demo':
-        if (!isTypingComplete || !returningDemoCompleted) return null;
+        if (!isTypingComplete) return null;
         return (
-          <QuickReplyButtons
-            options={[
-              { label: "Want this for your office?", onClick: handleContinueToWorkflow, primary: true },
-            ]}
-          />
+          <div className="space-y-5 animate-fade-in">
+            <QuickReplyButtons
+              options={[
+                { label: "Yes, let's do it!", onClick: handleReturningYes, primary: true },
+                { label: "Not right now", onClick: handleReturningNo },
+              ]}
+            />
+            <div className="text-sm text-muted-foreground text-center">
+              Or take our platform for a test drive below
+            </div>
+            <DemoChat onComplete={handleReturningDemoComplete} isCompleted={returningDemoCompleted} />
+          </div>
         );
 
       case 'ask_dental':
