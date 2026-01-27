@@ -153,9 +153,6 @@ const GuidedChat = () => {
     // Prevent duplicate processing of the same state
     if (processedStates.current.has(state)) return;
     processedStates.current.add(state);
-    // Prevent duplicate processing of the same state
-    if (processedStates.current.has(state)) return;
-    processedStates.current.add(state);
     
     const progressConversation = async () => {
       switch (state) {
