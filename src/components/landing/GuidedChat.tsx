@@ -469,8 +469,13 @@ We create AI-powered Virtual Front Desks for dental practices to help you save t
           />
         );
 
+      case 'show_demo_intro':
       case 'show_demo':
-        return null; // Demo is rendered separately to persist
+      case 'show_value':
+      case 'show_process':
+      case 'show_install':
+      case 'show_price':
+        return null; // No interaction during these states
 
       case 'not_dental_end':
         return (
