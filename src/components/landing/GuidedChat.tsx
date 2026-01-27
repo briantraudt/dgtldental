@@ -287,7 +287,7 @@ const GuidedChat = () => {
             type: 'success', 
             content: (
               <TypewriterText 
-                text={questionName ? `Thanks ${questionName}! Someone from our team will get back to you soon. Have a great day! 😊` : `Thanks! Someone from our team will get back to you soon. Have a great day! 😊`}
+                text="That's a great question — it would probably be best if someone from the team reached out to you directly to answer that. We want to make sure you're well taken care of! We'll be in touch soon. 😊"
               />
             )
           });
