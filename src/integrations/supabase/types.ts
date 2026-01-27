@@ -207,33 +207,39 @@ export type Database = {
       setup_requests: {
         Row: {
           contact_name: string
+          contact_preference: string | null
           created_at: string
           email: string
           id: string
           notes: string | null
+          phone: string | null
           practice_name: string
           status: string
-          website_url: string
+          website_url: string | null
         }
         Insert: {
           contact_name: string
+          contact_preference?: string | null
           created_at?: string
           email: string
           id?: string
           notes?: string | null
+          phone?: string | null
           practice_name: string
           status?: string
-          website_url: string
+          website_url?: string | null
         }
         Update: {
           contact_name?: string
+          contact_preference?: string | null
           created_at?: string
           email?: string
           id?: string
           notes?: string | null
+          phone?: string | null
           practice_name?: string
           status?: string
-          website_url?: string
+          website_url?: string | null
         }
         Relationships: []
       }

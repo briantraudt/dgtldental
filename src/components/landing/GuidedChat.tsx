@@ -396,16 +396,29 @@ Our pricing is really simple. It costs $99/month. No setup fee and it's complete
     setIsSubmitting(true);
 
     try {
+      // Save to database with all fields
       const { error } = await supabase
         .from('setup_requests' as any)
         .insert({
           practice_name: finalData.practice,
-          website_url: '',
           contact_name: finalData.name,
-          email: finalData.phone // Store phone in email field for now
+          email: '',
+          phone: value,
+          contact_preference: 'phone'
         });
 
       if (error) throw error;
+
+      // Send email notification
+      await supabase.functions.invoke('send-prospect', {
+        body: {
+          name: finalData.name,
+          practice: finalData.practice,
+          contactPreference: 'phone',
+          contactValue: value
+        }
+      });
+
       setState('complete');
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -423,16 +436,29 @@ Our pricing is really simple. It costs $99/month. No setup fee and it's complete
     setIsSubmitting(true);
 
     try {
+      // Save to database with all fields
       const { error } = await supabase
         .from('setup_requests' as any)
         .insert({
           practice_name: finalData.practice,
-          website_url: '',
           contact_name: finalData.name,
-          email: finalData.email
+          email: value,
+          phone: '',
+          contact_preference: 'email'
         });
 
       if (error) throw error;
+
+      // Send email notification
+      await supabase.functions.invoke('send-prospect', {
+        body: {
+          name: finalData.name,
+          practice: finalData.practice,
+          contactPreference: 'email',
+          contactValue: value
+        }
+      });
+
       setState('complete');
     } catch (error) {
       console.error('Error submitting form:', error);
