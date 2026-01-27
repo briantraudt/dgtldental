@@ -43,7 +43,7 @@ const MobileMenu = () => {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <button className="p-2 hover:bg-secondary rounded-lg transition-colors">
-            <MoreVertical className="w-5 h-5 text-muted-foreground" />
+            <span className="text-lg font-serif italic text-muted-foreground leading-none">i</span>
           </button>
         </SheetTrigger>
         <SheetContent side="right" className="w-[280px] bg-background">
