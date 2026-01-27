@@ -596,7 +596,7 @@ In the box below, ask any dental or office-related question and feel free to try
       </header>
 
       {/* Chat Area - scrollable content */}
-      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 flex flex-col justify-center relative">
+      <main className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-8 py-6 relative">
         <div className="max-w-[600px] mx-auto w-full">
           <div className="space-y-5">
             {messages.map(renderMessage)}
