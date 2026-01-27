@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import toothIcon from '@/assets/tooth-icon.png';
+import { triggerHaptic } from './audioFeedback';
 
 interface DemoChatProps {
   onComplete: () => void;
@@ -230,6 +231,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
+    triggerHaptic('medium');
     sendMessage(inputValue);
   };
 
@@ -318,6 +320,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
         <div className="pt-2 animate-fade-in flex justify-end">
           <button
             onClick={() => {
+              triggerHaptic('light');
               setHasCompleted(true);
               onComplete();
             }}
