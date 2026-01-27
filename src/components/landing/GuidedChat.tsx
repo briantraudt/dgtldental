@@ -35,8 +35,10 @@ type ConversationState =
   | 'ask_setup'
   | 'show_contact'
   | 'show_excited'
+  | 'ask_name'
   | 'ask_practice_name'
-  | 'ask_website'
+  | 'ask_contact_preference'
+  | 'ask_phone'
   | 'ask_email'
   | 'submitting'
   | 'complete';
@@ -48,8 +50,10 @@ interface Message {
 }
 
 interface FormData {
+  name: string;
   practice: string;
-  website: string;
+  contactPreference: 'phone' | 'email' | '';
+  phone: string;
   email: string;
 }
 
@@ -58,7 +62,7 @@ const GuidedChat = () => {
   const [state, setState] = useState<ConversationState>('initial');
   const [isTyping, setIsTyping] = useState(false);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
-  const [formData, setFormData] = useState<FormData>({ practice: '', website: '', email: '' });
+  const [formData, setFormData] = useState<FormData>({ name: '', practice: '', contactPreference: '', phone: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoCompleted, setDemoCompleted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -243,7 +247,20 @@ const GuidedChat = () => {
             content: (
               <TypewriterText 
                 text="Super — we're excited to work with you! Let's get your contact info so someone from our team can reach out right away."
-                onComplete={() => setState('ask_practice_name')}
+                onComplete={() => setState('ask_name')}
+              />
+            )
+          });
+          break;
+
+        case 'ask_name':
+          setIsTypingComplete(false);
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text="What is your name?"
+                onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
@@ -262,13 +279,26 @@ const GuidedChat = () => {
           });
           break;
 
-        case 'ask_website':
+        case 'ask_contact_preference':
           setIsTypingComplete(false);
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
-                text="What's your website URL?"
+                text="Do you prefer we reach out by phone or email?"
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'ask_phone':
+          setIsTypingComplete(false);
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text="What's the best phone number to reach you?"
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
@@ -332,7 +362,7 @@ const GuidedChat = () => {
 
   const handleBackToSetup = () => {
     addUserMessage("Actually, let's set it up");
-    setState('ask_practice_name');
+    setState('ask_name');
   };
 
   const handleOopsImADentist = () => {
@@ -340,16 +370,55 @@ const GuidedChat = () => {
     setState('show_demo_intro');
   };
 
+  const handleNameSubmit = (value: string) => {
+    setFormData(prev => ({ ...prev, name: value }));
+    addUserMessage(value);
+    setState('ask_practice_name');
+  };
+
   const handlePracticeSubmit = (value: string) => {
     setFormData(prev => ({ ...prev, practice: value }));
     addUserMessage(value);
-    setState('ask_website');
+    setState('ask_contact_preference');
   };
 
-  const handleWebsiteSubmit = (value: string) => {
-    setFormData(prev => ({ ...prev, website: value }));
-    addUserMessage(value);
+  const handleContactPreferencePhone = () => {
+    setFormData(prev => ({ ...prev, contactPreference: 'phone' }));
+    addUserMessage("Phone");
+    setState('ask_phone');
+  };
+
+  const handleContactPreferenceEmail = () => {
+    setFormData(prev => ({ ...prev, contactPreference: 'email' }));
+    addUserMessage("Email");
     setState('ask_email');
+  };
+
+  const handlePhoneSubmit = async (value: string) => {
+    const finalData = { ...formData, phone: value };
+    addUserMessage(value);
+    setState('submitting');
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('setup_requests' as any)
+        .insert({
+          practice_name: finalData.practice,
+          website_url: '',
+          contact_name: finalData.name,
+          email: finalData.phone // Store phone in email field for now
+        });
+
+      if (error) throw error;
+      setState('complete');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Something went wrong. Please try again.');
+      setState('ask_phone');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleEmailSubmit = async (value: string) => {
@@ -363,8 +432,8 @@ const GuidedChat = () => {
         .from('setup_requests' as any)
         .insert({
           practice_name: finalData.practice,
-          website_url: finalData.website,
-          contact_name: finalData.practice,
+          website_url: '',
+          contact_name: finalData.name,
           email: finalData.email
         });
 
@@ -430,13 +499,28 @@ const GuidedChat = () => {
           />
         );
 
+      case 'ask_name':
+        if (!isTypingComplete) return null;
+        return <ChatInput placeholder="Your name..." onSubmit={handleNameSubmit} />;
+
       case 'ask_practice_name':
         if (!isTypingComplete) return null;
         return <ChatInput placeholder="Practice name..." onSubmit={handlePracticeSubmit} />;
 
-      case 'ask_website':
+      case 'ask_contact_preference':
         if (!isTypingComplete) return null;
-        return <ChatInput placeholder="Website URL..." onSubmit={handleWebsiteSubmit} type="url" />;
+        return (
+          <QuickReplyButtons
+            options={[
+              { label: "Phone", onClick: handleContactPreferencePhone, primary: true },
+              { label: "Email", onClick: handleContactPreferenceEmail },
+            ]}
+          />
+        );
+
+      case 'ask_phone':
+        if (!isTypingComplete) return null;
+        return <ChatInput placeholder="Phone number..." onSubmit={handlePhoneSubmit} isSubmitting={isSubmitting} type="tel" />;
 
       case 'ask_email':
         if (!isTypingComplete) return null;
