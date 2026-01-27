@@ -392,11 +392,8 @@ Have a great day! 😊`}
 
   const handleContinueToWorkflow = () => {
     triggerHaptic('medium');
-    // Reset state tracking so it can process the new states
-    processedStates.current.clear();
-    hasInitialized.current = false;
-    setMessages([]);
-    setState('initial');
+    addUserMessage("Yes, tell me more");
+    setState('show_value');
   };
 
   const handleDentalNo = () => {
