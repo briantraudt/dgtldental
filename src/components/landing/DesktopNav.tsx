@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import toothIcon from '@/assets/tooth-icon.png';
 
-type ModalType = 'about' | 'pricing' | 'contact' | null;
+type ModalType = 'about' | 'pricing' | 'contact' | 'success' | null;
 
 const CONTACT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact`;
 
@@ -119,10 +119,9 @@ const DesktopNav = () => {
                 
                 if (!resp.ok) throw new Error('Failed to send');
                 
-                toast.success('Message sent! We\'ll get back to you soon.');
-                setActiveModal(null);
                 setContactEmail('');
                 setContactQuestion('');
+                setActiveModal('success');
               } catch (error) {
                 toast.error('Failed to send message. Please try again.');
               } finally {
@@ -160,6 +159,22 @@ const DesktopNav = () => {
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Success Modal */}
+      <Dialog open={activeModal === 'success'} onOpenChange={() => setActiveModal(null)}>
+        <DialogContent className="max-w-xs">
+          <div className="flex flex-col items-center py-4 space-y-4">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p className="text-center text-foreground text-[15px]">
+              Message sent! We'll get back to you soon.
+            </p>
+          </div>
         </DialogContent>
       </Dialog>
     </>
