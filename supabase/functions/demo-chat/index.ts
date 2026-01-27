@@ -56,7 +56,7 @@ OFFICE INFO:
 - Insurance: Delta Dental, Cigna, Aetna, MetLife, Guardian, United Healthcare, BlueCross BlueShield, Humana, and most PPO plans
 - Parking: Free parking in building lot
 - New Patients: Forms available at dentaloffice.com/new-patients
-- Established: 2008 (over 15 years serving the community)
+- Established: 2008 (over 18 years serving the community)
 
 DENTISTS & TEAM:
 - Dr. Sarah Mitchell, DDS (Lead Dentist & Owner): Graduated from UCLA School of Dentistry in 2005. Specializes in cosmetic dentistry and Invisalign. Over 18 years of experience. Known for her gentle approach and passion for patient education.
