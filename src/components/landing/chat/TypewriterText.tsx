@@ -12,10 +12,14 @@ const TypewriterText = ({ text, speed = 60, onComplete }: TypewriterTextProps) =
 
   useEffect(() => {
     if (currentIndex < text.length) {
+      // Add a longer pause after newlines
+      const isAfterNewline = currentIndex > 0 && text[currentIndex - 1] === '\n';
+      const delay = isAfterNewline ? 600 : speed;
+      
       const timeout = setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
-      }, speed);
+      }, delay);
 
       return () => clearTimeout(timeout);
     } else if (currentIndex === text.length && onComplete) {
@@ -28,7 +32,7 @@ const TypewriterText = ({ text, speed = 60, onComplete }: TypewriterTextProps) =
       {displayedText.split('\n').map((line, index, arr) => (
         <span key={index}>
           {line}
-          {index < arr.length - 1 && <><br /><br /></>}
+          {index < arr.length - 1 && <br />}
         </span>
       ))}
       {currentIndex < text.length && (
