@@ -92,6 +92,7 @@ const GuidedChat = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoCompleted, setDemoCompleted] = useState(false);
   const [returningDemoCompleted, setReturningDemoCompleted] = useState(false);
+  const [declinedDemoCompleted, setDeclinedDemoCompleted] = useState(false);
   const [showHeader, setShowHeader] = useState(isReturningVisitor || hasSubmittedContact);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
@@ -175,11 +176,13 @@ const GuidedChat = () => {
           break;
 
         case 'returning_visitor_declined':
+          setIsTypingComplete(false);
           await addMessage({ 
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="No problem at all — thanks for stopping by! If you ever change your mind, just reach out at hello@dgtldental.com"
+                text="No problem at all! If you change your mind, you're always welcome to take our platform for a test drive below, or reach out at hello@dgtldental.com"
+                onComplete={() => setIsTypingComplete(true)}
                 renderText={(displayedText, isComplete) => {
                   if (isComplete && displayedText.includes('hello@dgtldental.com')) {
                     const parts = displayedText.split('hello@dgtldental.com');
@@ -499,6 +502,13 @@ Have a great day! 😊`}
     setState('show_value');
   };
 
+  const handleDeclinedDemoComplete = () => {
+    // Declined visitors who try the demo should follow the standard workflow
+    setDeclinedDemoCompleted(true);
+    processedStates.current.clear();
+    setState('show_value');
+  };
+
   const handleReturningYes = () => {
     triggerHaptic('medium');
     addUserMessage("Yes, let's do it!");
@@ -710,6 +720,17 @@ Have a great day! 😊`}
               />
             </ExplanationMessage>
             <DemoChat onComplete={handleReturningDemoComplete} isCompleted={returningDemoCompleted} />
+          </div>
+        );
+
+      case 'returning_visitor_declined':
+        if (!isTypingComplete) return null;
+        return (
+          <div className="space-y-4 animate-fade-in">
+            <DemoChat 
+              onComplete={handleDeclinedDemoComplete} 
+              isCompleted={declinedDemoCompleted} 
+            />
           </div>
         );
 
