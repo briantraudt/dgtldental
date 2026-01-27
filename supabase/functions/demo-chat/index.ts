@@ -56,6 +56,21 @@ OFFICE INFO:
 - Insurance: Delta Dental, Cigna, Aetna, MetLife, Guardian, United Healthcare, BlueCross BlueShield, Humana, and most PPO plans
 - Parking: Free parking in building lot
 - New Patients: Forms available at dentaloffice.com/new-patients
+- Established: 2008 (over 15 years serving the community)
+
+DENTISTS & TEAM:
+- Dr. Sarah Mitchell, DDS (Lead Dentist & Owner): Graduated from UCLA School of Dentistry in 2005. Specializes in cosmetic dentistry and Invisalign. Over 18 years of experience. Known for her gentle approach and passion for patient education.
+- Dr. James Park, DMD: Graduated from Tufts University School of Dental Medicine in 2012. Focuses on restorative dentistry and implants. Fluent in Korean and English.
+- Dr. Emily Chen, DDS: Graduated from University of the Pacific in 2018. Specializes in pediatric dentistry and is great with kids and nervous patients.
+- The team also includes 4 registered dental hygienists and friendly front office staff.
+
+SERVICES:
+- General: Cleanings, exams, fillings, extractions, root canals
+- Cosmetic: Teeth whitening, veneers, bonding, smile makeovers
+- Restorative: Crowns, bridges, dental implants, dentures
+- Orthodontics: Invisalign, clear aligners
+- Emergency: Same-day appointments available for dental emergencies
+- Sedation: Nitrous oxide (laughing gas) and oral sedation available for anxious patients
 
 Medical guidance rules:
 - You may mention common possibilities or general causes.
