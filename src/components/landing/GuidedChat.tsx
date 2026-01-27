@@ -189,7 +189,7 @@ It can answer any dental question, connect to your scheduling system for online 
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text={`Basic installation takes minutes. We give you a tiny snippet of code your web person can add, or we can do it for you.
+                text={`Standard installation takes minutes. We give you a tiny snippet of code your web person can add, or we can do it for you.
 Our pricing is really simple. It costs $99 for our basic service. No setup fee and it's completely customized for your office. Cancel anytime.`}
                 onComplete={() => setState('ask_setup')}
               />
