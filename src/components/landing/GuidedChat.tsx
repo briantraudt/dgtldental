@@ -593,16 +593,19 @@ Have a great day! 😊`}
       case 'returning_visitor_demo':
         if (!isTypingComplete) return null;
         return (
-          <div className="space-y-5 animate-fade-in">
+          <div className="space-y-4 animate-fade-in">
             <QuickReplyButtons
               options={[
                 { label: "Yes, let's do it!", onClick: handleReturningYes, primary: true },
                 { label: "Not right now", onClick: handleReturningNo },
               ]}
             />
-            <div className="text-sm text-muted-foreground text-center">
-              Or take our platform for a test drive below
-            </div>
+            <ExplanationMessage animate={true}>
+              <TypewriterText 
+                text="Or take our platform for a test drive below 👇"
+                onComplete={() => {}}
+              />
+            </ExplanationMessage>
             <DemoChat onComplete={handleReturningDemoComplete} isCompleted={returningDemoCompleted} />
           </div>
         );
