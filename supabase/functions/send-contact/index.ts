@@ -35,16 +35,31 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Sending contact form email from:", email);
 
     const emailResponse = await resend.emails.send({
-      from: "DGTL Dental <onboarding@resend.dev>",
+      from: "DGTL Dental <noreply@goodbusinesshq.com>",
       to: ["brian@goodbusinesshq.com"],
-      subject: `New Contact Form: ${email}`,
+      subject: `Contact Form: ${email}`,
       reply_to: email,
       html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>From:</strong> ${email}</p>
-        <hr />
-        <p><strong>Question:</strong></p>
-        <p>${question.replace(/\n/g, '<br />')}</p>
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px 24px;">
+          <h2 style="color: #323c5a; font-size: 20px; font-weight: 600; margin: 0 0 24px 0; border-bottom: 2px solid #323c5a; padding-bottom: 12px;">
+            Contact Form
+          </h2>
+          
+          <div style="color: #323c5a; margin-bottom: 24px;">
+            <div style="margin-bottom: 16px;">
+              <span style="font-weight: 600; display: inline-block; width: 60px;">From</span>
+              <a href="mailto:${email}" style="color: #323c5a;">${email}</a>
+            </div>
+          </div>
+          
+          <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; color: #323c5a;">
+            <p style="margin: 0; white-space: pre-wrap;">${question.replace(/\n/g, '<br />')}</p>
+          </div>
+          
+          <p style="color: #6b7280; font-size: 13px; margin-top: 32px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
+            Via DGTL Dental contact form
+          </p>
+        </div>
       `,
     });
 
