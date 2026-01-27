@@ -277,16 +277,8 @@ const GuidedChat = () => {
           break;
 
         case 'returning_show_question_form':
-          setIsTypingComplete(false);
-          await addMessage({ 
-            type: 'question', 
-            content: (
-              <TypewriterText 
-                text="What can we help you with?"
-                onComplete={() => setIsTypingComplete(true)}
-              />
-            )
-          });
+          // No message needed - the input placeholder is sufficient
+          setIsTypingComplete(true);
           break;
 
         case 'returning_question_submitted':
