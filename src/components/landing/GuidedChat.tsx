@@ -316,11 +316,12 @@ Our pricing is really simple. It costs $99 for our basic service. No setup fee a
           break;
 
         case 'complete':
+          const successFirstName = formData.name.split(' ')[0];
           await addMessage({ 
             type: 'success', 
             content: (
               <TypewriterText 
-                text={`Thanks so much! Someone from our team will contact you right away.
+                text={`Thanks so much, ${successFirstName}! Someone from our team will contact you right away.
 Have a great day!`}
               />
             )
