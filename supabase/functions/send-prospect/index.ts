@@ -31,7 +31,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("New prospect submission:", { name, practice, contactPreference, contactValue });
 
     const emailResponse = await resend.emails.send({
-      from: "DGTL Dental <onboarding@resend.dev>",
+      from: "DGTL Dental <noreply@goodbusinesshq.com>",
       to: ["brian@goodbusinesshq.com"],
       subject: `🦷 New Prospect: ${practice}`,
       html: `
