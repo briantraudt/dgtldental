@@ -59,10 +59,12 @@ interface FormData {
 }
 
 const VISITED_KEY = 'dgtl_has_visited';
+const VISITOR_NAME_KEY = 'dgtl_visitor_name';
 
 const GuidedChat = () => {
-  // Check if returning visitor
+  // Check if returning visitor and get their stored name
   const isReturningVisitor = typeof window !== 'undefined' && localStorage.getItem(VISITED_KEY) === 'true';
+  const storedVisitorName = typeof window !== 'undefined' ? localStorage.getItem(VISITOR_NAME_KEY) : null;
   
   const [messages, setMessages] = useState<Message[]>([]);
   const [state, setState] = useState<ConversationState>(isReturningVisitor ? 'returning_visitor_demo' : 'initial');
@@ -136,11 +138,14 @@ const GuidedChat = () => {
       switch (state) {
         case 'returning_visitor_demo':
           hasInitialized.current = true;
+          const personalGreeting = storedVisitorName 
+            ? `Good to see you again, ${storedVisitorName}! Still thinking about a Virtual Front Desk for your practice?`
+            : `Good to see you again! Still thinking about a Virtual Front Desk for your practice?`;
           await addMessage({ 
             type: 'greeting', 
             content: (
               <TypewriterText 
-                text={`Good to see you again! Still thinking about a Virtual Front Desk for your practice?
+                text={`${personalGreeting}
 Go ahead — ask any dental or office question below and see how it works.`}
                 onComplete={() => setIsTypingComplete(true)}
               />
@@ -433,6 +438,10 @@ Have a great day! 😊`}
     triggerHaptic('medium');
     setFormData(prev => ({ ...prev, name: value }));
     addUserMessage(value);
+    // Store name for personalized returning visitor experience
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(VISITOR_NAME_KEY, value.split(' ')[0]);
+    }
     setState('ask_practice_name');
   };
 
