@@ -29,8 +29,7 @@ type ConversationState =
   | 'returning_submitted_no_contact'
   | 'returning_submitted_confirm_contact'
   | 'returning_submitted_yes_contacted'
-  | 'returning_yes_confirm_contact'
-  | 'returning_yes_ask_questions'
+  | 'returning_yes_confirm_before_question'
   | 'returning_ask_more_questions'
   | 'returning_show_question_form'
   | 'returning_question_submitted'
@@ -255,40 +254,27 @@ const GuidedChat = () => {
 
         case 'returning_submitted_yes_contacted':
           setIsTypingComplete(false);
-          const contactedConfirmMsg = storedContactValue 
-            ? `Ok, good deal. Just to confirm — we have ${storedContactValue} on file. Is that still the best way to reach you?`
-            : `Ok, good deal. What's the best phone or email to reach you?`;
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
-                text={contactedConfirmMsg}
+                text="Ok, good deal. Do you have any other questions right now?"
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
           });
           break;
 
-        case 'returning_yes_confirm_contact':
+        case 'returning_yes_confirm_before_question':
           setIsTypingComplete(false);
+          const confirmBeforeQuestionMsg = storedContactValue 
+            ? `Sure! We have ${storedContactValue} on file — is that still the best way to reach you?`
+            : `Sure! What's the best email or phone to reach you?`;
           await addMessage({ 
             type: 'question', 
             content: (
               <TypewriterText 
-                text="Perfect! Do you have any other questions right now?"
-                onComplete={() => setIsTypingComplete(true)}
-              />
-            )
-          });
-          break;
-
-        case 'returning_yes_ask_questions':
-          setIsTypingComplete(false);
-          await addMessage({ 
-            type: 'question', 
-            content: (
-              <TypewriterText 
-                text="Got it, thanks! Do you have any other questions right now?"
+                text={confirmBeforeQuestionMsg}
                 onComplete={() => setIsTypingComplete(true)}
               />
             )
@@ -656,11 +642,18 @@ Have a great day! 😊`}
     setState('returning_ask_new_contact');
   };
 
-  // Handlers for "Yes, been contacted" flow - confirm contact first
+  // Handler for "Yes, I have a question" after yes_contacted asks about questions
+  const handleYesContactedHasQuestion = () => {
+    triggerHaptic('light');
+    addUserMessage("Yes, I have a question");
+    setState('returning_yes_confirm_before_question');
+  };
+
+  // Handlers for contact confirmation before showing question form
   const handleYesContactedConfirm = () => {
     triggerHaptic('medium');
     addUserMessage("Yes, that's still correct");
-    setState('returning_yes_confirm_contact');
+    setState('returning_show_question_form');
   };
 
   const handleYesContactedUpdate = () => {
@@ -854,7 +847,17 @@ Have a great day! 😊`}
 
       case 'returning_submitted_yes_contacted':
         if (!isTypingComplete) return null;
-        // Show confirmation buttons if we have stored contact info
+        return (
+          <QuickReplyButtons
+            options={[
+              { label: "Yes, I have a question", onClick: handleYesContactedHasQuestion },
+              { label: "No, I'm all set", onClick: handleNoMoreQuestions },
+            ]}
+          />
+        );
+
+      case 'returning_yes_confirm_before_question':
+        if (!isTypingComplete) return null;
         if (storedContactValue) {
           return (
             <QuickReplyButtons
@@ -865,7 +868,6 @@ Have a great day! 😊`}
             />
           );
         }
-        // Otherwise ask for contact via input
         return (
           <ChatInput 
             placeholder="Email or phone number..." 
@@ -876,20 +878,8 @@ Have a great day! 😊`}
                 localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
                 localStorage.setItem(VISITOR_CONTACT_PREF_KEY, isEmail ? 'email' : 'phone');
               }
-              setState('returning_yes_ask_questions');
+              setState('returning_show_question_form');
             }} 
-          />
-        );
-
-      case 'returning_yes_confirm_contact':
-      case 'returning_yes_ask_questions':
-        if (!isTypingComplete) return null;
-        return (
-          <QuickReplyButtons
-            options={[
-              { label: "Yes, I have a question", onClick: handleHasMoreQuestions },
-              { label: "No, I'm all set", onClick: handleNoMoreQuestions },
-            ]}
           />
         );
 
@@ -905,7 +895,7 @@ Have a great day! 😊`}
                 localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
                 localStorage.setItem(VISITOR_CONTACT_PREF_KEY, isEmail ? 'email' : 'phone');
               }
-              setState('returning_yes_ask_questions');
+              setState('returning_show_question_form');
             }} 
           />
         );
