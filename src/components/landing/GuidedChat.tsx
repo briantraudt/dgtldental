@@ -33,6 +33,7 @@ type ConversationState =
   | 'returning_show_question_form'
   | 'returning_question_submitted'
   | 'returning_no_more_questions'
+  | 'returning_ask_new_contact'
   | 'initial'
   | 'ask_dental'
   | 'not_dental_end'
@@ -223,10 +224,9 @@ const GuidedChat = () => {
 
         case 'returning_submitted_no_contact':
           setIsTypingComplete(false);
-          const contactType = storedContactPref === 'phone' ? 'phone number' : 'email';
           const confirmMsg = storedContactValue 
-            ? `We'll get back to you right away! Just to confirm, is ${storedContactValue} still the best ${contactType} to reach you?`
-            : `We'll get back to you right away! What's the best ${contactType} to reach you?`;
+            ? `We'll get back to you right away! We have ${storedContactValue} on file — is that still the best way to reach you, or is there a better contact?`
+            : `We'll get back to you right away! What's the best way to reach you?`;
           await addMessage({ 
             type: 'question', 
             content: (
@@ -301,7 +301,19 @@ const GuidedChat = () => {
           });
           break;
 
-        case 'initial':
+        case 'returning_ask_new_contact':
+          setIsTypingComplete(false);
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text="No problem! What's the best email or phone to reach you?"
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
           hasInitialized.current = true;
           await addMessage({ 
             type: 'greeting', 
@@ -604,14 +616,8 @@ Have a great day! 😊`}
 
   const handleConfirmContactUpdate = () => {
     triggerHaptic('light');
-    addUserMessage("I have a new contact");
-    // Go to the appropriate contact input based on stored preference
-    processedStates.current.clear();
-    if (storedContactPref === 'phone') {
-      setState('ask_phone');
-    } else {
-      setState('ask_email');
-    }
+    addUserMessage("I have a better contact");
+    setState('returning_ask_new_contact');
   };
 
   const handleContinueToWorkflow = () => {
@@ -824,28 +830,45 @@ Have a great day! 😊`}
           return (
             <QuickReplyButtons
               options={[
-                { label: "Yes, that's correct", onClick: handleConfirmContactYes, primary: true },
-                { label: "I have a new contact", onClick: handleConfirmContactUpdate },
+                { label: "That's still correct", onClick: handleConfirmContactYes, primary: true },
+                { label: "I have a better contact", onClick: handleConfirmContactUpdate },
               ]}
             />
           );
         }
-        // Otherwise ask for contact via input
-        return storedContactPref === 'phone' 
-          ? <ChatInput placeholder="Phone number..." onSubmit={(value) => {
+        // Otherwise ask for contact via input (phone or email)
+        return (
+          <ChatInput 
+            placeholder="Email or phone number..." 
+            onSubmit={(value) => {
               addUserMessage(value);
               if (typeof window !== 'undefined') {
+                // Determine if it's email or phone and store appropriately
+                const isEmail = value.includes('@');
                 localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
+                localStorage.setItem(VISITOR_CONTACT_PREF_KEY, isEmail ? 'email' : 'phone');
               }
               setState('returning_submitted_confirm_contact');
-            }} type="tel" />
-          : <ChatInput placeholder="Email address..." onSubmit={(value) => {
+            }} 
+          />
+        );
+
+      case 'returning_ask_new_contact':
+        if (!isTypingComplete) return null;
+        return (
+          <ChatInput 
+            placeholder="Email or phone number..." 
+            onSubmit={(value) => {
               addUserMessage(value);
               if (typeof window !== 'undefined') {
+                const isEmail = value.includes('@');
                 localStorage.setItem(VISITOR_CONTACT_VALUE_KEY, value);
+                localStorage.setItem(VISITOR_CONTACT_PREF_KEY, isEmail ? 'email' : 'phone');
               }
               setState('returning_submitted_confirm_contact');
-            }} type="email" />;
+            }} 
+          />
+        );
 
       case 'ask_dental':
         if (!isTypingComplete) return null;
