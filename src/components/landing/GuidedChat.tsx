@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { RotateCcw } from 'lucide-react';
+
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { playMessageFeedback, triggerHaptic } from './chat/audioFeedback';
@@ -1162,22 +1162,6 @@ Have a great day! 😊`}
         </div>
       </main>
       
-      {/* Dev: Reset button to test first-time visitor flow */}
-      <button
-        onClick={() => {
-          localStorage.removeItem(VISITED_KEY);
-          localStorage.removeItem(VISITOR_NAME_KEY);
-          localStorage.removeItem(SUBMITTED_CONTACT_KEY);
-          localStorage.removeItem(VISITOR_CONTACT_PREF_KEY);
-          localStorage.removeItem(VISITOR_CONTACT_VALUE_KEY);
-          window.location.reload();
-        }}
-        className="fixed bottom-4 right-4 bg-muted hover:bg-muted/80 text-muted-foreground text-xs px-3 py-2 rounded-full shadow-lg z-50 flex items-center gap-1.5 opacity-50 hover:opacity-100 transition-opacity"
-        title="Reset demo (clear localStorage)"
-      >
-        <RotateCcw className="w-3 h-3" />
-        Reset Demo
-      </button>
     </div>
   );
 };
