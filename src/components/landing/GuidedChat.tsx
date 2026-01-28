@@ -363,6 +363,7 @@ const GuidedChat = () => {
           });
           break;
 
+        case 'initial':
           hasInitialized.current = true;
           await addMessage({ 
             type: 'greeting', 
