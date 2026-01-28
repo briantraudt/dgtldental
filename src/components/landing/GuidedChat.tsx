@@ -108,8 +108,8 @@ const GuidedChat = () => {
   const hasInitialized = useRef(false);
   const processedStates = useRef<Set<ConversationState>>(new Set());
   
-  // Mark visitor on first visit
-  useEffect(() => {
+  // Mark visitor as returning when they answer the first question (not on page load)
+  const markAsVisited = useCallback(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(VISITED_KEY, 'true');
     }
@@ -588,6 +588,7 @@ Have a great day! 😊`}
   // Handlers
   const handleDentalYes = () => {
     triggerHaptic('light');
+    markAsVisited();
     addUserMessage("Yes");
     setState('show_demo_intro');
   };
@@ -705,6 +706,7 @@ Have a great day! 😊`}
 
   const handleDentalNo = () => {
     triggerHaptic('light');
+    markAsVisited();
     addUserMessage("No");
     setState('not_dental_end');
   };
