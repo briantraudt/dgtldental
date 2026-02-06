@@ -41,6 +41,8 @@ type ConversationState =
   | 'initial'
   | 'ask_dental'
   | 'not_dental_end'
+  | 'not_dental_try_demo'
+  | 'not_dental_declined'
   | 'show_demo_intro'
   | 'show_demo'
   | 'show_value'
@@ -394,11 +396,51 @@ We create AI-powered Virtual Front Desks for dental practices to help you save t
           break;
 
         case 'not_dental_end':
+          setIsTypingComplete(false);
+          await addMessage({ 
+            type: 'question', 
+            content: (
+              <TypewriterText 
+                text="No worries! Would you still like to try out our Virtual Front Desk? You can ask it any dental or office-related question to see how it works."
+                onComplete={() => setIsTypingComplete(true)}
+              />
+            )
+          });
+          break;
+
+        case 'not_dental_try_demo':
           await addMessage({ 
             type: 'explanation', 
             content: (
               <TypewriterText 
-                text="No worries! This service is designed specifically for dental practices. Feel free to share with anyone you know in the dental field."
+                text="Great — go ahead and ask any dental question below to see it in action!"
+                onComplete={() => setState('show_demo')}
+              />
+            )
+          });
+          break;
+
+        case 'not_dental_declined':
+          await addMessage({ 
+            type: 'explanation', 
+            content: (
+              <TypewriterText 
+                text="Thanks for stopping by! If you know any dental practices that could use a Virtual Front Desk, feel free to share our site or reach out at hello@dgtldental.com"
+                renderText={(displayedText, isComplete) => {
+                  if (isComplete && displayedText.includes('hello@dgtldental.com')) {
+                    const parts = displayedText.split('hello@dgtldental.com');
+                    return (
+                      <>
+                        {parts[0]}
+                        <a href="mailto:hello@dgtldental.com" className="text-primary hover:text-primary/80 underline underline-offset-2">
+                          hello@dgtldental.com
+                        </a>
+                        {parts[1]}
+                      </>
+                    );
+                  }
+                  return displayedText;
+                }}
               />
             )
           });
@@ -732,10 +774,16 @@ Have a great day! 😊`}
     setState('ask_name');
   };
 
-  const handleOopsImADentist = () => {
+  const handleNotDentalTryDemo = () => {
     triggerHaptic('light');
-    addUserMessage("Oops, I am a dentist!");
-    setState('show_demo_intro');
+    addUserMessage("Yes, I'd like to try it!");
+    setState('not_dental_try_demo');
+  };
+
+  const handleNotDentalDecline = () => {
+    triggerHaptic('light');
+    addUserMessage("No thanks");
+    setState('not_dental_declined');
   };
 
   const handleNameSubmit = (value: string) => {
@@ -1037,6 +1085,8 @@ Have a great day! 😊`}
 
       case 'show_demo_intro':
       case 'show_demo':
+      case 'not_dental_try_demo':
+      case 'not_dental_declined':
       case 'show_value':
       case 'show_process':
       case 'show_install':
@@ -1044,15 +1094,14 @@ Have a great day! 😊`}
         return null; // No interaction during these states
 
       case 'not_dental_end':
+        if (!isTypingComplete) return null;
         return (
-          <div className="flex justify-center pt-4 animate-fade-in">
-            <button
-              onClick={handleOopsImADentist}
-              className="text-sm text-muted-foreground hover:text-primary transition-colors underline underline-offset-2"
-            >
-              Oops, I am a dentist
-            </button>
-          </div>
+          <QuickReplyButtons
+            options={[
+              { label: "Yes, let me try it!", onClick: handleNotDentalTryDemo, primary: true },
+              { label: "No thanks", onClick: handleNotDentalDecline },
+            ]}
+          />
         );
 
       case 'ask_setup':
