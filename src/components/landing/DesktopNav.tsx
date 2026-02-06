@@ -52,10 +52,8 @@ const DesktopNav = () => {
             <p className="text-[15px] text-foreground/80 leading-relaxed text-center">
               We build AI-powered Virtual Front Desks that answer patient questions around the clock. With <span className="text-foreground font-medium">over 50,000 questions answered</span> for practices nationwide, we help reduce phone interruptions while giving your patients instant, helpful responses.
             </p>
-            <div className="pt-4 text-center">
-              <a href="https://goodbusinesshq.com" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors">
-                A Good Business
-              </a>
+            <div className="pt-4 text-center text-xs text-muted-foreground/60">
+              DGTL Dental is <a href="https://goodbusinesshq.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors">a Good Business</a>
             </div>
           </div>
         </DialogContent>
