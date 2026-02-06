@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MoreVertical, Info, DollarSign, Mail, Send } from 'lucide-react';
+import { Menu, Info, DollarSign, Mail, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Sheet,
@@ -43,7 +43,7 @@ const MobileMenu = () => {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <button className="p-2 hover:bg-secondary rounded-lg transition-colors">
-            <span className="text-lg font-serif italic text-muted-foreground leading-none">i</span>
+            <Menu className="w-5 h-5 text-muted-foreground" />
           </button>
         </SheetTrigger>
         <SheetContent side="right" className="w-[280px] bg-background">
