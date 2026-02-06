@@ -72,12 +72,12 @@ const MobileMenu = () => {
       <Dialog open={activeModal === 'about'} onOpenChange={() => setActiveModal(null)}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
+            <div className="flex justify-center mb-2">
+              <img src={toothIcon} alt="DGTL" className="h-12 w-12" />
+            </div>
             <DialogTitle className="text-center font-normal text-lg text-muted-foreground">About Us</DialogTitle>
           </DialogHeader>
           <div className="space-y-5 pt-2">
-            <div className="text-center">
-              <img src={toothIcon} alt="DGTL" className="h-12 w-12 mx-auto mb-4" />
-            </div>
             <p className="text-[15px] text-foreground/80 leading-relaxed text-center">
               We build AI-powered Virtual Front Desks that answer patient questions around the clock. With <span className="text-foreground font-medium">over 50,000 questions answered</span> for practices nationwide, we help reduce phone interruptions while giving your patients instant, helpful responses.
             </p>
@@ -89,6 +89,9 @@ const MobileMenu = () => {
       <Dialog open={activeModal === 'pricing'} onOpenChange={() => setActiveModal(null)}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
+            <div className="flex justify-center mb-2">
+              <img src={toothIcon} alt="DGTL" className="h-12 w-12" />
+            </div>
             <DialogTitle className="text-center font-normal text-lg text-muted-foreground">Standard Pricing</DialogTitle>
           </DialogHeader>
           <div className="space-y-6 pt-2">
@@ -128,6 +131,9 @@ const MobileMenu = () => {
       }}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
+            <div className="flex justify-center mb-2">
+              <img src={toothIcon} alt="DGTL" className="h-12 w-12" />
+            </div>
             <DialogTitle className="text-center font-normal text-lg text-muted-foreground">Get in Touch</DialogTitle>
           </DialogHeader>
           <form 
