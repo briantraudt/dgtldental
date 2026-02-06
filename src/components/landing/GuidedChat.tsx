@@ -791,6 +791,16 @@ Have a great day! 😊`}
 
       if (error) throw error;
 
+      // Send email notification
+      supabase.functions.invoke('send-prospect', {
+        body: {
+          name: finalData.name,
+          practice: finalData.practice,
+          contactPreference: 'phone',
+          contactValue: value,
+        },
+      }).catch(err => console.error('Email notification error:', err));
+
       // Store contact info for returning visitor experience
       if (typeof window !== 'undefined') {
         localStorage.setItem(SUBMITTED_CONTACT_KEY, 'true');
@@ -828,6 +838,16 @@ Have a great day! 😊`}
         });
 
       if (error) throw error;
+
+      // Send email notification
+      supabase.functions.invoke('send-prospect', {
+        body: {
+          name: finalData.name,
+          practice: finalData.practice,
+          contactPreference: 'email',
+          contactValue: value,
+        },
+      }).catch(err => console.error('Email notification error:', err));
 
       // Store contact info for returning visitor experience
       if (typeof window !== 'undefined') {
