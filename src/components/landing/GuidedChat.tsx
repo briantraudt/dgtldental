@@ -465,11 +465,13 @@ Our pricing is really simple. It costs $99/month for our basic service with no s
           break;
 
         case 'show_contact':
+          setIsTypingComplete(false);
           await addMessage({ 
             type: 'explanation', 
             content: (
               <TypewriterText 
                 text="No problem! Reach out anytime at hello@dgtldental.com"
+                onComplete={() => setIsTypingComplete(true)}
                 renderText={(displayedText, isComplete) => {
                   if (isComplete && displayedText.includes('hello@dgtldental.com')) {
                     const parts = displayedText.split('hello@dgtldental.com');
@@ -1045,6 +1047,7 @@ Have a great day! 😊`}
         );
 
       case 'show_contact':
+        if (!isTypingComplete) return null;
         return (
           <QuickReplyButtons
             options={[
