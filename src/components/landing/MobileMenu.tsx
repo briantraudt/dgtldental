@@ -82,7 +82,7 @@ const MobileMenu = () => {
               We build AI-powered Virtual Front Desks that answer patient questions around the clock. With <span className="text-foreground font-medium">over 50,000 questions answered</span> for practices nationwide, we help reduce phone interruptions while giving your patients instant, helpful responses.
             </p>
             <div className="pt-4 text-center text-xs text-primary">
-              DGTL Dental is <a href="https://goodbusinesshq.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors">a Good Business</a>
+              DGTL Dental is <a href="https://goodbusinesshq.com" target="_blank" rel="noopener noreferrer" className="font-bold hover:text-primary/80 transition-colors">a Good Business</a>
             </div>
           </div>
         </DialogContent>
