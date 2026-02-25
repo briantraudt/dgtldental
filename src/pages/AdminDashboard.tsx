@@ -8,8 +8,9 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
 import {
-  Users, MessageSquare, Eye, TrendingUp, LogOut, ExternalLink, ArrowUpRight
+  Users, MessageSquare, Eye, TrendingUp, LogOut, ExternalLink, ArrowUpRight, Trash2
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { format } from 'date-fns';
 
 interface PageView {
@@ -105,6 +106,26 @@ const AdminDashboard = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/admin');
+  };
+
+  const deleteRow = async (table: string, id: string) => {
+    const { error } = await (supabase as any).from(table).delete().eq('id', id);
+    if (error) { toast.error('Delete failed'); return; }
+    toast.success('Deleted');
+    fetchAllData();
+  };
+
+  const deleteAll = async (table: string) => {
+    const ids = table === 'setup_requests' ? setupRequests.map(r => r.id)
+      : table === 'chat_messages' ? chatMessages.map(r => r.id)
+      : table === 'site_events' ? siteEvents.map(r => r.id)
+      : pageViews.map(r => r.id);
+    if (ids.length === 0) return;
+    if (!window.confirm(`Delete all ${ids.length} records?`)) return;
+    const { error } = await (supabase as any).from(table).delete().in('id', ids);
+    if (error) { toast.error('Delete failed'); return; }
+    toast.success(`Deleted ${ids.length} records`);
+    fetchAllData();
   };
 
   // Computed stats
@@ -246,8 +267,13 @@ const AdminDashboard = () => {
           {/* Leads Tab */}
           <TabsContent value="leads">
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Setup Requests / Leads ({setupRequests.length})</CardTitle>
+                {setupRequests.length > 0 && (
+                  <Button variant="destructive" size="sm" onClick={() => deleteAll('setup_requests')}>
+                    <Trash2 className="w-4 h-4 mr-1" /> Delete All
+                  </Button>
+                )}
               </CardHeader>
               <CardContent>
                 {setupRequests.length === 0 ? (
@@ -263,6 +289,9 @@ const AdminDashboard = () => {
                         <TableHead>Phone</TableHead>
                         <TableHead>Preference</TableHead>
                         <TableHead>Website</TableHead>
+                        <TableHead>Notes</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead></TableHead>
                         <TableHead>Notes</TableHead>
                         <TableHead>Status</TableHead>
                       </TableRow>
@@ -293,6 +322,11 @@ const AdminDashboard = () => {
                               {sr.status}
                             </span>
                           </TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="icon" onClick={() => deleteRow('setup_requests', sr.id)}>
+                              <Trash2 className="w-4 h-4 text-destructive" />
+                            </Button>
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -315,8 +349,13 @@ const AdminDashboard = () => {
               ))}
             </div>
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Recent Events</CardTitle>
+                {siteEvents.length > 0 && (
+                  <Button variant="destructive" size="sm" onClick={() => deleteAll('site_events')}>
+                    <Trash2 className="w-4 h-4 mr-1" /> Delete All
+                  </Button>
+                )}
               </CardHeader>
               <CardContent>
                 <Table>
@@ -327,6 +366,7 @@ const AdminDashboard = () => {
                       <TableHead>Data</TableHead>
                       <TableHead>Page</TableHead>
                       <TableHead>Visitor</TableHead>
+                      <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -339,6 +379,11 @@ const AdminDashboard = () => {
                         </TableCell>
                         <TableCell className="text-xs">{ev.page_path}</TableCell>
                         <TableCell className="text-xs font-mono">{ev.visitor_id?.slice(0, 8) || '—'}</TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" onClick={() => deleteRow('site_events', ev.id)}>
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -366,8 +411,13 @@ const AdminDashboard = () => {
               </Card>
             </div>
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Recent Page Views</CardTitle>
+                {pageViews.length > 0 && (
+                  <Button variant="destructive" size="sm" onClick={() => deleteAll('page_views')}>
+                    <Trash2 className="w-4 h-4 mr-1" /> Delete All
+                  </Button>
+                )}
               </CardHeader>
               <CardContent>
                 <Table>
@@ -378,6 +428,7 @@ const AdminDashboard = () => {
                       <TableHead>Referrer</TableHead>
                       <TableHead>UTM Source</TableHead>
                       <TableHead>Visitor</TableHead>
+                      <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -388,6 +439,11 @@ const AdminDashboard = () => {
                         <TableCell className="text-xs max-w-[200px] truncate">{pv.referrer || 'Direct'}</TableCell>
                         <TableCell>{pv.utm_source || '—'}</TableCell>
                         <TableCell className="text-xs font-mono">{pv.visitor_id?.slice(0, 8) || '—'}</TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" onClick={() => deleteRow('page_views', pv.id)}>
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -446,8 +502,13 @@ const AdminDashboard = () => {
           {/* Chats Tab */}
           <TabsContent value="chats">
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Chat Messages ({chatMessages.length})</CardTitle>
+                {chatMessages.length > 0 && (
+                  <Button variant="destructive" size="sm" onClick={() => deleteAll('chat_messages')}>
+                    <Trash2 className="w-4 h-4 mr-1" /> Delete All
+                  </Button>
+                )}
               </CardHeader>
               <CardContent>
                 {chatMessages.length === 0 ? (
@@ -460,6 +521,7 @@ const AdminDashboard = () => {
                         <TableHead>Clinic</TableHead>
                         <TableHead>User Message</TableHead>
                         <TableHead>AI Response</TableHead>
+                        <TableHead></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -472,6 +534,11 @@ const AdminDashboard = () => {
                           </TableCell>
                           <TableCell className="max-w-[400px]">
                             <p className="text-sm truncate text-muted-foreground">{cm.response_content}</p>
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="icon" onClick={() => deleteRow('chat_messages', cm.id)}>
+                              <Trash2 className="w-4 h-4 text-destructive" />
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
