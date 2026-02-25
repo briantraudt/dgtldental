@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { trackEvent } from '@/lib/tracking';
 import { playMessageFeedback, triggerHaptic } from './chat/audioFeedback';
 import toothIcon from '@/assets/tooth-icon.png';
 import dgtlLogo from '@/assets/dgtl-logo.png';
@@ -839,7 +840,8 @@ Have a great day! 😊`}
 
       if (error) throw error;
 
-      // Send email notification
+      trackEvent('lead_submitted', { contact_preference: 'phone', practice: finalData.practice });
+
       supabase.functions.invoke('send-prospect', {
         body: {
           name: finalData.name,
@@ -887,7 +889,8 @@ Have a great day! 😊`}
 
       if (error) throw error;
 
-      // Send email notification
+      trackEvent('lead_submitted', { contact_preference: 'email', practice: finalData.practice });
+
       supabase.functions.invoke('send-prospect', {
         body: {
           name: finalData.name,

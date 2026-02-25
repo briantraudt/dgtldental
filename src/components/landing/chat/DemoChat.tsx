@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import toothIcon from '@/assets/tooth-icon.png';
 import { triggerHaptic } from './audioFeedback';
+import { trackEvent } from '@/lib/tracking';
 
 interface DemoChatProps {
   onComplete: () => void;
@@ -232,6 +233,7 @@ const DemoChat = ({ onComplete, isCompleted = false }: DemoChatProps) => {
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     triggerHaptic('medium');
+    trackEvent('demo_chat_message', { question: inputValue });
     sendMessage(inputValue);
   };
 
